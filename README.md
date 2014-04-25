@@ -1,0 +1,4 @@
+SmartCourse
+===========
+
+Database Laboratory Project
