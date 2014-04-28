@@ -9,16 +9,17 @@ class Courses {
 	/**
 	 * Check for existing course
 	 **/
-	public function course_exists($course_alias)
+	public function course_exists($value)
 	{
-		$query = $this->db->prepare("SELECT * FROM `sm_courses` WHERE `course_alias` = ?");
-		$query->bindValue(1, $course_alias);
+		$query = $this->db->prepare("SELECT * FROM `sm_courses` WHERE (`course_alias` = ?) OR (`course_code` = ?)");
+		$query->bindValue(1, $value);
+		$query->bindValue(2, $value);
 
 		try {
 			$query->execute();
-			$rows = $query->fetchColum();
+			$rows = $query->fetchColumn();
 
-			if ($rows == 1) {
+			if ($rows > 0) {
 				return true;
 			} else {
 				return false;
@@ -47,23 +48,56 @@ class Courses {
 		}
 	}
 
-	public function create_course($course_title, $course_alias, $cat_id)
+	public function create_course($course_title, $course_code, $course_alias, $cat_id, $course_type, $start_date, $length, $user_id)
 	{
-		$query = $this->db->prepare("INSERT INTO `sm_courses` (`course_title`, `course_alias`, `cat_id`) VALUES (?, ?, ?) ");
+		$create_date = time();
 
+		$query = $this->db->prepare("INSERT INTO `sm_courses` (`course_title`, `course_code`, `course_alias`, `cat_id`,`course_type`, `create_date`, `start_date`, `length`)
+									 VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 		$query->bindValue(1, $course_title);
-		$query->bindValue(2, $course_alias);
-		$query->bindValue(3, $cat_id);
+		$query->bindValue(2, $course_code);
+		$query->bindValue(3, $course_alias);
+		$query->bindValue(4, $cat_id);
+		$query->bindValue(5, $course_type);
+		$query->bindValue(6, $create_date);
+		$query->bindValue(7, $start_date);
+		$query->bindValue(8, $length);
+
+		
 
 		try {
 			$query->execute();
 
-			return true;
-
+			// $tmp = $this->search_courses($course_alias);
+			// if ($tmp <> false) {
+			// 	# code...
+			// }
+			// $query2 = $this->db->prepare("INSERT INTO `sm_create_course`(`user_id`, `course_id`, `create_date`)
+			// 						  VALUES (?, ?, ?)");
+			// $query2->bindValue(1, $user_id);
+			return true;		# Successfully create the course
 		} catch (PDOException $e) {
 			die($e->getMessage());
 		}
+		return false;
 	}
+	// public function create_course($course_title, $course_alias, $cat_id)
+	// {
+	// 	$query = $this->db->prepare("INSERT INTO `sm_courses` (`course_title`, `course_alias`, `cat_id`) VALUES (?, ?, ?) ");
+
+	// 	$query->bindValue(1, $course_title);
+	// 	$query->bindValue(2, $course_alias);
+	// 	$query->bindValue(3, $cat_id);
+
+	// 	try {
+	// 		$query->execute();
+
+	// 		return true;
+
+	// 	} catch (PDOException $e) {
+	// 		die($e->getMessage());
+	// 	}
+	// }
 
 	public function update_course($course_id,$course_desc, $start_date, $length, $avatar)
 	{
@@ -150,10 +184,10 @@ class Courses {
 	public function search_courses($keyword)
 	{
 		$results = array();
-		$query = $this->db->prepare("SELECT * FROM `sm_courses` WHERE `course_title` = ? ");
-		$token = '\'%' . $keyword . '%\'';
-		$query->bindValue(1, $keyword);
-
+		$query = $this->db->prepare("SELECT * FROM `sm_courses` WHERE (`course_title` LIKE '?') OR (`course_alias` = '?) ");
+		$token = '%' . $keyword . '%';
+		$query->bindValue(1, $token);
+		$query->bindValue(2, $keyword);
 		try {
 			$query->execute();
 			$results = $query->fetchAll();
@@ -167,6 +201,7 @@ class Courses {
 
 		return false;
 	}
+
 }
 
  ?>

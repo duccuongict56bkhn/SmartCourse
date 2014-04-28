@@ -56,7 +56,7 @@ if (isset($_GET['success']) && empty($_GET['success'])) {
 			<div class="panel-heading">Register for <strong>Smartcourse</strong></div>
 			<div class="panel-body">
 				<div class="col-md-12">
-					<?php if (isset($status)) {
+					<?php if (isset($status) === true) {
 						echo "<div class=\"alert alert-info\">" . $status ."</div>";
 						$status = '';
 					}?>
