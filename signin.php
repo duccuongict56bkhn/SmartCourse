@@ -1,6 +1,6 @@
 <?php
+require 'core/init.php';
 require 'navbar.php';
-#require 'core/init.php';
 $general->logged_in_protect();
 
 if (empty($_POST) === false) {

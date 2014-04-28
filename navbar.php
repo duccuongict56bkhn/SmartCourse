@@ -1,13 +1,19 @@
-<?php require 'core/init.php'; ?>
+<?php #require 'core/init.php'; 
+$filename = basename($_SERVER['PHP_SELF']);
+$page_title = ucfirst(substr($filename, 0, strpos($filename, '.php')));
+
+?>
 
 <!DOCTYPE html>
 <html lang="en" charset="utf8">
 <head>
-	<title>Smartcourse | Homepage </title>
+	<title>Smartcourse | <?php echo $page_title;?></title>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="css/prettify.css">
-	<link rel="stylesheet" type="text/css" href="css/bootstrap-select.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-select/bootstrap-select.css">
+	<link rel="shortcut icon" href="images/icon.ico">
 	<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900' rel='stylesheet' type='text/css'>
+
 </head>
 <body>
 
@@ -26,17 +32,17 @@
 
 		<div class="collapse navbar-collapse" id="navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li class="active dropdown">
-					<a href="index.php" class="dropdown-toggle" data-toggle="dropdown">Courses <b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li><a href="#">Computer Science</a></li>
-						<li><a href="#">Literature</a></li>
-						<li><a href="#">Electrical Engineering</a></li>
-						<li><a href="#">Biomedical Engineering</a></li>
-						<li><a href="#">Economics &amp; Finance</a></li>
-						<li><a href="#">Humanities</a></li>
-					</ul>
+				<?php 
+				if (basename($_SERVER['PHP_SELF']) == 'courses.php') {
+				 ?>
+				<li>
+					<a href="courses.php" class="active">Courses</a>
 				</li>
+				<?php } else { ?>
+				<li>
+					<a href="courses.php">Courses</a>
+				</li>
+				<?php } ?>
 				<li><a href="#">FAQ</a></li>
 				<li><a href="#">About</a></li>
 				<li><a href="#">Terms of services</a></li>
@@ -44,6 +50,12 @@
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right">
+			<?php 
+			if ($general->logged_in()) {
+				if ($users->get_role($user['user_id']) == 'Teacher') { ?>
+			
+				<li><a href="createcourse.php">Create a new course</a></li>
+			<?php  } }?>
 			<?php 
 			if ($general->logged_in()) { $image = $user['avatar']; ?>
 				<li>
@@ -58,10 +70,10 @@
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><strong><?php echo $user['username']; ?></strong><b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="course.php?username=<?php echo $user['username'];?>">My courses</a></li>
-						<li><a href="profile.php?username=<?php echo $user['username'];?>">My profile</a></li>
-						<li><a href="settings.php">Settings</a></li>
-						<li><a href="signout.php">Log out</a></li>
+						<li><a href="course.php?username=<?php echo $user['username'];?>"><span class="glyphicon glyphicon-list"></span>My courses</a></li>
+						<li><a href="profile.php?username=<?php echo $user['username'];?>"><span class="glyphicon glyphicon-user"></span>My profile</a></li>
+						<li><a href="settings.php"><span class="glyphicon glyphicon-edit"></span>Settings</a></li>
+						<li><a href="signout.php"><span class="glyphicon glyphicon-off"></span>Sign out</a></li>
 					</ul>
 				</li>
 			<?php } else { ?>

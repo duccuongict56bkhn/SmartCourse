@@ -1,4 +1,5 @@
 <?php 
+    require 'core/init.php';
 	require_once 'header.php';
 	//require 'core/init.php';
 

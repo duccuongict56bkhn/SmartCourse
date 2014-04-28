@@ -1,4 +1,5 @@
 <?php 
+require 'core/init.php';
 require 'navbar.php';
 $general->logged_in_protect();
 ?>

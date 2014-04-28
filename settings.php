@@ -1,4 +1,5 @@
-<?php 
+<?php
+require 'core/init.php'; 
 include_once 'navbar.php';
 $general->logged_out_protect();
 
@@ -164,8 +165,9 @@ if (isset($_GET['success']) && empty($_GET['success']) === false) {
 	                           	}
 	                            echo '<option '. $sel .'>' . $option . '</option>';
 	                        }
+
+	                        echo "</select>";
 	                    ?>
-	                    </select>
 			   			</dd>
                     </dl>
    				</div>

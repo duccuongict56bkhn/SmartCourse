@@ -1,7 +1,4 @@
-<?php 
-	require 'navbar.php'
- ?>
-
+<?php require 'navbar.php'; ?>
 <!--header-->
 <div class="jumbotron" id="home-hero">
 	<div class="home-slogan">

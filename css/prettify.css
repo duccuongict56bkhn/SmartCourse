@@ -13,7 +13,7 @@
 	color: #c0ccdb !important;
 }
 
-.navbar-inverse .navbar-nav > .active {
+.navbar-inverse .navbar-nav .active {
 	background-color: #54667a !important;
 	font-weight: bold;
 	color: white;
@@ -366,5 +366,36 @@ div {
 }
 #edit-user-profile {
 	margin-top: 22px;
+	display: inline-block;
+}
+
+.catagories {
+	padding-left: 0 !important;
+}
+
+.dropdown .glyphicon {
+	padding-right: 10px;
+	padding-top: 3px;
+}
+
+.course-list-detail {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+
+.course-entry {
+	padding-top: 20px;
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+	padding-bottom: 15px;
+}
+
+.course-entry img {
+	max-height: 150px;
+	height: 120px;
+	width: auto;
+}
+
+.course-entry img, .course-meta {
 	display: inline-block;
 }

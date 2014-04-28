@@ -1,5 +1,5 @@
 <?php 
-#require 'core/init.php';
+require 'core/init.php';
 require 'navbar.php';
 
 $status = 'Please enter your information below.';

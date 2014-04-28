@@ -1,6 +1,5 @@
 <?php 
-	#require_once 'header.php';
-	//require 'core/init.php';
+	require 'core/init.php';
 	require 'navbar.php';
 	$general->logged_out_protect();
 	

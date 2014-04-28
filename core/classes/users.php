@@ -287,8 +287,63 @@ class Users {
 		$query->bindValue(5, $avatar);
 		$query->bindValue(6, $user_id);
 
+		var_dump($query);
+
 		try {
 			$query->execute();
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+	}
+
+	public function get_course($user_id)
+	{
+		$role = fetch_info('role', 'user_id', $user_id);
+		# Lay thong tin course dang hoc cho doi tuong sinh vien
+		if ($role == 1) {
+			$query = $this->db->prepare("SELECT * FROM `sm_courses` AS smc, `sm_enroll_course` AS sme
+									    WHERE sme.user_id = ?
+									    AND  sme.course_id = smc.course_id");
+			$query->bindValue(1, $user_id);
+
+			try {
+				$query->execute();		
+			} catch (DPOException $e) {
+				die($e->getMessage());
+			}
+			return $query->fetch();
+
+		} else if ($role == 2) {	#Neu ng dung la giao vien -> lay cac course dang day
+			$query = $this->db->prepare("SELECT * FROM `sm_courses` AS smc, `sm_create_course` AS scc
+									    WHERE sme.user_id = ?
+									    AND  sme.course_id = scc.course_id");
+			$query->bindValue(1, $user_id);
+
+			try {
+				$query->execute();		
+			} catch (DPOException $e) {
+				die($e->getMessage());
+			}
+			return $query->fetch();
+		}
+	}
+
+	public function get_role($user_id)
+	{
+		$query = $this->db->prepare("SELECT `role` FROM `sm_users` WHERE `user_id` = ?");
+		$query->bindValue(1, $user_id);
+		try {
+			$query->execute();
+
+			$role = $query->fetchColumn();
+
+			if ($role == 0) {
+				return 'Admin';
+			} else if ($role == 1) {
+				return 'Student';
+			} else if ($role == 2) {
+				return 'Teacher';
+			}
 		} catch (PDOException $e) {
 			die($e->getMessage());
 		}
