@@ -37,9 +37,11 @@
 				<?php 
 				if (isset($_POST['keyword']) && !empty($_POST['keyword'])) {
 					$keyword = $_POST['keyword'];
-					?>
+					if (strlen($keyword) > 16) { ?>
+						<h2>Search results for &ldquo;<?php echo substr($keyword, 0, 15) . '...'; ?>&rdquo;</h2>
+					<?php } else {?>
 					<h2>Search results for &ldquo;<?php echo $keyword; ?>&rdquo;</h2>
-				<?php } else { ?>
+				<?php } } else { ?>
 					<h2>All topics</h2>
 				<?php } ?>
 			</div>
@@ -56,7 +58,22 @@
 		<div class="col-md-9 line-separator">
 		</div>
 		<div class="col-md-12 course-list-detail">
-			<?php 
+		<?php if (isset($_POST['keyword']) && !empty($_POST['keyword'])) {
+			$keyword = $_POST['keyword']; 
+
+			$results = $courses->search_courses($keyword);
+			var_dump($results);
+			if ($results != false) {
+				foreach ($results as $result) { ?>
+					<div class="course-entry">
+						<img src="<?php echo $result['course_avatar'];?>">
+						<div class="course-meta">
+							<a href="<?php echo 'courses/' . $result['course_alias'] . '/'; ?>"><h3><?php echo $result['course_title'];?></h3></a>
+							<span><?php echo $result['course_code']; ?></span>
+							<span><?php echo $result['course_id']; ?></span>
+						</div>
+					</div>
+			<?php }} else ?> <h2>No row returned!</h2> <?php } else {
 				$results = $courses->get_all_courses();
 
 				foreach ($results as $result) {?>
@@ -66,9 +83,16 @@
 							<a href="<?php echo 'courses/' . $result['course_alias'] . '/'; ?>"><h3><?php echo $result['course_title'];?></h3></a>
 							<span><?php echo $result['course_code']; ?></span>
 						</div>
-
+						<?php 
+						if ($general->logged_in()) {
+							if (($users->get_role($user_id) == 'Teacher') && ($courses->is_created_by_me($user_id, $result['course_id']) === true)) { 
+								?>
+								<div class="pull-right">
+									<a href="editcourse.php?course_alias=<?php echo $result['course_alias']; ?>">Edit</a>
+								</div>
+							<?php } } ?>
 					</div>
-			<?php	} ?>
+			<?php	} }?>
 		</div>
 	<div class="col-md-9" id="bottom-line-separator">
 		<div class="line-separator"></div>

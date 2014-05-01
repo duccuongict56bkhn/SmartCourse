@@ -42,9 +42,9 @@ if (isset($_GET['success']) && empty($_GET['success']) === false) {
  			$a 				= explode('.', $name);
  			$file_ext		= strtolower(end($a)); unset($a);		// getting the allowed extensions
  			$file_size		= $_FILES['myfile']['size'];
- 			$path			= "images/avatars";			// the folder to store
+ 			$path			= "images/avatars/";			// the folder to store
 
- 			if (in_array($file_ext, $allowed_text) === false) {
+ 			if (in_array($file_ext, $allowed_text) == false) {
  				$errors[] = 'Image type is not allowed';
  			}
 

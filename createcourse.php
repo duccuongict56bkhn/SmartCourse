@@ -7,7 +7,7 @@ $status = '';
 
 if (isset($_POST['submit'])) {
 
-	if ($users->get_role() != 'Teacher') {
+	if ($users->get_role($user_id) != 'Teacher') {
 		$errors[] = 'Only teacher can create courses.';
 	} else 
 
@@ -44,8 +44,12 @@ if (isset($_POST['submit'])) {
 		$length		  = htmlentities($_POST['length']);
 
 		$courses->create_course($course_title, $course_code, $course_alias, $cat_id, $course_type, $start_date, $length, $user_id);
-		header('Location: createcourse.php?success');
 
+		if ($users->get_role($user_id) == 'Teacher') {
+			header('Location: editcourse.php?course_alias=' . $course_alias);
+		} else {
+			header('Location: createcourse.php?success');
+		}
 		if (isset($_GET['success']) ) {
 			$status = $course_alias . 'has been successfully created. Now you can edit the contents of the course';
 		}
@@ -56,7 +60,7 @@ if (isset($_POST['submit'])) {
 
 ?>
 
-<div class="container" style="margin-top: 88px;">
+<div class="container" style="margin-top: 25px;">
 	<div class="col-md-12">
 		<div class="panel panel-default">
 			<div class="panel-heading"><strong>Create a new course</strong></div>

@@ -1,0 +1,384 @@
+<?php 
+require 'core/init.php';
+require 'navbar.php';
+$general->logged_out_protect();
+?>
+
+<?php if (isset($_GET['course_alias']) && !empty($_GET['course_alias'])) { 
+	$alias = htmlentities($_GET['course_alias']);
+	if (!$courses->course_exists($alias)) {
+		header('Location: index.php');
+		die();
+	} else if (!$courses->is_created_by_me($user_id, $courses->get_info('course_id', 'course_alias', $alias))) {
+		header('Location: index.php');
+		die();
+	} else {
+		$course_data = array();
+		$id 		    = $courses->get_info('course_id', 'course_alias', $alias);
+		$course_data = $courses->coursedata($id);
+		$annos = $courses->get_announcement($course_data['course_id'], $user_id);
+	}
+
+	if (isset($_POST['update']) && !empty($_POST['update'])) {
+		if (isset($_FILES['avatar']) && !empty($_FILES['avatar']['name'])) {
+			$name 			= $_FILES['avatar']['name'];	// get the file name
+ 			$tmp_name		= $_FILES['avatar']['tmp_name'];
+ 			$allowed_text	= array('jpg', 'jpeg', 'png', 'gif');
+ 			$a 				= explode('.', $name);
+ 			$file_ext		= strtolower(end($a)); unset($a);		// getting the allowed extensions
+ 			$path			= "images/courses/";			// the folder to store
+
+ 			$newpath = $general->file_newpath($path, $name);
+ 			move_uploaded_file($tmp_name, $newpath);
+
+ 			$course_desc = htmlentities(trim($_POST['course_desc']));
+ 			$avatar 	 = htmlentities(trim($newpath));
+
+ 			$rel = $courses->update_course($course_data['course_id'], $course_desc, $avatar);
+ 			var_dump($rel);
+ 			if ($rel === true) {
+ 				header('Location: editcourse.php?success');
+	 			exit();
+ 			} else {
+ 				var_dump($rel);
+ 			}
+		}
+	}
+
+	if (isset($_POST['create-anno'])) {
+		$anno_id = rand(2, 10000);
+		$anno_title = $_POST['anno-title'];
+	   $anno_content = $_POST['anno-content'];
+	   $create_date = time();
+	   $anno_type =  $_POST['anno-type'];
+	   $valid_from = new DateTime($_POST['anno-valid-from']);
+	   $valid_to = new DateTime($_POST['anno-valid-to']);
+	   try {
+	   	$courses->create_announcement($user_id, $course_data['course_id'], $anno_id, $anno_title, $anno_content, $create_date, $anno_type, $valid_from, $valid_to);
+	   } catch (PDOException $e) {
+	   	die($e->getMesssage());
+	   }
+	   unset($_POST['create-anno']);
+	}
+?>
+<div class="container-fluid admin-panel">
+	<div class="row">
+		<div class="col-sm-3 col-md-2 sidebar">
+			<ul class="nav nav-sidebar">
+				<li><a href="#general-infor" class="active"><span class="glyphicon glyphicon-home"></span>Dashboard</a></li>
+				<li><a href="#announcement"><span class="glyphicon glyphicon-bullhorn"></span>Announcements</a></li>
+				<li><a href=""><span class="glyphicon glyphicon-picture"></span>Photos</a></li>
+				<li><a href="#"><span class="glyphicon glyphicon-eye-open"></span>Syllabus</a></li>
+				<li><a href="#"><span class="glyphicon glyphicon-calendar"></span>Calendar</a></li>
+				<li><a href="#"><span class="glyphicon glyphicon-book"></span>Lectures</a></li>
+				<li><a href="#"><span class="glyphicon glyphicon-tasks"></span>Exercises</a></li>
+				<li><a href="#"><span class="glyphicon glyphicon-print"></span>Course materials</a></li>
+				<li><a href="#"><span class="glyphicon glyphicon-bookmark"></span>Discussions</a></li>
+			</ul>
+		</div> <!-- end of .sidebar -->
+
+		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+			<h1 class="page-header"><?php echo $course_data['course_title']; ?></h1>
+				<div class="page-segment" id="dashboard">
+					<ol class="breadcrumb">
+						<li><a href="#"><span class="glyphicon glyphicon-home"></span>Dashboard</a></li>
+					</ol>
+					<div class="alert alert-info">
+						<p>Welcome to <strong>Setting Panel</strong> for <?php echo $course_data['course_title']; ?>. Here you can view all contents, settings for your course. 
+						Navigate to the left sidebar, you can customize, edit those settings and contents.</p>
+					</div>
+					<!-- <div class="row info">
+						<li>
+							<div class="col-md-4 col-sm-3">
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<span>Code</span>
+										<span class="pull-right"><strong><?php echo $course_data['course_code']; ?></strong></span>
+										<br>
+										<span>Name</span>
+										<span class="pull-right"><strong><?php echo $course_data['course_title']; ?></strong></span>
+										<br>
+										<span>Teacher</span>
+										<span class="pull-right"><strong><?php echo $users->fetch_info('display_name', 'user_id', $user_id); ?></strong></span>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li>
+							<div class="col-md-4 col-sm-3">
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<span>Type</span>
+										<span class="pull-right"><strong><?php echo ($course_data['course_type'] == 1) ? 'Self-study' : 'Period'; ?></strong></span>
+										<br>
+										<span>Start date</span>
+										<span class="pull-right"><strong><?php echo $course_data['start_date']; ?></strong></span>
+										<br>
+										<?php if ($course_data['course_type'] != 1) { ?>
+											<span>Length</span>
+											<span class="pull-right"><strong><?php echo $course_data['length'] . ' weeks'; ?></strong></span>
+										<?php } else { ?>
+											<span>Length</span>
+											<span class="pull-right"><strong>N/A</strong></span>
+										<?php } ?>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li>
+							<div class="col-md-4 col-sm-3">
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<span>Type</span>
+										<span class="pull-right"><strong><?php echo ($course_data['course_type'] == 1) ? 'Self-study' : 'Period'; ?></strong></span>
+										<br>
+										<span>Start date</span>
+										<span class="pull-right"><strong><?php echo $course_data['start_date']; ?></strong></span>
+										<br>
+										<?php if ($course_data['course_type'] != 1) { ?>
+											<span>Length</span>
+											<span class="pull-right"><strong><?php echo $course_data['length'] . ' weeks'; ?></strong></span>
+										<?php } else { ?>
+											<span>Length</span>
+											<span class="pull-right"><strong>N/A</strong></span>
+										<?php } ?>
+									</div>
+								</div>
+							</div>
+						</li>
+					</div> -->
+					<div class="row" id="statistic">
+						<div class="col-lg-3">
+							<div class="panel panel-default panel-success">
+								<div class="panel-heading panel-success">
+									<div class="row">
+										<div class="col-xs-6">
+											<span class="glyphicon glyphicon-user"></span>
+										</div>
+										<div class="col-xs-6 text-right">
+											<p class="figure-heading">125</p>
+										</div>
+										<div class="text-right" style="padding-right: 14px;"><p>Students are taking this course</p></div>
+									</div>
+								</div>
+								<div class="panel-footer alert-success">
+								<a href="#">View details</a>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3">
+							<div class="panel panel-default panel-info">
+								<div class="panel-heading panel-info">
+									<div class="row">
+										<div class="col-xs-6">
+											<span class="glyphicon glyphicon-tasks"></span>
+										</div>
+										<div class="col-xs-6 text-right">
+											<p class="figure-heading">701</p>
+										</div>
+										<div class="text-right" style="padding-right: 14px;"><p>Exercises in this course</p></div>
+									</div>
+								</div>
+								<div class="panel-footer panel-info">
+								<a href="#">View details</a>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-3">
+							<div class="panel panel-default panel-warning">
+								<div class="panel-heading panel-warning">
+									<div class="row">
+										<div class="col-xs-6">
+											<span class="glyphicon glyphicon-star"></span>
+										</div>
+										<div class="col-xs-6 text-right">
+											<p class="figure-heading">4.5</p>
+										</div>
+										<div class="text-right" style="padding-right: 14px;"><p>is average vote for this course</p></div>
+									</div>
+								</div>
+								<div class="panel-footer panel-warning">
+								<a href="#">View details</a>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-3">
+							<div class="panel panel-default panel-danger">
+								<div class="panel-heading panel-danger">
+									<div class="row">
+										<div class="col-xs-6">
+											<span class="glyphicon glyphicon-fire"></span>
+										</div>
+										<div class="col-xs-6 text-right">
+											<p class="figure-heading">2</p>
+										</div>
+										<div class="text-right" style="padding-right: 14px;"><p>is the number of exams</p></div>
+									</div>
+								</div>
+								<div class="panel-footer panel-danger">
+								<a href="#">View details</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row" id="student-list" style="padding-left: 15px; padding-right: 15px;">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<h3 class="panel-title"><span class="glyphicon glyphicon-list"></span>Student list</h3>
+							</div>
+							<div class="panel-body">
+								<table class="table">
+									<thead>
+										<tr>
+											<th>No.</th>
+											<th>Firstname</th>
+											<th>Lastname</th>
+											<th>Username</th>
+											<th>Register date</th>
+											<th>Current progress</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<th>1</th>
+											<th>Cuong</th>
+											<th>Dao Duc</th>
+											<th>cuongdd</th>
+											<th>28-Apr-2014</th>
+											<th>
+												<div class="progress">
+													<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+    												60%
+  													</div>
+												</div>
+											</th>
+										</tr>
+										<tr>
+											<th>2</th>
+											<th>Tien</th>
+											<th>Le Anh</th>
+											<th>tiendepzai</th>
+											<th>29-Apr-2014</th>
+											<th>
+												<div class="progress">
+													<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" style="width: 5%;">
+    												5%
+  													</div>
+												</div>
+											</th>
+										</tr>
+										<tr>
+											<th>3</th>
+											<th>Tuan</th>
+											<th>Hoang Minh</th>
+											<th>tuanhm</th>
+											<th>26-Apr-2014</th>
+											<th>
+												<div class="progress">
+													<div class="progress-bar" role="progressbar" aria-valuenow="43" aria-valuemin="0" aria-valuemax="100" style="width: 43%;">
+    												43%
+  													</div>
+												</div>
+											</th>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="page-segment" id="announcement">
+					<ol class="breadcrumb">
+						<li><a href="#dashboard"><span class="glyphicon glyphicon-home"></span>Dashboard</a></li>
+						<li><span class="glyphicon glyphicon-bullhorn"></span>Announcements</li>
+					</ol>
+					<h2 class="page-header">Announcements</h2>
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<div class="panel-title">
+								<span class="glyphicon glyphicon-pencil"></span>Create new announcement
+							</div>
+						</div>
+						<div class="panel-body">
+							<form role="form" method="post" action="">
+								<div class="form-group">
+									<div class="row">
+										<div class="col-lg-6 col-md-6">
+											<label>Title</label>
+											<input type="text" name="anno-title" placeholder="Announcement title" class="form-control">
+										</div>
+										<div class="col-lg-2 col-md-2">
+											<label>Type</label>
+											<select class="form-control selectpicker" name="anno-type">
+												<option>Normal</option>
+												<option>Important</option>
+												<option>Urgent</option>
+											</select>
+										</div>
+										<div class="col-lg-2 col-md-2">
+											<label>Valid from</label>
+										   <input type="text" class="datepicker form-control"  id="valid-from" name="anno-valid-from" data-date-format="mm/dd/yyyy">
+										</div>
+										<div class="col-lg-2 col-md-2">
+											<label>Valid to</label>
+											<input type="text" class="datepicker form-control" id="valid-to" name="anno-valid-to" data-date-format="mm/dd/yyyy">
+
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-lg-12 col-md-12">
+											<label>Content</label>
+											<textarea class="form-control" name="anno-content" id="anno-content"></textarea>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<button type="submit" name="create-anno" class="btn btn-primary">Create</button>
+								</div>
+							</form>
+						</div>
+					</div>
+					<?php 
+					foreach ($annos as $anno) { 
+						if ($anno['anno_type'] == 'Normal') {?>
+						<div class="alert alert-info announcement announcement-info">
+							<p><strong><?php echo $anno['anno_title']; ?></strong></p>
+							<span><?php echo $anno['anno_content']; ?></span>
+						</div>
+					<?php } elseif ($anno['anno_type'] == 'Important') {?>
+						<div class="alert alert-warning announcement announcement-warning">
+							<p><strong><?php echo $anno['anno_title']; ?></strong></p>
+							<span><?php echo $anno['anno_content']; ?></span>
+						</div>
+					<?php } else { ?>
+						<div class="alert alert-danger announcement announcement-danger">
+							<p><strong><?php echo $anno['anno_title']; ?></strong></p>
+							<span><?php echo $anno['anno_content']; ?></span>
+						</div>
+					<?php } } ?>
+				</div>
+		</div>
+	</div>
+</div> <!-- end of .container -->
+
+<!-- scripts -->
+ <script  src="js/jquery-2.1.0.min.js"></script>
+ <script  src="js/bootstrap.js"></script>
+ <script  src="js/ajax.js"></script>
+ <script  src="js/prettify.js"></script>
+ <script  src="css/bootstrap-select/bootstrap-select.js"></script>
+ <script type="text/javascript">
+          $(document).ready(function(e) {
+              $('.selectpicker').selectpicker();
+          });
+      </script>
+ <script  src="js/bootstrap-datepicker.js"></script>
+ <script>
+ $('#valid-from').datepicker();
+ $('#valid-to').datepicker();
+ </script>
+<?php } else { 
+	header('Location: courses.php');}?>

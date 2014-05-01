@@ -1,5 +1,5 @@
 <?php #require 'core/init.php'; 
-$filename = basename($_SERVER['PHP_SELF']);
+$filename = basename($_SERVER['SCRIPT_NAME']);
 $page_title = ucfirst(substr($filename, 0, strpos($filename, '.php')));
 
 ?>
@@ -10,10 +10,13 @@ $page_title = ucfirst(substr($filename, 0, strpos($filename, '.php')));
 	<title>Smartcourse | <?php echo $page_title;?></title>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="css/prettify.css">
+	<?php if (str_replace(' ', '', $filename) == 'editcourse.php') { ?>
+	<link rel="stylesheet" type="text/css" href="css/dashboard.css">
+	<?php } ?>
+	<link rel="stylesheet" type="text/css" href="css/datepicker.css">
 	<link rel="stylesheet" type="text/css" href="css/bootstrap-select/bootstrap-select.css">
 	<link rel="shortcut icon" href="images/icon.ico">
 	<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900' rel='stylesheet' type='text/css'>
-
 </head>
 <body>
 
@@ -54,7 +57,7 @@ $page_title = ucfirst(substr($filename, 0, strpos($filename, '.php')));
 			if ($general->logged_in()) {
 				if ($users->get_role($user['user_id']) == 'Teacher') { ?>
 			
-				<li><a href="createcourse.php">Create a new course</a></li>
+				<li><a href="createcourse.php"><span class="glyphicon glyphicon-plus"></span>Create a new course</a></li>
 			<?php  } }?>
 			<?php 
 			if ($general->logged_in()) { $image = $user['avatar']; ?>
@@ -72,7 +75,7 @@ $page_title = ucfirst(substr($filename, 0, strpos($filename, '.php')));
 					<ul class="dropdown-menu">
 						<li><a href="course.php?username=<?php echo $user['username'];?>"><span class="glyphicon glyphicon-list"></span>My courses</a></li>
 						<li><a href="profile.php?username=<?php echo $user['username'];?>"><span class="glyphicon glyphicon-user"></span>My profile</a></li>
-						<li><a href="settings.php"><span class="glyphicon glyphicon-edit"></span>Settings</a></li>
+						<li><a href="settings.php"><span class="glyphicon glyphicon-wrench"></span>Settings</a></li>
 						<li><a href="signout.php"><span class="glyphicon glyphicon-off"></span>Sign out</a></li>
 					</ul>
 				</li>

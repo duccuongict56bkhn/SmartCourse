@@ -1,11 +1,15 @@
-/**
- * by duccuongict
- */
+/*******************************************************************
+ * 
+ * File: prettify.css;
+ * Description: This is an enhancement to standard bootstrap;
+ * By: DuccuongICT
+ *
+ *******************************************************************/
+/
  html, body {
  	background-color: white;
  	color: #2a3744;
  	-webkit-font-smoothing: antialiased;
-/* 	height: 100%;*/
  }
 
 .navbar-fixed-top, .navbar-inverse {
@@ -13,7 +17,7 @@
 	color: #c0ccdb !important;
 }
 
-.navbar-inverse .navbar-nav .active {
+.navbar-inverse .navbar-nav > .active {
 	background-color: #54667a !important;
 	font-weight: bold;
 	color: white;
@@ -88,6 +92,12 @@
 	font-weight: bold !important ;
 	color: #a66230;
 	display: block;
+}
+
+.sorting {
+	position: absolute;
+	right: 0;
+	top: 3px;
 }
 
 .separator {
@@ -275,139 +285,33 @@ div {
 	padding-top: 0 !important;
 }
 
+
 .nice-footer {
-	background-color: #212A34;
-	color: #e4e4e4;
+	background-color: #EEF1F3 !important;
+	color: #898E9D !important;
+	border-top: 1px solid #ccc;
 }
 
-.avatar img{
-	margin-top: 32%;
-	max-height: 30px;
-	height: 30px;
-	width: 30px;
+.footer-brand {
+	margin-top: 18px;
+	margin-bottom: 8px;
+	vertical-align: center;
 }
 
-/** Callout **/
-.bs-callout {
-	margin: 5px 0;
-	padding: 5px;
-	border-left:3px solid #eee;
-	margin-bottom: 20px;
-}
-.bs-callout h4 {
-	font-size: 16px;
-	margin-top:5px;
-	margin-bottom:5px;
-	margin-left: 5px;
 
-}
-.bs-callout p:last-child{margin-bottom:0; margin-left: 5px;}
-.bs-callout code{background-color:#fff;border-radius:3px}
-.bs-callout-danger{background-color:#fdf7f7;border-color:#d9534f}
-.bs-callout-danger h4{color:#d9534f}
-.bs-callout-warning{background-color:#fcf8f2;border-color:#f0ad4e}
-.bs-callout-warning h4{color:#f0ad4e}.bs-callout-info{background-color:#f4f8fa;border-color:#5bc0de}
-.bs-callout-info h4{color:#5bc0de}.color-swatches{margin:0 -5px;overflow:hidden}
-.bs-callout-info span {padding-left: 5px;}
-
-.display-avatar {
-	max-height: 64px;
-	height: 64px;
-	background-color: #eee;
-	width: auto;
-}
-
-.edit-profile-avatar img {
-	min-width: 76px;
-	min-height: 76px;
-	width: 70px;
-	height: 70px;
-	border: 1px solid #eee;
-}
-
-.avatar-upload {
-	display: inline;
-	margin-left: 10px;
-	padding: 5px;
-}
-
-.form-group input[type=text], .form-group textarea {
-	font-weight: normal !important;
-}
-
-#choose-avatar-picture {
-	margin-top: 10px;
-	display: inline-block;
-}
-
-.profile-container img {
-	width: 100%;
-/*-	max-height: 255px;*/
-	height: auto;
-	border-radius: 10px;
-}
-
-.user-general-info h2 {
-	margin-top: 10px;
-	margin-bottom: 0px;
+.footer-brand span {
 	font-weight: bold;
+	padding-left: 4px;
+}
+.footer-menu a {
+	color: #898E9D !important;
 }
 
-.user-general-info h3 {
-	margin-top:3px;
-	margin-bottom: 22px;
-	padding-bottom: 22px;
-	color: #a2a2a2;
-	border-bottom: 1px solid #f7f7f9 ;
+.site-footer-brand {
+	margin-bottom: 8px;
 }
 
-.user-display-bio {
-	padding-left: 8px;
-	padding-bottom: 22px;
-	border-bottom: 1px solid #f7f7f9 ;
-}
-#edit-user-profile {
-	margin-top: 22px;
-	display: inline-block;
-}
-
-.catagories {
-	padding-left: 0 !important;
-}
-
-.dropdown .glyphicon, .navbar-right .glyphicon {
-	padding-right: 10px;
-	padding-top: 3px;
-}
-
-.course-list-detail {
-	padding-left: 0 !important;
-	padding-right: 0 !important;
-}
-
-.course-entry {
-	padding-top: 20px;
-	padding-left: 0 !important;
-	padding-right: 0 !important;
-	padding-bottom: 15px;
-}
-
-.course-entry img {
-	max-height: 150px;
-	height: 120px;
-	width: auto;
-}
-
-.course-entry img, .course-meta {
-	display: inline-block;
-}
-
-/*#course-images {
-	padding-left: 15px;
-}*/
-
-#course-images img {
-	width: 100px;
-	height: auto;
-	border: 1px solid #eee;
+footer > .copyright {
+	font-size: 12px;
+	margin-bottom: 32px;
 }
