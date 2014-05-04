@@ -18,6 +18,11 @@ $is_owner   = $courses->is_created_by_me($user['user_id'], $id);
 	<link rel="stylesheet" href="../../css/dashboard.css">
 	<link rel="stylesheet" href="../../css/datepicker.css">
 	<link rel="stylesheet" type="text/css" href="../../css/bootstrap-select/bootstrap-select.css">
+	<script src="../../js/jquery-2.1.0.min.js"></script>
+	<script src="../../js/bootstrap.js"></script>
+	<script src="../../js/prettify.js"></script>
+	<script src="../../js/bootstrap-datepicker.js"></script>
+	<script src="../../js/bootstrap-select.js"></script>
 </head>
 <body>
 <!-- Navbar-->
@@ -49,7 +54,7 @@ $is_owner   = $courses->is_created_by_me($user['user_id'], $id);
 						<li class="drowndown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="option-btn">
 								<div class="btn-group">
-									<button type="button" class="btn btn-primary btn-sm">Option <b class="caret"></b></button>
+									<button type="button" class="btn btn-primary btn-sm">Tools <b class="caret"></b></button>
 								</div>
 							</a>
 							<ul class="dropdown-menu" role="menu">
@@ -58,6 +63,11 @@ $is_owner   = $courses->is_created_by_me($user['user_id'], $id);
 									<a href="#">Add new unit</a>
 									<a href="#">Add new announcement</a>
 									<a href="#">Add new materials</a>
+								</li>
+								<li role="representation" class="divider"></li>
+								<li role="representation" class="dropdown-header">Exercises</li>
+								<li>
+									<a href="#">Correct student's submits</a>
 								</li>
 								<li role="representation" class="divider"></li>
 								<li role="representation" class="dropdown-header">Create course</li>
@@ -119,20 +129,20 @@ $is_owner   = $courses->is_created_by_me($user['user_id'], $id);
 				<li><a href="lecture.php"><span class="glyphicon glyphicon-film"></span>Video Lectures</a></li>
 				<?php }?>
 				<?php if ($filename == 'exercise.php') {?>
-				<li><a class="active" href="exercise.php?course=<?php echo $course_data['course_alias']; ?>"><span class="glyphicon glyphicon-tasks"></span>Exercises</a></li>
+				<li><a class="active" href="exercise.php"><span class="glyphicon glyphicon-tasks"></span>Exercises</a></li>
 				<?php } else { ?>
-				<li><a href="exercise.php?course=<?php echo $course_data['course_alias']; ?>"><span class="glyphicon glyphicon-tasks"></span>Exercises</a></li>
+				<li><a href="exercise.php"><span class="glyphicon glyphicon-tasks"></span>Exercises</a></li>
 				<?php }?>
 				<li class="spacer"></li>
 				<?php if ($filename == 'syllabus.php') {?>
-				<li><a class="active" href="syllabus.php?course=<?php echo $course_data['course_alias']; ?>"><span class="glyphicon glyphicon-pencil"></span>Syllabus</a></li>
+				<li><a class="active" href="syllabus.php"><span class="glyphicon glyphicon-pencil"></span>Syllabus</a></li>
 				<?php } else { ?>
-				<li><a href="syllabus.php?course=<?php echo $course_data['course_alias']; ?>"><span class="glyphicon glyphicon-pencil"></span>Syllabus</a></li>
+				<li><a href="syllabus.php"><span class="glyphicon glyphicon-pencil"></span>Syllabus</a></li>
 				<?php }?>
 				<?php if ($filename == 'forum.php') {?>
-				<li><a class="active" href="forum.php?course=<?php echo $course_data['course_alias']; ?>"><span class="glyphicon glyphicon-screenshot"></span>Discussion Forum</a></li>
+				<li><a class="active" href="forum.php"><span class="glyphicon glyphicon-screenshot"></span>Discussion Forum</a></li>
 				<?php } else { ?>
-				<li><a href="forum.php?course=<?php echo $course_data['course_alias']; ?>"><span class="glyphicon glyphicon-screenshot"></span>Discussion Forum</a></li>
+				<li><a href="forum.php"><span class="glyphicon glyphicon-screenshot"></span>Discussion Forum</a></li>
 				<?php }?>
 				<li class="spacer"></li>
 				<?php if ($is_teacher && $is_owner): ?>
@@ -141,11 +151,17 @@ $is_owner   = $courses->is_created_by_me($user['user_id'], $id);
 					<?php else : ?>
 						<li><a href="studentlist.php"><span class="glyphicon glyphicon-list"></span>Student list</a></li>
 					<?php endif ?>
+					<?php if ($filename == 'studentsubmit.php'): ?>
+						<li><a class="active" href="studentsubmit.php"><span class="glyphicon glyphicon-circle-arrow-up"></span>Student submittals</a></li>
+					<?php else : ?>
+						<li><a href="studentsubmit.php"><span class="glyphicon glyphicon-circle-arrow-up"></span>Student submittals</a></li>
+					<?php endif ?>
 				<?php endif ?>
+				<li class="spacer"></li>
 				<?php if ($filename == 'about.php') {?>
-				<li><a href="about.php?course=<?php echo $course_data['course_alias']; ?>"><span class="glyphicon glyphicon-user"></span>Course staff</a></li>
+				<li><a href="about.php"><span class="glyphicon glyphicon-user"></span>Course staff</a></li>
 				<?php } else { ?>
-				<li><a href="about.php?course=<?php echo $course_data['course_alias']; ?>"><span class="glyphicon glyphicon-user"></span>Course staff</a></li>
+				<li><a href="about.php"><span class="glyphicon glyphicon-user"></span>Course staff</a></li>
 				<?php }?>
 			</ul>
 		</div> <!-- End of .sidebar-->
@@ -156,9 +172,12 @@ $is_owner   = $courses->is_created_by_me($user['user_id'], $id);
 			<div class="row announcement">
 			<div class="col-lg-12 col-md-12" style="padding-left: 0; padding-right: 0;">
 				<h2 class="page-header">Announcements</h2>
-				<div class="pull-right">
-					<a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-flash"></span>Create new</a>
-				</div>
+				<?php if ($is_owner): ?>
+					<div class="pull-right">
+						<a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-flash"></span>Create new</a>
+					</div>
+				<?php endif ?>
+				
 			</div>
 						<!-- Announcement holder-->
 			<div class="col-lg-12 col-md-12" >
@@ -206,18 +225,69 @@ $is_owner   = $courses->is_created_by_me($user['user_id'], $id);
 
 		<!-- For lecture.php-->
 		<?php if ($filename == 'lecture.php'): ?>
-
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main-content">
+			<div class="row announcement">
+				<div class="col-lg-12 col-md-12" style="padding-left: 0; padding-right: 0;">
+					<h2 class="page-header">Video Lectures</h2>
+					<?php if ($is_owner): ?>
+					<div class="pull-right">
+						<a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-flash"></span>Create new</a>
+					</div>
+					<?php endif ?>
+				</div>
+							<!-- Announcement holder-->
+				<div class="col-lg-12 col-md-12" >
+					<!-- Video dialog-->
+					<div class="modal fade" id="vid-modal">
+					  <div class="modal-dialog">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					        <div class="modal-title">
+					        		<h4 id="modal-title">Modal title</h4>
+					        </div>
+					      </div>
+					      <div class="modal-body">
+					        <div class="modal-video">
+					        		<iframe src=""></iframe>
+					        </div>
+					      </div>
+					    </div><!-- /.modal-content -->
+					  </div><!-- /.modal-dialog -->
+					</div><!-- /.modal -->
+					<!-- End video dialog-->
+					<div class="panel-group" id="accordion"> 
+					<?php 
+					$v_units = $courses->get_distinct_unit($id);
+					foreach ($v_units as $v_unit) { ?>
+							<div class="panel-info">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a data-toggle="collapse" href="#collpase<?php echo $v_unit['unit_id'];?>">L<?php echo $v_unit['unit_id'] . ' - ' . $v_unit['unit_name']; ?></a>
+									</h4>
+								</div> <!-- End of .panel-heading-->
+								<div id="collpase<?php echo $v_unit['unit_id'];?>" class="panel-collapse collapse in">
+									<div class="panel-body">
+										 <?php $v_vids = $courses->get_unit_video($v_unit['unit_id']); ?>
+										 <?php foreach ($v_vids as $v_vid): ?>
+										 	<a class="show-vid-modal" href="<?php echo $v_vid['vid_link']; ?>"><?php echo $v_vid['vid_title'] ?></a>
+										 	<a href="#" class="pull-right slide"><span class="glyphicon glyphicon-list-alt"></span>Slides</a>
+										 	
+									 <?php endforeach ?>
+									</div> <!-- End of .panel-body -->
+								</div> <!-- End of .panel-collapse -->
+							</div> <!-- End of .panel-default-->
+					<?php }?>
+					</div> <!-- End of #accordion-->
+				</div>
+			</div>
+		</div>
 		<?php endif ?>		
 		<!-- End lecture.php-->
 	</div>
 </div>
 <!-- End .main content -->
 <!-- Javascript-->
-<script src="../../js/jquery-2.1.0.min.js"></script>
-<script src="../../js/bootstrap.js"></script>
-<script src="../../js/prettify.js"></script>
-<script src="../../js/bootstrap-datepicker.js"></script>
-<script src="../../js/bootstrap-select.js"></script>
 <script type="text/javascript">
  $(document).ready(function(e) {
      $('.selectpicker').selectpicker();

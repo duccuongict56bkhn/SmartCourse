@@ -222,6 +222,32 @@ class Courses {
 		}
 	}
 
+	public function get_unit_video($unit_id)
+	{
+		$query = $this->db->prepare("SELECT `vid_id`,`vid_title`, `vid_link` FROM `sm_units` WHERE `unit_id` = ?");
+		$query->bindValue(1, $unit_id);
+
+		try {
+			$query->execute();
+			return $query->fetchAll();
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+	}
+
+	public function get_distinct_unit($course_id)
+	{
+		$query = $this->db->prepare("SELECT DISTINCT `unit_id`, `unit_name` FROM `sm_units` WHERE `course_id` = ?");
+		$query->bindValue(1, $course_id);
+
+		try {
+			$query->execute();
+			return $query->fetchAll();
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+	}
+
 	public function search_courses($keyword)
 	{
 		$token = '%' . $keyword . '%';
