@@ -36,7 +36,7 @@
 
 			<div class="row copyright">
 				<div class="col-md-6">
-					<p><em>Smartcourse </em>&copy 2014. All rights reserved</p>
+					<p><em>Smartcourse </em>&copy 2014. Some rights reserved</p>
 				</div>
 			</div>
 			</div>

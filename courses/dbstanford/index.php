@@ -1,0 +1,1 @@
+<?php $alias = 'dbstanford'; require '../index.php';?>

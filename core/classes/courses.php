@@ -83,23 +83,11 @@ class Courses {
 		}
 		return false;
 	}
-	// public function create_course($course_title, $course_alias, $cat_id)
-	// {
-	// 	$query = $this->db->prepare("INSERT INTO `sm_courses` (`course_title`, `course_alias`, `cat_id`) VALUES (?, ?, ?) ");
 
-	// 	$query->bindValue(1, $course_title);
-	// 	$query->bindValue(2, $course_alias);
-	// 	$query->bindValue(3, $cat_id);
-
-	// 	try {
-	// 		$query->execute();
-
-	// 		return true;
-
-	// 	} catch (PDOException $e) {
-	// 		die($e->getMessage());
-	// 	}
-	// }
+	public function create_course_structure($course_alias)
+	{
+		# Todo: Create a structure of files and folder for storing the course data
+	}
 
 	public function coursedata($course_id)
 	{
@@ -215,11 +203,22 @@ class Courses {
 
 			try {
 				$query->execute();
+				return $query->fetchColumn();
 			} catch (PDOException $e) {
 				die($e->getMessage());
 			}
+		}
+	}
 
-			return $query->fetchColumn();
+	public function get_units($course_id)
+	{
+		$query = $this->db->prepare("SELECT * FROM `sm_units` WHERE `course_id` = ?");
+		$query->bindValue(1, $course_id);
+		try {
+			$query->execute();
+			return $query->fetchAll();
+		} catch (PDOException $e) {
+			die($e->getMessage());
 		}
 	}
 
@@ -264,16 +263,14 @@ class Courses {
 		}
 	}
 
-	public function get_announcement($course_id, $user_id)
+	public function get_announcement($course_id)
 	{
 		$query = $this->db->prepare("SELECT *
 											  FROM `sm_course_announcements`
 											  WHERE `course_id` = ?
-											  AND   `user_id`   = ?
 											  ORDER BY `create_date` DESC
 											  LIMIT 10");
 		$query->bindValue(1, $course_id);
-		$query->bindValue(2, $user_id);
 
 		try {
 			$query->execute();

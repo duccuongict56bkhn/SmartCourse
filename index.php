@@ -1,23 +1,22 @@
 <?php 
-    require 'core/init.php';
+   require 'core/init.php';
 	require_once 'header.php';
 	//require 'core/init.php';
 
 	// $conn = connect($config);
 
 	// if (!$conn) die(); 
+	$cats = $courses->get_cat();
  ?>
 <div class="container">
 	<div class="col-md-3 catagories">
 		<div class="nav-container">
 			<ul class="nav-sidebarlist">
 				<li class="emphasize">All topics</li>
-				<li><a href="#">Computer Science</a></li>
-				<li><a href="#">Literature</a></li>
-				<li><a href="#">Electrical Engineering</a></li>
-				<li><a href="#">Biomedical Engineering</a></li>
-				<li><a href="#">Economics &amp; Finance</a></li>
-				<li><a href="#">Humanities</a></li>
+				<?php 
+				foreach ($cats as $cat) { ?>
+					<li><a href="#"><?php echo $cat['cat_title']; ?></a></li>
+				<?php } ?>
 			</ul>
 		</div>
 	</div>

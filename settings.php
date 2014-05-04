@@ -51,28 +51,28 @@ if (isset($_GET['success']) && empty($_GET['success']) === false) {
  			if ($file_size > 2097152) {
  				$errors[] = 'File size must be smaller than 2 MB';
  			}
- 		} else {
- 			$newpath	  = $user['avatar'];			// if user did not provide any file -> use the default
- 		}
+	 		} else {
+	 			$newpath	  = $user['avatar'];			// if user did not provide any file -> use the default
+	 		}
 
- 		if (empty($errors) === true) {
+	 		if (empty($errors) === true) {
 
- 			if (isset($_FILES['myfile']) && !empty($_FILES['myfile']['name'])) {
+	 			if (isset($_FILES['myfile']) && !empty($_FILES['myfile']['name'])) {
 
- 				$newpath = $general->file_newpath($path, $name);
-				move_uploaded_file($tmp_name, $newpath);
+	 				$newpath = $general->file_newpath($path, $name);
+					move_uploaded_file($tmp_name, $newpath);
 
- 			} else {
+	 			} else {
 
-                $newpath = 'images/avatars/default_avatar.png';
-            }
+	                $newpath = 'images/avatars/default_avatar.png';
+         }
 
-            $first_name 	= htmlentities(trim($_POST['first_name']));
+         $first_name 	= htmlentities(trim($_POST['first_name']));
 			$last_name 		= htmlentities(trim($_POST['last_name']));	
-			$gender 		= htmlentities(trim($_POST['gender']));
-			$bio 			= htmlentities(trim($_POST['bio']));
+			$gender 			= htmlentities(trim($_POST['gender']));
+			$bio 				= htmlentities(trim($_POST['bio']));
 			$display_name	= htmlentities(trim($_POST['display_name']));
-			$avatar 		= htmlentities(trim($newpath));
+			$avatar 			= htmlentities(trim($newpath));
 			
 			$users->update_user($user_id, $first_name, $last_name, $bio, $display_name, $avatar);
 			header('Location: settings.php?success');

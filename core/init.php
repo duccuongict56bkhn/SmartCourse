@@ -9,7 +9,7 @@ require 'classes/general.php';
 require 'classes/bcrypt.php';
 require 'classes/courses.php';
 
-$users			= new Users($db);
+$users		= new Users($db);
 $general		= new General();
 $bcrypt 		= new Bcrypt();
 $courses		= new Courses($db);

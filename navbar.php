@@ -7,7 +7,7 @@ $page_title = ucfirst(substr($filename, 0, strpos($filename, '.php')));
 <!DOCTYPE html>
 <html lang="en" charset="utf8">
 <head>
-	<title>Smartcourse | <?php echo $page_title;?></title>
+	<title>StudyHub | <?php echo $page_title;?></title>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="css/prettify.css">
 	<?php if (str_replace(' ', '', $filename) == 'editcourse.php') { ?>
@@ -30,7 +30,7 @@ $page_title = ucfirst(substr($filename, 0, strpos($filename, '.php')));
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a href="index.php" class="navbar-brand">Smartcourse</a>
+				<a href="index.php" class="navbar-brand">StudyHub</a>
 		</div>
 
 		<div class="collapse navbar-collapse" id="navbar-collapse-1">

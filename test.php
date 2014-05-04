@@ -1,5 +1,9 @@
 <?php 
 require 'core/init.php';
-
-echo date('Y-m-d H:i:s',time());
+$folder = 'dbstanford';
+// $dir = mkdir('courses/'. $folder, 777);
+// echo $dir;
+$mkfir = file_put_contents('courses/' . $folder . '/lecture.php',
+									'<?php $alias = \'' . $folder . '\'; require \'../index.php\';?>');
+echo '<br>' . $mkfir;
 ?>

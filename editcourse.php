@@ -16,7 +16,7 @@ $general->logged_out_protect();
 		$course_data = array();
 		$id 		    = $courses->get_info('course_id', 'course_alias', $alias);
 		$course_data = $courses->coursedata($id);
-		$annos = $courses->get_announcement($course_data['course_id'], $user_id);
+		$annos = $courses->get_announcement($course_data['course_id']);
 	}
 
 	if (isset($_POST['update']) && !empty($_POST['update'])) {
@@ -87,66 +87,6 @@ $general->logged_out_protect();
 						<p>Welcome to <strong>Setting Panel</strong> for <?php echo $course_data['course_title']; ?>. Here you can view all contents, settings for your course. 
 						Navigate to the left sidebar, you can customize, edit those settings and contents.</p>
 					</div>
-					<!-- <div class="row info">
-						<li>
-							<div class="col-md-4 col-sm-3">
-								<div class="panel panel-default">
-									<div class="panel-body">
-										<span>Code</span>
-										<span class="pull-right"><strong><?php echo $course_data['course_code']; ?></strong></span>
-										<br>
-										<span>Name</span>
-										<span class="pull-right"><strong><?php echo $course_data['course_title']; ?></strong></span>
-										<br>
-										<span>Teacher</span>
-										<span class="pull-right"><strong><?php echo $users->fetch_info('display_name', 'user_id', $user_id); ?></strong></span>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="col-md-4 col-sm-3">
-								<div class="panel panel-default">
-									<div class="panel-body">
-										<span>Type</span>
-										<span class="pull-right"><strong><?php echo ($course_data['course_type'] == 1) ? 'Self-study' : 'Period'; ?></strong></span>
-										<br>
-										<span>Start date</span>
-										<span class="pull-right"><strong><?php echo $course_data['start_date']; ?></strong></span>
-										<br>
-										<?php if ($course_data['course_type'] != 1) { ?>
-											<span>Length</span>
-											<span class="pull-right"><strong><?php echo $course_data['length'] . ' weeks'; ?></strong></span>
-										<?php } else { ?>
-											<span>Length</span>
-											<span class="pull-right"><strong>N/A</strong></span>
-										<?php } ?>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="col-md-4 col-sm-3">
-								<div class="panel panel-default">
-									<div class="panel-body">
-										<span>Type</span>
-										<span class="pull-right"><strong><?php echo ($course_data['course_type'] == 1) ? 'Self-study' : 'Period'; ?></strong></span>
-										<br>
-										<span>Start date</span>
-										<span class="pull-right"><strong><?php echo $course_data['start_date']; ?></strong></span>
-										<br>
-										<?php if ($course_data['course_type'] != 1) { ?>
-											<span>Length</span>
-											<span class="pull-right"><strong><?php echo $course_data['length'] . ' weeks'; ?></strong></span>
-										<?php } else { ?>
-											<span>Length</span>
-											<span class="pull-right"><strong>N/A</strong></span>
-										<?php } ?>
-									</div>
-								</div>
-							</div>
-						</li>
-					</div> -->
 					<div class="row" id="statistic">
 						<div class="col-lg-3">
 							<div class="panel panel-default panel-success">

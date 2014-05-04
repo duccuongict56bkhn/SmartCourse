@@ -60,7 +60,7 @@ if (isset($_POST['submit'])) {
 
 ?>
 
-<div class="container" style="margin-top: 25px;">
+<div class="container" style="margin-top: 88px;">
 	<div class="col-md-12">
 		<div class="panel panel-default">
 			<div class="panel-heading"><strong>Create a new course</strong></div>
@@ -129,13 +129,13 @@ if (isset($_POST['submit'])) {
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Course start date</label>
-								<input type="text" class="form-control" name="start_date" placeholder="Course start date"/>
+								<input type="text" class="form-control" name="start_date" id = "start_date" placeholder="Course start date"/>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Course length</label>
-								<input type="text" class="form-control" name="length" placeholder="Course length"/>
+								<input type="text" class="form-control" name="length" id="length" placeholder="Course length"/>
 							</div>
 						</div>
 					</div> <!-- end .row-->
@@ -149,7 +149,16 @@ if (isset($_POST['submit'])) {
 		</div>	
 	</div>
 </div> <!-- end of .container-->
-
 <?php 
 require 'footer.php';
  ?>
+  <script type="text/javascript">
+          $(document).ready(function(e) {
+              $('.selectpicker').selectpicker();
+          });
+      </script>
+ <script  src="js/bootstrap-datepicker.js"></script>
+ <script>
+ $('#start_date').datepicker();
+ $('#length').datepicker();
+ </script>
