@@ -322,3 +322,7 @@ html, body {
     padding: 0;
     margin: 0;
 }
+
+.borderless td, .borderless th, .borderless tr {
+  border: none;
+}

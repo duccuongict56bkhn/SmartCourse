@@ -86,7 +86,13 @@ class Courses {
 	private function build_structure($course_alias)
 	{
 		$folder = 'courses/'.$course_alias;
-		$dir	  = mkdir($folder, 755);
+		$dir	= mkdir($folder, 755);
+		$img	= $folder . '/img';
+		$slide  = $folder . '/slides';
+
+		mkdir($img, 755);
+		mkdir($slide, 755);
+		
 		# create index file
 		file_put_contents($folder . '/index.php', '<?php $alias = \'' . $course_alias . '\'; require \'../index.php\';?>');
 		# create lecture file
@@ -264,6 +270,11 @@ class Courses {
 		}
 	}
 
+	// public function get_exercise($course_id, $unit_id)
+	// {
+	// 	$query = $this->db->prepare("")
+	// }
+
 	public function search_courses($keyword)
 	{
 		$token = '%' . $keyword . '%';
@@ -345,6 +356,31 @@ class Courses {
 		}
 
 		return $query === false;
+	}
+
+	public function insert_html($htmlString)
+	{
+		$query = $this->db->prepare("INSERT INTO `sm_html`(`content`)
+									 VALUES ('" . $htmlString ."') ");
+		$query->bindParam(':htmlString', $htmlString, PDO::PARAM_STR);
+
+		try {
+			$query->execute();
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+	}
+	public function load_html($id)
+	{
+		$query = $this->db->prepare("SELECT `content` FROM `sm_html` WHERE `id` = $id");
+		$query->bindParam('id', $id, PDO::PARAM_INT);
+
+		try {
+			$query->execute();
+			return $query->fetchColumn();
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
 	}
 }
 

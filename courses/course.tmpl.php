@@ -284,6 +284,36 @@ $is_owner   = $courses->is_created_by_me($user_id, $id);
 		</div>
 		<?php endif ?>		
 		<!-- End lecture.php-->
+
+		<!-- Exercise.php-->
+		<?php if ($filename == 'exercise.php'): ?>
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main-content">
+			<div class="row announcement">
+				<div class="col-lg-12 col-md-12" style="padding-left: 0; padding-right: 0;">
+					<h2 class="page-header">Course Exercises</h2>
+					<select class="selectpicker" name="ex_filter" id="ex_filter">
+						<option>All</option>
+						<?php $v_units = $courses->get_distinct_unit($id); ?>
+						<?php foreach ($v_units as $v_unit): ?>
+							<option>L<?php echo $v_unit['unit_id'] . ' - ' . $v_unit['unit_name'];?></option>
+						<?php endforeach ?>
+					</select>
+					<?php if ($is_owner): ?>
+					<!-- <div class="pull-right">
+						<a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-flash"></span>Create new</a>
+					</div> -->
+					<?php endif ?>
+				</div>
+							<!-- Announcement holder-->
+				<div class="col-lg-12 col-md-12" >
+					<?php foreach ($variable as $key => $value): ?>
+						
+					<?php endforeach ?>
+				</div>
+			</div>
+		</div>
+		<?php endif ?>
+		<!-- End of exercise.php-->
 	</div>
 </div>
 <!-- End .main content -->

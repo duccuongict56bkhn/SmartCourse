@@ -69,7 +69,7 @@ class Users {
 		try {
 			$query->execute();
 
-			mail($email, 'Please activate your account', "Hello " . $username. ",\r\nThank you for registering with us. Please visit the link below so we can activate your account:\r\n\r\nlocalhost/smartcourse/activate.php?email=" . $email . "&email_code=" . $email_code . "\r\n\r\n-- Example team");
+			mail($email, 'Please activate your account', "Hello " . $username. ",\r\nThank you for registering with us. Please visit the link below so we can activate your account:\r\n\r\nlocalhost/studyhub/activate.php?email=" . $email . "&email_code=" . $email_code . "\r\n\r\n-- Example team");
 
 		} catch (PDOException $e) {
 			die($e->getMessage());
@@ -203,7 +203,7 @@ class Users {
 		try {
 			$query->execute();
 
-			mail($email, 'Recover Password', "Hello " . $username. ",\r\nPlease click the link below:\r\n\r\nhttp://localhost/smartcourse/recover.php?email=" . $email . "&generated_string=" . $generated_string . "\r\n\r\n We will generate a new password for you and send it back to your email.\r\n\r\n-- Smartcourse Team");	
+			mail($email, 'Recover Password', "Hello " . $username. ",\r\nPlease click the link below:\r\n\r\nhttp://localhost/studyhub/recover.php?email=" . $email . "&generated_string=" . $generated_string . "\r\n\r\n We will generate a new password for you and send it back to your email.\r\n\r\n-- studyhub Team");	
 		} catch (PDOException $e) {
 			die($e->getMessage());
 		}
@@ -242,7 +242,7 @@ class Users {
 
 					$query->execute();
 
-					mail($email, 'Your password', "Hello " . $username . ",\n\nYour your new password is: " . $generated_password . "\n\nPlease change your password once you have logged in using this password.\n\n--Smartcourse Team");
+					mail($email, 'Your password', "Hello " . $username . ",\n\nYour your new password is: " . $generated_password . "\n\nPlease change your password once you have logged in using this password.\n\n--studyhub Team");
 
 				} else {
 					return false;
