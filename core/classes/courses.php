@@ -382,6 +382,51 @@ class Courses {
 			die($e->getMessage());
 		}
 	}
+
+	# Fetch the maximum unit id of the course
+	public function get_max_unit_id($course_id) 
+	{
+		$query = $this->db->prepare("SELECT IFNULL(MAX(`unit_id`), 0) FROM `sm_units` WHERE `course_id` = $course_id");
+		$query->bindParam(':course_id', $course_id, PDO::PARAM_INT);
+
+		try {
+			$query->execute();
+			return $query->fetchColumn();
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+		return false;
+	}	
+
+	public function get_max_exercise_id($course_id, $unit_id)
+	{
+		$query = $this->db->prepare("SELECT IFNULL(MAX(`exercise_id`), 0) FROM `sm_exercises` WHERE `course_id` = $course_id AND `unit_id` = $unit_id");
+		$query->bindParam(':course_id', $course_id, PDO::PARAM_INT);
+		$query->bindParam(':unit_id', $unit_id, PDO::PARAM_INT);
+
+		try {
+			$query->execute();
+			return $query->fetchColumn();
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+		return false;
+	}
+
+	# Developing-time functions
+	public function get_all_exercises($course_id) 
+	{
+		$query = $this->db->prepare("SELECT * FROM `sm_exercises` WHERE `course_id` = $course_id");
+		$query->bindParam(':course_id', $course_id, PDO::PARAM_INT);
+
+		try {
+			$query->execute();
+			return $query->fetchAll();
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+		return false;
+	}
 }
 
  ?>

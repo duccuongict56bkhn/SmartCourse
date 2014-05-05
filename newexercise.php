@@ -42,7 +42,7 @@ $general->logged_out_protect();
 </head>
 <body>
 <div class="container" style="width: 100%;">
-	<h3 class="form-title">Create new exercises <span class="label label-danger pull-right">Close</span></h3>
+	<h3 class="form-title">Create new exercises <span id="close-window" class="label label-danger pull-right">Close</span></h3>
 	<form role="form" method="post">
 		<div class="form-group sp">
 			<label>Exercise title</label>
@@ -116,6 +116,11 @@ $general->logged_out_protect();
 	  	height: 100,
 	  	focus: true
 	  });
+	});
+</script>
+<script type="text/javascript">
+	$('#close-window').click(function() {
+		close();
 	});
 </script>
 </body>

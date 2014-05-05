@@ -68,6 +68,9 @@ $is_owner   = $courses->is_created_by_me($user_id, $id);
 								<li role="representation" class="divider"></li>
 								<li role="representation" class="dropdown-header">Exercises</li>
 								<li>
+									<a id="open-new-ex" target="_blank" href="../../newexercise.php?course=<?php echo $course_data['course_alias']; ?>">Create new exercise</a>
+								</li>
+								<li>
 									<a href="#">Correct student's submits</a>
 								</li>
 								<li role="representation" class="divider"></li>
@@ -306,8 +309,30 @@ $is_owner   = $courses->is_created_by_me($user_id, $id);
 				</div>
 							<!-- Announcement holder-->
 				<div class="col-lg-12 col-md-12" >
-					<?php foreach ($variable as $key => $value): ?>
-						
+					<?php $exs = $courses->get_all_exercises($id); ?>
+					<?php foreach ($exs as $ex): ?>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title"><?php echo $ex['exercise_title']; ?></h4>
+							</div>
+							<div class="panel-body">
+								<?php echo $ex['question']; ?>
+							</div>
+							<div class="panel-footer">
+								<li>
+									<?php echo $ex['multi_one']; ?>
+								</li>
+								<li>
+									<?php echo $ex['multi_two']; ?>
+								</li>
+								<li>
+									<?php echo $ex['multi_three']; ?>
+								</li>
+								<li>
+									<?php echo $ex['multi_four']; ?>
+								</li>
+							</div>
+						</div>
 					<?php endforeach ?>
 				</div>
 			</div>
