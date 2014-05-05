@@ -1,8 +1,9 @@
 <?php 
 $title = $course_data['course_title'];
 $filename = basename($_SERVER['SCRIPT_NAME']);
-$is_teacher = ($user['role'] == 2) ? true : false;
-$is_owner   = $courses->is_created_by_me($user['user_id'], $id);
+$is_teacher = ($users->get_role($user_id) == 'Teacher') ? true : false;
+$is_owner   = $courses->is_created_by_me($user_id, $id);
+
 ?>
 
 <!DOCTYPE html>
@@ -101,7 +102,7 @@ $is_owner   = $courses->is_created_by_me($user['user_id'], $id);
 								<li><a href="../../signout.php"><span class="glyphicon glyphicon-off"></span>Sign out</a></li>
 							</ul>
 						</li>
-				<?php } else {	?>	# user need to first signin to register for this course
+				<?php } else {	?>
 					<li><a href="../../signup.php">Sign up</a></li>
 					<li><a href="../../signin.php">Sign in</a></li>
 				<?php } ?>
@@ -115,7 +116,7 @@ $is_owner   = $courses->is_created_by_me($user['user_id'], $id);
 <div class="container admin-panel">
 	<div class="row">
 		<div class="col-sm-3 col-md-2 sidebar">
-			<img src="../../images/courses/database-thumbnail.png" class="sidebar-logo">
+			<img src="../../<?php echo $course_data['course_avatar']; ?>" class="sidebar-logo">
 			<ul class="nav nav-sidebar">
 				<!-- Dynamically create active section based on what page we are in-->
 				<?php if ($filename == 'index.php') {?>
@@ -177,7 +178,6 @@ $is_owner   = $courses->is_created_by_me($user['user_id'], $id);
 						<a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-flash"></span>Create new</a>
 					</div>
 				<?php endif ?>
-				
 			</div>
 						<!-- Announcement holder-->
 			<div class="col-lg-12 col-md-12" >
@@ -249,7 +249,7 @@ $is_owner   = $courses->is_created_by_me($user['user_id'], $id);
 					      </div>
 					      <div class="modal-body">
 					        <div class="modal-video">
-					        		<iframe src=""></iframe>
+					        		<iframe src="" id="video-frame" sandbox="allow-same-origin allow-scripts allow-forms"></iframe>
 					        </div>
 					      </div>
 					    </div><!-- /.modal-content -->
@@ -270,9 +270,9 @@ $is_owner   = $courses->is_created_by_me($user['user_id'], $id);
 									<div class="panel-body">
 										 <?php $v_vids = $courses->get_unit_video($v_unit['unit_id']); ?>
 										 <?php foreach ($v_vids as $v_vid): ?>
-										 	<a class="show-vid-modal" href="<?php echo $v_vid['vid_link']; ?>"><?php echo $v_vid['vid_title'] ?></a>
+										 	<a class="show-vid-modal" videosrc="<?php echo str_replace('watch?v=','embed/', $v_vid['vid_link']); ?>" videotitle="<?php echo $v_vid['vid_title']; ?>" href="#"><?php echo $v_vid['vid_title'] ?></a>
 										 	<a href="#" class="pull-right slide"><span class="glyphicon glyphicon-list-alt"></span>Slides</a>
-										 	
+										 	<br>
 									 <?php endforeach ?>
 									</div> <!-- End of .panel-body -->
 								</div> <!-- End of .panel-collapse -->
@@ -292,6 +292,38 @@ $is_owner   = $courses->is_created_by_me($user['user_id'], $id);
  $(document).ready(function(e) {
      $('.selectpicker').selectpicker();
  });
+</script>
+<script>
+	$('a.show-vid-modal').click(function(e) { 
+	 var vidsrc = $(this).attr('videosrc');
+     var title = $(this).attr('videotitle');
+
+	 e.preventDefault();
+
+	 var options = {
+	   "backdrop" : "static"
+	 }
+
+	$("#vid-modal").on('show.bs.modal', function(e) {
+	    //here the attribute video-src is helpfull
+	     $("h4#modal-title").text(title);
+	    // //here the id for the iframe is helpfull
+	     $('#video-frame').attr('src', vidsrc);
+	  });
+
+	$("#vid-modal").on('hide.bs.modal', function(e) {
+	    // //here the id for the iframe is helpfull
+	     $('#video-frame').attr('src', '');
+	  });
+
+    $("#vid-modal").modal(options);
+
+});
+// Debug
+// $('a.show-vid-modal').click(function(e) {
+// 	e.preventDefault();
+// 	alert($('a.show-vid-modal').text());
+// });
 </script>
 </body>
 </html>

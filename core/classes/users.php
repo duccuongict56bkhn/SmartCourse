@@ -348,6 +348,24 @@ class Users {
 			die($e->getMessage());
 		}
 	}
+
+	public function enroll($course_id, $user_id)
+	{
+		$enroll_time = time();
+		$query = $this->db->prepare("INSERT INTO `sm_enroll_course`(`user_id`, `course_id`, `enroll_date`)
+											  VALUES (?, ?, ?)");
+		$query->bindValue(1, $user_id);
+		$query->bindValue(2, $course_id);
+		$query->bindValue(3, $enroll_time);
+
+		try {
+			$query->execute();
+			return true;
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+		return false;
+	}
  }
  
  ?>

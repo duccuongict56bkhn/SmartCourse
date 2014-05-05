@@ -1,1 +1,6 @@
-ErrorDocument 404 /smartcourse/404.php
+#<Directory "D:/www/wamp/studyhub/">
+#	Options Indexes FollowSymLinks
+#	AllowOverride All
+#	Order Deny, Allow
+#	Allow From All
+#</Directory>

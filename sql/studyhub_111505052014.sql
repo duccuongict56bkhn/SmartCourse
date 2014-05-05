@@ -1,0 +1,310 @@
+-- phpMyAdmin SQL Dump
+-- version 4.0.4
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: May 05, 2014 at 04:15 AM
+-- Server version: 5.6.12-log
+-- PHP Version: 5.4.16
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Database: `smartcourse`
+--
+CREATE DATABASE IF NOT EXISTS `studyhub` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `studyhub`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sm_courses`
+--
+
+CREATE TABLE IF NOT EXISTS `sm_courses` (
+  `cat_id` int(10) NOT NULL,
+  `course_id` int(10) NOT NULL AUTO_INCREMENT,
+  `course_code` varchar(10) NOT NULL,
+  `course_title` varchar(255) NOT NULL,
+  `course_alias` varchar(100) CHARACTER SET utf32 NOT NULL COMMENT 'Alias to create a folder for course in PHP',
+  `course_type` varchar(10) NOT NULL COMMENT '1 - Self-study; 2 - Period course',
+  `course_desc` text COMMENT 'For storing a large number of texts, should use this TEXT',
+  `start_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `length` int(5) DEFAULT NULL COMMENT 'The length of the course in weeks',
+  `course_avatar` varchar(500) DEFAULT 'images/courses/css-thumbnail.png',
+  `course_cover` varchar(1000) NOT NULL,
+  PRIMARY KEY (`course_id`),
+  KEY `cat_id` (`cat_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Courses that are currently available in the system' AUTO_INCREMENT=20 ;
+
+--
+-- Dumping data for table `sm_courses`
+--
+
+INSERT INTO `sm_courses` (`cat_id`, `course_id`, `course_code`, `course_title`, `course_alias`, `course_type`, `course_desc`, `start_date`, `length`, `course_avatar`, `course_cover`) VALUES
+(2, 15, '1DM016', 'Human Inferface', 'human-interface', '2', 'Human Interface description goes here', '2014-02-13 17:00:00', 20, 'images/courses/css-thumbnail.png', 'images/courses/cover-default.png'),
+(1, 16, '1DT038', 'Introduction to Computer Architecture', 'dark2013', '1', NULL, '0000-00-00 00:00:00', 0, 'images/courses/css-thumbnail.png', 'images/courses/cover-default.png'),
+(2, 17, 'CS2450', 'Data structure and Algorithms', 'algorithms', '1', 'This is the description part for Data Structure and Algorithms course', '0000-00-00 00:00:00', 0, 'images/courses/css-thumbnail.png', 'images/courses/cover-default.png'),
+(2, 18, 'CS1234', 'Database', 'db', '2', NULL, '2014-02-13 17:00:00', 20, 'images/courses/css-thumbnail.png', ''),
+(1, 19, 'CS2250', 'Introduction to Databases', 'dbstanford', '1', '"Introduction to Databases" had a very successful public offering in fall 2011, as one of Stanford''s inaugural three massive open online courses. Since then, the course materials have been improved and expanded, and we''re excited to be launching a second public offering of the course in winter 2013. The course includes video lectures and demos with in-video quizzes to check understanding, in-depth standalone quizzes, a wide variety of automatically-checked interactive programming exercises, midterm and final exams, a discussion forum, optional additional exercises with solutions, and pointers to readings and resources. Taught by Professor Jennifer Widom, the curriculum draws from Stanford''s popular Introduction to Databases course. ', '0000-00-00 00:00:00', 0, 'images/courses/database-thumbnail.png', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sm_course_announcements`
+--
+
+CREATE TABLE IF NOT EXISTS `sm_course_announcements` (
+  `user_id` int(10) NOT NULL,
+  `course_id` int(10) NOT NULL,
+  `anno_id` int(10) NOT NULL,
+  `anno_title` varchar(255) NOT NULL,
+  `anno_content` text NOT NULL,
+  `create_date` int(15) NOT NULL COMMENT 'The time annoucement is made',
+  `valid_from` date NOT NULL,
+  `valid_to` date NOT NULL,
+  `anno_type` int(3) NOT NULL DEFAULT '1' COMMENT '1 - Normal; 2 - Important; 3 - Urgent',
+  PRIMARY KEY (`user_id`,`course_id`,`anno_id`),
+  KEY `sm_course_announcements_fk2` (`course_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `sm_course_announcements`
+--
+
+INSERT INTO `sm_course_announcements` (`user_id`, `course_id`, `anno_id`, `anno_title`, `anno_content`, `create_date`, `valid_from`, `valid_to`, `anno_type`) VALUES
+(20, 19, 1, 'Test announcement', 'This is the first announcement for Database course. It is to test the course announcement functionalities.', 1398897788, '2014-05-01', '2014-05-30', 1),
+(20, 19, 865, 'Lorem Announcement', 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.', 1398902853, '2014-05-14', '2014-05-28', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sm_course_cat`
+--
+
+CREATE TABLE IF NOT EXISTS `sm_course_cat` (
+  `cat_id` int(10) NOT NULL AUTO_INCREMENT,
+  `cat_title` varchar(100) NOT NULL,
+  PRIMARY KEY (`cat_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Course catagories' AUTO_INCREMENT=9 ;
+
+--
+-- Dumping data for table `sm_course_cat`
+--
+
+INSERT INTO `sm_course_cat` (`cat_id`, `cat_title`) VALUES
+(1, 'Computer Science: Systems & Security'),
+(2, 'Computer Science: Software Engineering'),
+(3, 'Computer Science: Networks'),
+(4, 'Physics'),
+(5, 'Chemistry'),
+(6, 'Humanity'),
+(7, 'Economics and Finance'),
+(8, 'Biomedical Engineering');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sm_create_course`
+--
+
+CREATE TABLE IF NOT EXISTS `sm_create_course` (
+  `user_id` int(10) NOT NULL,
+  `course_id` int(10) NOT NULL,
+  `create_date` int(15) NOT NULL,
+  PRIMARY KEY (`user_id`,`course_id`),
+  KEY `sm_create_course_ibfk_2` (`course_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Store information for the creation of courses by teachers';
+
+--
+-- Dumping data for table `sm_create_course`
+--
+
+INSERT INTO `sm_create_course` (`user_id`, `course_id`, `create_date`) VALUES
+(18, 15, 1398693374),
+(18, 16, 1398693785),
+(18, 18, 1398737796),
+(19, 17, 1398697915),
+(20, 19, 1399113079);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sm_enroll_course`
+--
+
+CREATE TABLE IF NOT EXISTS `sm_enroll_course` (
+  `user_id` int(10) NOT NULL,
+  `course_id` int(10) NOT NULL,
+  `enroll_date` int(15) NOT NULL,
+  `unenroll_date` date DEFAULT NULL,
+  `result` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`user_id`,`course_id`),
+  KEY `user_id` (`user_id`),
+  KEY `sm_enroll_course_ibfk_2` (`course_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sm_exercises`
+--
+
+CREATE TABLE IF NOT EXISTS `sm_exercises` (
+  `unit_id` int(10) NOT NULL,
+  `excersise_id` int(10) NOT NULL AUTO_INCREMENT,
+  `question` text NOT NULL,
+  `question_type` int(2) NOT NULL COMMENT '1 - Multiple choice; 2 - Written',
+  `multi_one` text,
+  `multi_two` text,
+  `multi_three` text,
+  `multi_four` text,
+  `correct_answer` varchar(10000) NOT NULL,
+  PRIMARY KEY (`excersise_id`),
+  KEY `unit_id` (`unit_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sm_rate_course`
+--
+
+CREATE TABLE IF NOT EXISTS `sm_rate_course` (
+  `user_id` int(10) NOT NULL,
+  `course_id` int(10) NOT NULL,
+  `rate_time` date NOT NULL,
+  `rate_no` int(1) NOT NULL,
+  PRIMARY KEY (`user_id`,`course_id`),
+  KEY `sm_rate_course_ibfk_2` (`course_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Store information for the rating of courses by students and teachers';
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sm_units`
+--
+
+CREATE TABLE IF NOT EXISTS `sm_units` (
+  `unit_id` int(10) NOT NULL,
+  `vid_id` int(11) NOT NULL,
+  `unit_name` text,
+  `vid_type` char(1) NOT NULL,
+  `vid_title` varchar(255) NOT NULL,
+  `vid_link` varchar(255) NOT NULL,
+  `vid_length` int(15) NOT NULL,
+  `unit_slides` varchar(500) NOT NULL,
+  `course_id` int(10) NOT NULL,
+  PRIMARY KEY (`unit_id`,`vid_id`),
+  KEY `course_id` (`course_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `sm_units`
+--
+
+INSERT INTO `sm_units` (`unit_id`, `vid_id`, `unit_name`, `vid_type`, `vid_title`, `vid_link`, `vid_length`, `unit_slides`, `course_id`) VALUES
+(1, 1, 'Introduction to the course', 'W', 'Introduction to Databases', 'http://www.youtube.com/watch?v=D-k-h0GuFmE', 834, '', 19),
+(2, 1, 'Relational Model', 'W', 'The Relational Model', 'http://www.youtube.com/watch?v=spQ7IFksP9g', 529, '', 19),
+(2, 2, 'Relational Model', 'W', 'Querying relational databases', 'https://www.youtube.com/watch?v=nf1-h2GpEGc', 380, '', 19),
+(3, 1, 'XML Data', 'W', 'Well-formed XML', 'https://www.youtube.com/watch?v=x8kMELlNaYg', 797, '', 19),
+(3, 2, 'XML Data', 'W', 'DTDs, IDS and IDREFs', 'https://www.youtube.com/watch?v=-Wft5dD-1ig', 1080, '', 19),
+(3, 3, 'XML Data', 'W', 'XML Schema', 'https://www.youtube.com/watch?v=YkAZlQgPXG4', 788, '', 19);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sm_users`
+--
+
+CREATE TABLE IF NOT EXISTS `sm_users` (
+  `user_id` int(10) NOT NULL AUTO_INCREMENT,
+  `username` varchar(30) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` char(1) NOT NULL DEFAULT '1' COMMENT 'Check in list:0 - admin/1 - student/2 - teacher/3 - staff/4 - dummy',
+  `email` varchar(255) NOT NULL,
+  `display_name` varchar(100) DEFAULT 'username',
+  `birthday` date DEFAULT NULL,
+  `join_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `first_name` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `last_name` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `gender` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `bio` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `email_code` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `avatar` varchar(500) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'images/avatars/default_avatar.png',
+  `time` int(11) NOT NULL,
+  `confirmed` int(11) NOT NULL DEFAULT '0',
+  `generated_string` varchar(35) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `ip` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Store user''s credentials, used to login, create new user' AUTO_INCREMENT=21 ;
+
+--
+-- Dumping data for table `sm_users`
+--
+
+INSERT INTO `sm_users` (`user_id`, `username`, `password`, `role`, `email`, `display_name`, `birthday`, `join_date`, `first_name`, `last_name`, `gender`, `bio`, `email_code`, `avatar`, `time`, `confirmed`, `generated_string`, `ip`) VALUES
+(13, 'tuanhm', '$2y$12$396456118153560ad36a9uV8h8l4lSJYTxtZVuEapCjYfkpw7dhgm', '1', 'tuanhm@example.com', 'Minh Tuan', '0000-00-00', '2014-04-25 15:03:01', '', '', '', '', 'code_53560ad36a9918.88085225', 'images/avatars/default_avatar.png', 1398147795, 1, '0', '127.0.0.1'),
+(14, 'vinhpt', '$2y$12$294838118253560cd76a9uxaHmxYJc0mhIbn04DJ68tAcHP1ZJtfW', '1', 'vinhpt@example.com', NULL, '0000-00-00', '2014-04-25 15:03:01', '', '', '', '', 'code_53560cd76a9916.79158021', 'images/avatars/default_avatar.png', 1398148311, 1, '0', '127.0.0.1'),
+(15, 'cuongdd', '$2y$12$88767320953561127a000eYbQL3uo4pkb1luUjqhMlHcv95Bg.YTu', '1', 'cuongdd@example.com', 'Dao Duc Cuong', '1993-05-09', '2014-04-25 15:03:01', 'Cuong', 'Dao Duc', 'Male', 'Another update', 'code_53561127a000f8.58403816', 'images/avatars/default_avatar.png', 1398149415, 1, '0', '127.0.0.1'),
+(16, 'haidd', '$2y$12$25660897285356842d4a3OmrwzdmdME8a1O0JauwsmL2vazc4DiEi', '1', 'haidd@example.com', NULL, '0000-00-00', '2014-04-25 15:03:01', '', '', '', '', 'code_5356842d4a3401.53899016', 'images/avatars/default_avatar.png', 1398178861, 0, '0', '::1'),
+(17, 'duccuongict56bkhn', '$2y$12$324873160535a75cb705cO3sp7o/ZaGT33n3OAQbue4p9yGaAzLti', '1', 'duccuong5199@gmail.com', NULL, '0000-00-00', '2014-04-25 15:03:01', 'Duc Cuong', 'Dao', 'Male', 'Another account', 'code_535a75cb6fcc48.61027433', 'images/avatars/default_avatar.png', 1398437323, 1, '0', '::1'),
+(18, 'davidb', '$2y$12$723271988535db41f6f0fuqiEygJEmsIfCR8zOfMn..ntiIjf/vKG', '2', 'davidb@example.com', 'David Black-Schaffer', NULL, '2014-04-28 01:51:27', 'David', 'Black-Shaffer', 'Male', 'Assistant Professor in Department of Information Technology - Uppsala University', 'code_535db41f6f0d12.26496647', 'images/avatars/davbl791.jpg', 1398649887, 1, '0', '::1'),
+(19, 'andersb', '$2y$12$1045017269535e6f4396dOwNjU357wXSOTpoeAeOmV4kMD4ZuJhxy', '2', 'andersb@example.com', 'Anders Berglund', NULL, '2014-04-28 15:09:55', '', '', '', '', 'code_535e6f4396db15.06762459', 'images/avatars/default_avatar.png', 1398697795, 1, '0', '::1'),
+(20, 'jennifer', '$2y$12$22341414525364c3c0ea2eTT3ydjdYsHC5o6Lxg9zuLRCRhXwPYd2', '2', 'widom@cs.stanford.edu', 'Jennifer Widom', NULL, '2014-05-03 10:24:01', 'Jennifer', 'Widom', 'Female', 'Jenifer Widom is the Fletcher Jones Professor and Chair of the Computer Science Department at Stanford University. She received her Bachelors degree from the Indiana University School of Music in 1982 and her Computer Science Ph.D. from Cornell University in 1987. She was a Research Staff Member at the IBM Almaden Research Center before joining the Stanford faculty in 1993. Her research interests span many aspects of nontraditional data management. She is an ACM Fellow and a member of the National Academy of Engineering and the American Academy of Arts & Sciences; she received the ACM SIGMOD Edgar F. Codd Innovations Award in 2007 and was a Guggenheim Fellow in 2000; she has served on a variety of program committees, advisory boards, and editorial boards.', 'code_5364c3c0e71fe2.76402301', 'images/avatars/jennifer.jpg', 1399112640, 1, '0', '::1');
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `sm_courses`
+--
+ALTER TABLE `sm_courses`
+  ADD CONSTRAINT `sm_courses_ibfk_1` FOREIGN KEY (`cat_id`) REFERENCES `sm_course_cat` (`cat_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `sm_course_announcements`
+--
+ALTER TABLE `sm_course_announcements`
+  ADD CONSTRAINT `sm_course_announcements_fk1` FOREIGN KEY (`user_id`) REFERENCES `sm_users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `sm_course_announcements_fk2` FOREIGN KEY (`course_id`) REFERENCES `sm_courses` (`course_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `sm_create_course`
+--
+ALTER TABLE `sm_create_course`
+  ADD CONSTRAINT `sm_create_course_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `sm_users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `sm_create_course_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `sm_courses` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `sm_enroll_course`
+--
+ALTER TABLE `sm_enroll_course`
+  ADD CONSTRAINT `sm_enroll_course_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `sm_users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `sm_enroll_course_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `sm_courses` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `sm_rate_course`
+--
+ALTER TABLE `sm_rate_course`
+  ADD CONSTRAINT `sm_rate_course_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `sm_users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `sm_rate_course_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `sm_courses` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `sm_units`
+--
+ALTER TABLE `sm_units`
+  ADD CONSTRAINT `sm_units_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `sm_courses` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

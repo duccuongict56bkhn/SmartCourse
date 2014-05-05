@@ -1,4 +1,4 @@
-SmartCourse
+StudyHub
 ===========
 
 Database Laboratory Project

@@ -62,8 +62,6 @@ class Courses {
 		$query->bindValue(6, $start_date);
 		$query->bindValue(7, $length);
 
-		
-
 		try {
 			$query->execute();
 
@@ -77,6 +75,7 @@ class Courses {
 
 			$query_f->execute();
 
+			$this->build_structure($course_alias);
 			return true;		# Successfully create the course
 		} catch (PDOException $e) {
 			die($e->getMessage());
@@ -84,9 +83,26 @@ class Courses {
 		return false;
 	}
 
-	public function create_course_structure($course_alias)
+	private function build_structure($course_alias)
 	{
-		# Todo: Create a structure of files and folder for storing the course data
+		$folder = 'courses/'.$course_alias;
+		$dir	  = mkdir($folder, 755);
+		# create index file
+		file_put_contents($folder . '/index.php', '<?php $alias = \'' . $course_alias . '\'; require \'../index.php\';?>');
+		# create lecture file
+		file_put_contents($folder . '/lecture.php', '<?php $alias = \'' . $course_alias . '\'; require \'../index.php\';?>');
+		# create exercise file
+		file_put_contents($folder . '/exercise.php', '<?php $alias = \'' . $course_alias . '\'; require \'../index.php\';?>');
+		# create syllabbus file
+		file_put_contents($folder . '/syllabus.php', '<?php $alias = \'' . $course_alias . '\'; require \'../index.php\';?>');
+		# create forum file
+		file_put_contents($folder . '/forum.php', '<?php $alias = \'' . $course_alias . '\'; require \'../index.php\';?>');
+		# create studentlist file
+		file_put_contents($folder . '/studentlist.php', '<?php $alias = \'' . $course_alias . '\'; require \'../index.php\';?>');
+		# create studentsubmit file
+		file_put_contents($folder . '/studentsubmit.php', '<?php $alias = \'' . $course_alias . '\'; require \'../index.php\';?>');
+		# create about file
+		file_put_contents($folder . '/about.php', '<?php $alias = \'' . $course_alias . '\'; require \'../index.php\';?>');
 	}
 
 	public function coursedata($course_id)

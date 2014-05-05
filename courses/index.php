@@ -8,6 +8,7 @@ if ($tmp == '/studyhub/courses/') {
 	if ($general->logged_in() === true) { # Dont' know why yet, but this is to prevent infite redirect
 		$general->logged_out_protect();
 	}
+	#$user_id = $_SESSION['user_id'];
 	# Set <title> of the page as course's name
 	$id = $courses->get_info('course_id', 'course_alias', $alias);
 	$course_data = $courses->coursedata($id);

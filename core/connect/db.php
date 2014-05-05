@@ -4,7 +4,7 @@ $config = array(
 	'host' => 'localhost',
 	'username' => 'root',
 	'password' => '',
-	'database' => 'smartcourse'
+	'database' => 'studyhub'
 	);
 
 # Connect to the database
