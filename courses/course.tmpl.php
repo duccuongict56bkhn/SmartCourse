@@ -334,7 +334,7 @@ $is_owner   = $courses->is_created_by_me($user_id, $id);
 	   "backdrop" : "static"
 	 }
 
-	$("#vid-modal").on('show.bs.modal', function(e) {
+	$("#vid-modal").on('shown.bs.modal', function(e) {
 	    //here the attribute video-src is helpfull
 	     $("h4#modal-title").text(title);
 	    // //here the id for the iframe is helpfull

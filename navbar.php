@@ -10,9 +10,7 @@ $page_title = ucfirst(substr($filename, 0, strpos($filename, '.php')));
 	<title>StudyHub | <?php echo $page_title;?></title>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="css/prettify.css">
-	<?php if (str_replace(' ', '', $filename) == 'editcourse.php') { ?>
 	<link rel="stylesheet" type="text/css" href="css/dashboard.css">
-	<?php } ?>
 	<link rel="stylesheet" type="text/css" href="css/datepicker.css">
 	<link rel="stylesheet" type="text/css" href="css/bootstrap-select/bootstrap-select.css">
 	<link rel="shortcut icon" href="images/icon.ico">
