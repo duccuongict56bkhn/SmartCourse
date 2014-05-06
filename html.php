@@ -51,7 +51,8 @@ require 'core/init.php';
  		$.ajax({
  			type: "POST",
  			url: "html.php",
- 			data: { htmlString: sHTML}
+ 			data: { htmlString: sHTML,
+ 					htmlTest : "Testring"}
  		});
  	});
  </script>
@@ -60,7 +61,8 @@ require 'core/init.php';
 
 <?php 
 if (isset($_POST['htmlString'])) {
-	$courses->insert_html($_POST['htmlString']);
+	echo $_POST['htmlString'];
+	// $courses->insert_html($_POST['htmlString']);
 }
 
  ?>

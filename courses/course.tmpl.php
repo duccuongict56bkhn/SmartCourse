@@ -263,7 +263,7 @@ $is_owner   = $courses->is_created_by_me($user_id, $id);
 					<?php 
 					$v_units = $courses->get_distinct_unit($id);
 					foreach ($v_units as $v_unit) { ?>
-							<div class="panel-info">
+							<div class="panel panel-info">
 								<div class="panel-heading">
 									<h4 class="panel-title">
 										<a data-toggle="collapse" href="#collpase<?php echo $v_unit['unit_id'];?>">L<?php echo $v_unit['unit_id'] . ' - ' . $v_unit['unit_name']; ?></a>

@@ -1,1 +1,0 @@
-<?php $alias = 'ettmath'; require '../index.php';?>

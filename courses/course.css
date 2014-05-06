@@ -252,7 +252,7 @@ html, body {
 }
 .modal-backdrop.in {
   filter: alpha(opacity=50);
-  opacity: .5;
+  opacity: .8;
 }
 .modal-header {
   min-height: 10px;

@@ -86,11 +86,13 @@ class Courses {
 	private function build_structure($course_alias)
 	{
 		$folder = 'courses/'.$course_alias;
-		$dir	= mkdir($folder, 755);
-		$img	= $folder . '/img';
+		$dir	  = mkdir($folder, 755);
+		$img	  = $folder . '/img';
+		$vid    = $folder . '/videos';
 		$slide  = $folder . '/slides';
 
 		mkdir($img, 755);
+		mkdir($vid, 755);
 		mkdir($slide, 755);
 		
 		# create index file
@@ -358,6 +360,40 @@ class Courses {
 		return $query === false;
 	}
 
+	public function create_exercise($unit_id, $course_id, $exercise_id,$exercise_title, 
+											  $question_type, $score, $attempt_limit, $question, 
+											  $multi_one, $multi_two, $multi_three, $multi_four, $correct_answer)
+	{
+		$query = $this->db->prepare("INSERT INTO `sm_exercises`(`unit_id`, `course_id`, 
+															  `exercise_id`,`exercise_title`, 
+						  									  `question_type`, `score`, `attempt_limit`,
+						  									  `question`, `multi_one`, `multi_two`, `multi_three`, `multi_four`, `correct_answer`)
+							  							VALUES (?, ?,
+							  									  ?, ?,
+							  									  ?, ?, ?,
+							  									  ?, ?, ?, ?, ?, ?)");
+		$query->bindValue(1, $unit_id);
+		$query->bindValue(2, $course_id);
+		$query->bindValue(3, $exercise_id);
+		$query->bindValue(4, $exercise_title);
+		$query->bindValue(5, $question_type);
+		$query->bindValue(6, $score);
+		$query->bindValue(7, $attempt_limit);
+		$query->bindValue(8, $question);
+		$query->bindValue(9, $multi_one);
+		$query->bindValue(10, $multi_two);
+		$query->bindValue(11, $multi_three);
+		$query->bindValue(12, $multi_four);
+		$query->bindValue(13, $correct_answer);
+
+		try {
+			$query->execute();
+			return true;
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+	}
+
 	public function insert_html($htmlString)
 	{
 		$query = $this->db->prepare("INSERT INTO `sm_html`(`content`)
@@ -400,9 +436,11 @@ class Courses {
 
 	public function get_max_exercise_id($course_id, $unit_id)
 	{
-		$query = $this->db->prepare("SELECT IFNULL(MAX(`exercise_id`), 0) FROM `sm_exercises` WHERE `course_id` = $course_id AND `unit_id` = $unit_id");
-		$query->bindParam(':course_id', $course_id, PDO::PARAM_INT);
-		$query->bindParam(':unit_id', $unit_id, PDO::PARAM_INT);
+		$query = $this->db->prepare("SELECT IFNULL(MAX(`exercise_id`), 0) FROM `sm_exercises` WHERE `course_id` = ? AND `unit_id` = ?");
+		// $query->bindParam(':course_id', $course_id, PDO::PARAM_INT);
+		// $query->bindParam(':unit_id', $unit_id, PDO::PARAM_INT);
+		$query->bindValue(1, $course_id);
+		$query->bindValue(2, $unit_id);
 
 		try {
 			$query->execute();

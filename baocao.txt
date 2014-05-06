@@ -1,0 +1,7 @@
+Báo cáo:
+
+- Quyen bao cao (doc, docx, pdf)
+- Slides trinh bay
+- Demo tai cho
+
+=> folder: ten nhom : so_tt + ten_truong_nhom

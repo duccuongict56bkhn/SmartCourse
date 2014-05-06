@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 05, 2014 at 05:06 PM
+-- Generation Time: May 06, 2014 at 05:01 AM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.12
 
@@ -42,19 +42,14 @@ CREATE TABLE IF NOT EXISTS `sm_courses` (
   `course_cover` varchar(1000) NOT NULL,
   PRIMARY KEY (`course_id`),
   KEY `cat_id` (`cat_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Courses that are currently available in the system' AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Courses that are currently available in the system' AUTO_INCREMENT=20 ;
 
 --
 -- Dumping data for table `sm_courses`
 --
 
 INSERT INTO `sm_courses` (`cat_id`, `course_id`, `course_code`, `course_title`, `course_alias`, `course_type`, `course_desc`, `start_date`, `length`, `course_avatar`, `course_cover`) VALUES
-(2, 15, '1DM016', 'Human Inferface', 'human-interface', '2', 'Human Interface description goes here', '2014-02-13 17:00:00', 20, 'images/courses/css-thumbnail.png', 'images/courses/cover-default.png'),
-(1, 16, '1DT038', 'Introduction to Computer Architecture', 'dark2013', '1', NULL, '0000-00-00 00:00:00', 0, 'images/courses/css-thumbnail.png', 'images/courses/cover-default.png'),
-(2, 17, 'CS2450', 'Data structure and Algorithms', 'algorithms', '1', 'This is the description part for Data Structure and Algorithms course', '0000-00-00 00:00:00', 0, 'images/courses/css-thumbnail.png', 'images/courses/cover-default.png'),
-(2, 18, 'CS1234', 'Database', 'db', '2', NULL, '2014-02-13 17:00:00', 20, 'images/courses/css-thumbnail.png', ''),
-(1, 19, 'CS2250', 'Introduction to Databases', 'dbstanford', '1', '"Introduction to Databases" had a very successful public offering in fall 2011, as one of Stanford''s inaugural three massive open online courses. Since then, the course materials have been improved and expanded, and we''re excited to be launching a second public offering of the course in winter 2013. The course includes video lectures and demos with in-video quizzes to check understanding, in-depth standalone quizzes, a wide variety of automatically-checked interactive programming exercises, midterm and final exams, a discussion forum, optional additional exercises with solutions, and pointers to readings and resources. Taught by Professor Jennifer Widom, the curriculum draws from Stanford''s popular Introduction to Databases course. ', '0000-00-00 00:00:00', 0, 'images/courses/database-thumbnail.png', ''),
-(1, 20, 'UT4123', 'Embedded Systems', 'embeddedsystem', '2', NULL, '0000-00-00 00:00:00', 24, 'images/courses/css-thumbnail.png', '');
+(1, 19, 'CS2250', 'Introduction to Databases', 'dbstanford', '1', '"Introduction to Databases" had a very successful public offering in fall 2011, as one of Stanford''s inaugural three massive open online courses. Since then, the course materials have been improved and expanded, and we''re excited to be launching a second public offering of the course in winter 2013. The course includes video lectures and demos with in-video quizzes to check understanding, in-depth standalone quizzes, a wide variety of automatically-checked interactive programming exercises, midterm and final exams, a discussion forum, optional additional exercises with solutions, and pointers to readings and resources. Taught by Professor Jennifer Widom, the curriculum draws from Stanford''s popular Introduction to Databases course. ', '2014-05-01 05:30:00', 0, 'images/courses/database-thumbnail.png', '');
 
 -- --------------------------------------------------------
 
@@ -130,12 +125,7 @@ CREATE TABLE IF NOT EXISTS `sm_create_course` (
 --
 
 INSERT INTO `sm_create_course` (`user_id`, `course_id`, `create_date`) VALUES
-(18, 15, 1398693374),
-(18, 16, 1398693785),
-(18, 18, 1398737796),
-(19, 17, 1398697915),
-(20, 19, 1399113079),
-(20, 20, 1399278670);
+(20, 19, 1399113079);
 
 -- --------------------------------------------------------
 
@@ -201,8 +191,8 @@ CREATE TABLE IF NOT EXISTS `sm_exercises` (
 --
 
 INSERT INTO `sm_exercises` (`unit_id`, `course_id`, `exercise_id`, `exercise_title`, `question`, `question_type`, `multi_one`, `multi_two`, `multi_three`, `multi_four`, `correct_answer`, `attempt_limit`, `score`) VALUES
-(3, 19, 1, 'Question 1', '<p>We''re interested in well-formed XML that satisfies the following conditions:</p><p></p><ul><li>It has root element "tasklist"</li><li>The root element has three "task" elements</li><li>Each of the "task" subelements has an attribute named "name"<br></li><li>The values of the "name" attributes for the 3 tasks are "eat", "drink", and "play"</li></ul>Select, from the choices below, the well-formed XML that meets the above requirements.<div><span style="font-style: italic;">Code A</span><br><p></p><p></p><pre style="padding: 10px; margin-bottom: 10.5px; line-height: 21px; border-color: rgba(0, 0, 0, 0.14902);">&lt;tasklist&gt;\r\n  &lt;task name="eat"&gt;\r\n  &lt;task name="drink"&gt;\r\n  &lt;task name="play"&gt;\r\n&lt;/tasklist&gt;</pre><p><span style="font-style: italic;">Code B</span></p><pre style="padding: 10px; margin-bottom: 10.5px; line-height: 21px; border-color: rgba(0, 0, 0, 0.14902);">&lt;tasklist&gt;\r\n  &lt;task name=eat/&gt;\r\n  &lt;task name=drink/&gt;\r\n  &lt;task name=play/&gt;\r\n&lt;/tasklist&gt;</pre><p><span style="font-style: italic;">Code C</span></p><pre style="padding: 10px; margin-bottom: 10.5px; line-height: 21px; border-color: rgba(0, 0, 0, 0.14902);">&lt;tasklist&gt;\r\n  &lt;task name="eat"&gt;&lt;/task&gt;\r\n  &lt;task name="drink"&gt;&lt;/task&gt;\r\n  &lt;task name="play"&gt;&lt;/task&gt;\r\n&lt;/tasklist&gt;</pre><p><span style="font-style: italic;">Code D</span></p><pre style="padding: 10px; margin-bottom: 10.5px; line-height: 21px; border-color: rgba(0, 0, 0, 0.14902);">&lt;tasklist&gt;\r\n  &lt;task name="eat"/&gt;\r\n&lt;/tasklist&gt;\r\n&lt;tasklist&gt;\r\n  &lt;task name="drink"/&gt;\r\n&lt;/tasklist&gt;\r\n&lt;tasklist&gt;\r\n  &lt;task name="play"/&gt;\r\n&lt;/tasklist&gt;</pre></div>', 1, 'Code A', 'Code B', 'Code C', 'Code D', '3', 100, 10),
-(3, 19, 2, 'Question 2', '<p>An XML Document contain the following portion:</p><pre style="padding: 10px; margin-bottom: 10.5px; line-height: 21px; border-color: rgba(0, 0, 0, 0.14902);"><font color="blue">     &lt;INFO&gt;\r\n         &lt;ADDR&gt;101 Maple St.&lt;/ADDR&gt;\r\n         &lt;PHONE&gt;555-1212&lt;/PHONE&gt;\r\n         &lt;PHONE&gt;555-4567&lt;/PHONE&gt;\r\n     &lt;/INFO&gt;</font></pre><p>Which of the following could be the INFO element specification in a DTD that the document match</p>', 1, '<!ELEMENT INFO (ADDR,PHONE?)>', '<!ELEMENT INFO (#PCDATA)>', '<!ELEMENT INFO (ADDR,PHONE*,MANAGER?)>', '<!ELEMENT INFO (ADDR*,PHONE+,MANAGER)>', '4', 100, 10);
+(3, 19, 1, 'Question 1', '<p>We''re interested in well-formed XML that satisfies the following conditions:</p><p></p><ul><li>It has root element "tasklist"</li><li>The root element has three "task" elements</li><li>Each of the "task" subelements has an attribute named "name"<br></li><li>The values of the "name" attributes for the 3 tasks are "eat", "drink", and "play"</li></ul>Select, from the choices below, the well-formed XML that meets the above requirements.<div><span style="font-style: italic;">Code A</span><br><p></p><p></p><pre style="padding: 10px; margin-bottom: 10.5px; line-height: 21px; border-color: rgba(0, 0, 0, 0.14902);">&lt;tasklist&gt;\r\n  &lt;task name="eat"&gt;\r\n  &lt;task name="drink"&gt;\r\n  &lt;task name="play"&gt;\r\n&lt;/tasklist&gt;</pre><p><span style="font-style: italic;">Code B</span></p><pre style="padding: 10px; margin-bottom: 10.5px; line-height: 21px; border-color: rgba(0, 0, 0, 0.14902);">&lt;tasklist&gt;\r\n  &lt;task name=eat/&gt;\r\n  &lt;task name=drink/&gt;\r\n  &lt;task name=play/&gt;\r\n&lt;/tasklist&gt;</pre><p><span style="font-style: italic;">Code C</span></p><pre style="padding: 10px; margin-bottom: 10.5px; line-height: 21px; border-color: rgba(0, 0, 0, 0.14902);">&lt;tasklist&gt;\r\n  &lt;task name="eat"&gt;&lt;/task&gt;\r\n  &lt;task name="drink"&gt;&lt;/task&gt;\r\n  &lt;task name="play"&gt;&lt;/task&gt;\r\n&lt;/tasklist&gt;</pre><p><span style="font-style: italic;">Code D</span></p><pre style="padding: 10px; margin-bottom: 10.5px; line-height: 21px; border-color: rgba(0, 0, 0, 0.14902);">&lt;tasklist&gt;\r\n  &lt;task name="eat"/&gt;\r\n&lt;/tasklist&gt;\r\n&lt;tasklist&gt;\r\n  &lt;task name="drink"/&gt;\r\n&lt;/tasklist&gt;\r\n&lt;tasklist&gt;\r\n  &lt;task name="play"/&gt;\r\n&lt;/tasklist&gt;</pre></div>', 1, 'Code A', 'Code B', 'Code C', 'Code D', 'C', 100, 10),
+(3, 19, 2, 'Question 2', '<p>An XML Document contain the following portion:</p><pre style="padding: 10px; margin-bottom: 10.5px; line-height: 21px; border-color: rgba(0, 0, 0, 0.14902);"><font color="blue">     &lt;INFO&gt;\r\n         &lt;ADDR&gt;101 Maple St.&lt;/ADDR&gt;\r\n         &lt;PHONE&gt;555-1212&lt;/PHONE&gt;\r\n         &lt;PHONE&gt;555-4567&lt;/PHONE&gt;\r\n     &lt;/INFO&gt;</font></pre><p>Which of the following could be the INFO element specification in a DTD that the document match</p>', 1, '<!ELEMENT INFO (ADDR,PHONE?)>', '<!ELEMENT INFO (#PCDATA)>', '<!ELEMENT INFO (ADDR,PHONE*,MANAGER?)>', '<!ELEMENT INFO (ADDR*,PHONE+,MANAGER)>', 'D', 100, 10);
 
 -- --------------------------------------------------------
 
@@ -271,7 +261,20 @@ INSERT INTO `sm_units` (`unit_id`, `vid_id`, `unit_name`, `vid_type`, `vid_title
 (2, 2, 'Relational Model', 'W', 'Querying relational databases', 'https://www.youtube.com/watch?v=nf1-h2GpEGc', 380, '', 19),
 (3, 1, 'XML Data', 'W', 'Well-formed XML', 'https://www.youtube.com/watch?v=x8kMELlNaYg', 797, '', 19),
 (3, 2, 'XML Data', 'W', 'DTDs, IDS and IDREFs', 'https://www.youtube.com/watch?v=-Wft5dD-1ig', 1080, '', 19),
-(3, 3, 'XML Data', 'W', 'XML Schema', 'https://www.youtube.com/watch?v=YkAZlQgPXG4', 788, '', 19);
+(3, 3, 'XML Data', 'W', 'XML Schema', 'https://www.youtube.com/watch?v=YkAZlQgPXG4', 788, '', 19),
+(4, 1, 'JSON Data', 'W', 'Introduction to JSON', 'https://www.youtube.com/watch?v=JwSWIC6fJ5Q', 635, '', 19),
+(4, 2, 'JSON Data', 'W', 'JSON Demo', 'https://www.youtube.com/watch?v=TjZLdJvm3to', 1336, '', 19),
+(5, 1, 'Relational Algebra', 'W', 'Select, Project, Join', 'https://www.youtube.com/watch?v=tii7xcFilOA', 1084, '', 19),
+(5, 2, 'Relational Algebra', 'W', 'Set operators, renaming, notation', 'https://www.youtube.com/watch?v=GkBf2dZAES0', 1183, '', 19),
+(6, 1, 'SQL', 'W', 'Introduction to SQL', 'https://www.youtube.com/watch?v=wxFmiRwXcQY', 271, '', 19),
+(6, 2, 'SQL', 'W', 'Basic SELECT Statement', 'https://www.youtube.com/watch?v=XtNwJg2aL7k', 596, '', 19),
+(6, 3, 'SQL', 'W', 'Table variables and Set operators', 'https://www.youtube.com/watch?v=thcqxTlSAmw ', 632, '', 19),
+(6, 4, 'SQL', 'W', 'Subqueries in WHERE clause', 'https://www.youtube.com/watch?v=IJPXosPGLTU', 1213, '', 19),
+(6, 5, 'SQL', 'W', 'Subqueries in FROM and SELECT', 'https://www.youtube.com/watch?v=8OCAxk1Rybg', 481, '', 19),
+(6, 6, 'SQL', 'W', 'The JOIN family of operators', 'https://www.youtube.com/watch?v=oXd4mTA86MI', 1499, '', 19),
+(6, 7, 'SQL', 'W', 'Aggregations', 'https://www.youtube.com/watch?v=iR-QQjpBg68', 1517, '', 19),
+(6, 8, 'SQL', 'W', 'NULL values', 'https://www.youtube.com/watch?v=-oH4h6asJYs', 324, '', 19),
+(6, 9, 'SQL', 'W', 'Data modification statements', 'https://www.youtube.com/watch?v=Hb6K1uucuSg', 873, '', 19);
 
 -- --------------------------------------------------------
 
