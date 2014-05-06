@@ -116,8 +116,8 @@ $alias = $_GET['course'];
 					</select>
 				</div>
 				<div class="form-group form-btn">
-					<button type="button" name="create_exercise" id="create_exercise" class="btn btn-primary">Create</button>
-					<button type="button" name="discard" id="discard" class="btn btn-default" id="discard">Discard</button>
+					<button type="submit" name="create_exercise" id="create_exercise" class="btn btn-primary">Create</button>
+					<button type="submit" name="discard" id="discard" class="btn btn-default" id="discard">Discard</button>
 				</div>
 			</form>
 		</div>
@@ -134,67 +134,18 @@ $alias = $_GET['course'];
 			  });
 			});
 		</script>
-		<script type="text/javascript">
-			// $('#close-window').click(function() {
-			// 	close();
-			// });
 
-			$('#create_exercise').click(function(e) {
-				// Check for the required fill
-				var ex_title     = $("#exercise_title").val();
-				var ex_score     = $("#score").val();
-				var ex_attempt   = $("#attempt_limit").val();
-				var ex_question  = $("#summernote").val();
-				var ex_one		 = $("#multi_one").val();
-				$.ajax({
-					url : 'newexercise.php',
-					type : 'POST',
-					// data : 'exercise_title='+ex_title+'&unit_id=3&question_type=2'+'&score='+ex_score+'&attempt_limit='+ex_attempt+'&question='+ex_question+'&multi_one='+ex_one,
-					data : {
-						exercise_title : ex_title,
-						unit_id		   : 3,
-						question_type  : 2,
-						score 			: ex_score,
-						attempt_limit	: ex_attempt,
-						question 		: ex_question,
-						multi_one 		: ex_one
-					},
-					success : function() {
-						alert('Exercise is successfully created');
-					}
-				});
-			});
-		</script>
 	</body>
 </html>
 <?php 
-// if (isset($_POST['exercise_title']) 
-//  // && !empty($_POST['exercise_title'])
-// )
- // && !empty($_POST['unit_id'])
- // && isset($_POST['question_type']) 
- // && !empty($_POST['question_type'])
- // && isset($_POST['score']) 
- // && !empty($_POST['score'])
- // && isset($_POST['attempt_limit']) 
- // && !empty($_POST['attempt_limit'])
- // && isset($_POST['question']) 
- // && !empty($_POST['question']) 
- // && isset($_POST['multi_one']) 
- // && !empty($_POST['multi_one'])) 
-{
-
-	// echo $_POST['exercise_title'];
-	// echo $_POST['unit_id'];
-	$ex_id = 1 + $courses->get_max_exercise_id($c_id, $_POST['unit_id']);
-	$courses->create_exercise($_POST['unit_id'],
-									 $c_id,
-									 $ex_id,
-									 $_POST['exercise_title'],
-									 $_POST['question_type'],
-									 $_POST['score'],
-									 $_POST['attempt_limit'],
-									 $_POST['question'],
-									 $_POST['multi_one'], '', '', '', '');
-}
- ?>
+// $ex_id = 1 + $courses->get_max_exercise_id($c_id, $_POST['unit_id']);
+// $courses->create_exercise($_POST['unit_id'],
+// 								 $c_id,
+// 								 $ex_id,
+// 								 $_POST['exercise_title'],
+// 								 $_POST['question_type'],
+// 								 $_POST['score'],
+// 								 $_POST['attempt_limit'],
+// 								 $_POST['question'],
+// 								 $_POST['multi_one'], '', '', '', '');
+?>
