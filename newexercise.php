@@ -13,6 +13,7 @@ $alias = $_GET['course'];
 		<script src="js/jquery-2.1.0.min.js"></script>
 	 	<script src="js/bootstrap.js"></script>
 	 	<script src="js/prettify.js"></script>
+	 	<script type="text/javascript" src="magic.js"></script>
 	 	<link rel="stylesheet" type="text/css" href="fonts/font-awesome/css/font-awesome.css">
 	 	<link rel="stylesheet" type="text/css" href="summernote/summernote.css">
 	 	<link rel="stylesheet" type="text/css" href="summernote/summernote-bs3.css">
@@ -42,9 +43,12 @@ $alias = $_GET['course'];
 	 	</style>
 	</head>
 	<body>
+		<div id="alias">
+			<?php echo $alias ?>
+		</div>
 		<div class="container" style="width: 100%;">
 			<h3 class="form-title">Create new exercises <span id="close-window" class="label label-danger pull-right">Close</span></h3>
-			<form role="form" method="post">
+			<form role="form" id="ex-form" method="post">
 				<div class="form-group sp">
 					<div class="row">
 						<div class="col-md-6">
@@ -56,7 +60,7 @@ $alias = $_GET['course'];
 							<?php $c_id = $courses->get_info('course_id', 'course_alias', $alias);
 								   $v_us = $courses->get_distinct_unit($c_id);
 							 ?>
-							 <select class="selectpicker" data-width="100%" id="ex_unit">
+							 <select class="selectpicker" data-width="100%" id="ex_unit" name="ex_unit">
 								 <?php foreach ($v_us as $v_u): ?>
 								 	<option value="<?php echo $v_u['unit_id'] ?>">L<?php echo $v_u['unit_id'] . ' - ' . $v_u['unit_name']; ?></option>
 								 <?php endforeach ?>
@@ -67,8 +71,8 @@ $alias = $_GET['course'];
 				<div class="form-group sp">
 					<div class="row">
 						<div class="col-md-6">
-							<label>Exercise type</label><br>
-							<select class="selectpicker" name="exercise_type" style="width: 100%">
+							<label>Question type</label><br>
+							<select class="selectpicker" name="question_type" id="question_type" style="width: 100%">
 								<option value="1">Multiple-choice exercise</option>
 								<option value="2">Written exercise</option>
 							</select>
@@ -108,21 +112,22 @@ $alias = $_GET['course'];
 				</div>
 				<div class="form-group sp">
 					<label>Correct Answer</label>
-					<select class="selectpicker" name="correct_answer" style="width: 100%"  data-style="btn-primary">
-							<option value="A">A</option>
-							<option value="B">B</option>
-							<option value="C">C</option>
-							<option value="D">D</option>
+					<select class="selectpicker" name="correct_answer" id="correct_answer" style="width: 100%" >
+							<option value="1">A</option>
+							<option value="2">B</option>
+							<option value="3">C</option>
+							<option value="4">D</option>
 					</select>
 				</div>
 				<div class="form-group form-btn">
 					<button type="submit" name="create_exercise" id="create_exercise" class="btn btn-primary">Create</button>
-					<button type="submit" name="discard" id="discard" class="btn btn-default" id="discard">Discard</button>
+					<button type="button" name="discard" id="discard" class="btn btn-default" id="discard">Discard</button>
 				</div>
 			</form>
 		</div>
 		<script type="text/javascript">
 			$(document).ready(function() {
+			  $('#alias').hide();
 			  $('.selectpicker').selectpicker();
 			});
 		</script>
