@@ -33,16 +33,16 @@ if (empty($_POST) === false) {
 } 
 ?>
 
-<div class="container" style=" margin-top: 88px; width:50%;">
+<div class="container" style=" margin-top: 25px; width:50%;">
    
-<?php if (isset($errors) === true) {
+<?php if (isset($errors) && !empty($errors)) {
          echo "<div class=\"alert fade-in alert-danger\">";
          echo '<p>' . implode('</p><p>', $errors) . '</p>';
          echo "</div>";
 } ?>    
             
 	<div class="panel panel-default" style="padding-bottom: 30px;">
-		<div class="panel-heading">Sign in to <strong>Smartcourse</strong></div>
+		<div class="panel-heading">Sign in to <strong>StudyHub</strong></div>
 		<div class="panel-body">
       
 			<div class="col-md-8">

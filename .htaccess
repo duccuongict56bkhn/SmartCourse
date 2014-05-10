@@ -1,6 +1,0 @@
-#<Directory "D:/www/wamp/studyhub/">
-#	Options Indexes FollowSymLinks
-#	AllowOverride All
-#	Order Deny, Allow
-#	Allow From All
-#</Directory>

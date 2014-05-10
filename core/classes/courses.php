@@ -65,7 +65,7 @@ class Courses {
 		try {
 			$query->execute();
 
-			$id = $this->get_info('course_id', 'course_alias', $course_alias);
+			$id = $this->get_ifa($course_alias);
 
 			$query_f = $this->db->prepare("INSERT INTO `sm_create_course`(`user_id`, `course_id`, `create_date`)
 										   VALUES (?, ?, ?)");
@@ -83,7 +83,7 @@ class Courses {
 		return false;
 	}
 
-	private function build_structure($course_alias)
+	public function build_structure($course_alias)
 	{
 		$folder = 'courses/'.$course_alias;
 		$dir	  = mkdir($folder, 755);
@@ -160,7 +160,11 @@ class Courses {
 		$query = $this->db->prepare("SELECT scat.cat_title AS 'title', COUNT(smc.course_id) AS 'count'
 									FROM `sm_courses` AS smc, `sm_course_cat` AS scat
 									WHERE smc.cat_id = scat.cat_id
-									GROUP BY scat.cat_id, scat.cat_title");
+									GROUP BY scat.cat_id, scat.cat_title
+									UNION 
+									SELECT scat.cat_title AS 'title', 0 AS 'count'
+									FROM `sm_course_cat` AS scat
+									WHERE scat.cat_id NOT IN (SELECT DISTINCT cat_id FROM `sm_courses`) ");
 		try {
 			$query->execute();
 
@@ -222,7 +226,7 @@ class Courses {
 			throw new InvalidArgumentException;
 		} else {
 
-			$query = $this->db->prepare("SELECT $what FROM `sm_courses` WHERE $field = ?");
+			$query = $this->db->prepare("SELECT $what FROM `sm_courses` WHERE $field = '?'");
 			$query->bindValue(1, $value);
 
 			try {
@@ -232,6 +236,20 @@ class Courses {
 				die($e->getMessage());
 			}
 		}
+	}
+
+	public function get_ifa($course_alias)
+	{
+		$query = $this->db->prepare("SELECT `course_id` FROM `sm_courses` WHERE `course_alias` = ?");
+		$query->bindValue(1, $course_alias);
+
+		try {
+			$query->execute();
+			return $query->fetchColumn();
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+		return false;
 	}
 
 	public function get_units($course_id)
@@ -277,24 +295,34 @@ class Courses {
 	// 	$query = $this->db->prepare("")
 	// }
 
-	public function search_courses($keyword)
+	public function get_exercise_by_unit($course_id, $unit_id)
 	{
-		$token = '%' . $keyword . '%';
-		$results = array();
-		$query = $this->db->prepare("SELECT * FROM `sm_courses` WHERE `course_title` LIKE '?'");
-		$query->bindValue(1, $token);
+		$query = $this->db->prepare("SELECT * FROM `sm_exercises` WHERE `course_id` = ? AND `unit_id` = ?");
+		$query->bindValue(1, $course_id);
+		$query->bindValue(2, $unit_id);
+
 		try {
 			$query->execute();
-			$results = $query->fetchAll();
-			var_dump($query);
+			return $query->fetchAll();
 		} catch (PDOException $e) {
 			die($e->getMessage());
 		}
+		return false;
+	}
 
-		if (!empty($results)) {
-			return $results;
-		} 
-
+	public function search_courses($keyword)
+	{
+		$token = '\'%' . $keyword . '%\'';
+		$results = array();
+		$query = $this->db->prepare('SELECT * FROM `sm_courses` WHERE `course_title` LIKE ' . $token . '');
+        $query->bindParam(':token', $token, PDO::PARAM_STR);
+        
+		try {
+			$query->execute();
+			return $query->fetchAll();
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
 		return false;
 	}
 
@@ -418,6 +446,19 @@ class Courses {
 			die($e->getMessage());
 		}
 	}
+
+	public function get_max_course_id() 
+	{
+		$query = $this->db->prepare("SELECT IFNULL(MAX(`course_id`), 0) FROM `sm_courses`");
+
+		try {
+			$query->execute();
+			return $query->fetchColumn();
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+		return false;
+	}	
 
 	# Fetch the maximum unit id of the course
 	public function get_max_unit_id($course_id) 

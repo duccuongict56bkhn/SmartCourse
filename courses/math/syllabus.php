@@ -1,0 +1,1 @@
+<?php $alias = 'math'; require '../index.php';?>

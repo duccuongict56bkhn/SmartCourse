@@ -9,12 +9,12 @@ $general->logged_out_protect();
 	if (!$courses->course_exists($alias)) {
 		header('Location: index.php');
 		die();
-	} else if (!$courses->is_created_by_me($user_id, $courses->get_info('course_id', 'course_alias', $alias))) {
+	} else if (!$courses->is_created_by_me($user_id, $courses->get_ifa($alias))) {
 		header('Location: index.php');
 		die();
 	} else {
 		$course_data = array();
-		$id 		    = $courses->get_info('course_id', 'course_alias', $alias);
+		$id 		    = $courses->get_ifa($alias);
 		$course_data = $courses->coursedata($id);
 	}
 ?>
@@ -75,4 +75,5 @@ $general->logged_out_protect();
  <script>
  </script>
 <?php } else { 
-	header('Location: courses.php');}?>
+	header('Location: courses.php');}
+	?>

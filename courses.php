@@ -2,7 +2,7 @@
     require 'core/init.php';
 	require 'navbar.php';
  ?>
-<div class="container" style="margin-top: 88px;">
+<div class="container" style="margin-top: -6px;">
 	<div class="panel panel-default">
 		<div class="panel-body">
 			<h4><strong>Search for courses</strong></h4>
@@ -45,16 +45,7 @@
 					<h2>All topics</h2>
 				<?php } ?>
 			</div>
-			
 		</div>
-		<!-- <div class="col-md-3 pull-right sorting">
-			<p style="display: block; font-size: 12px;">Sort by</p>
-			<div class="btn-group btn-group-sm">
-				<button type="button" class="btn btn-default active">Recency</button>
-				<button type="button" class="btn btn-default">Popularity</button>
-			</div>
-		</div> -->
-
 		<div class="col-md-9 line-separator">
 		</div>
 		<div class="col-md-12 course-list-detail">
@@ -62,7 +53,6 @@
 			$keyword = $_POST['keyword']; 
 
 			$results = $courses->search_courses($keyword);
-			var_dump($results);
 			if ($results != false) {
 				foreach ($results as $result) { ?>
 					<div class="course-entry">
@@ -73,7 +63,10 @@
 							<span><?php echo $result['course_id']; ?></span>
 						</div>
 					</div>
-			<?php }} else ?> <h2>No row returned!</h2> <?php } else {
+			<?php }
+            } else { ?> 
+                <h3>There is nothing like that!</h3>
+            <?php }} else {
 				$results = $courses->get_all_courses();
 
 				foreach ($results as $result) {?>
@@ -97,14 +90,6 @@
 	<div class="col-md-9" id="bottom-line-separator">
 		<div class="line-separator"></div>
 	</div>
-<!-- 	<div class="col-md-9" id="pagination">
-		<div class="row">
-			<ul class="pager">
-			  <li class="previous"><a href="#">&larr; Previous</a></li>
-			  <li class="next"><a href="#">Next &rarr;</a></li>
-			</ul>
-		</div>
-	</div> -->
 </div>
 </div>
 <!-- ./Body -->

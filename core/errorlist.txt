@@ -1,0 +1,33 @@
+List errors còn tồn tại:
+
+* Trang index.php
+    - Thiếu đường dẫn đến các file FAQ, Contact, About ... tương ứng
+    - Các categories chưa hoạt động được
+    - Chưa đưa ra các course được rất cao nhất theo dữ liệu thật của hệ thống
+    - Chưa có khả năng pagination
+    
+* Phần signin/sigup:
+    - Chưa check ngay được bằng ajax xem tên đăng nhập đã tồn tại hay chưa
+    - Phần hiển thị lỗi vẫn chưa đúng, nên dùng has-errors, help-block của boostrap
+    - Chưa cho chọn vai trò người dùng: Teacher/Student...
+    
+* Trang home.php
+    - Chưa hiển thị số lượng course đang có trong các catogories
+    - Chưa đưa ra danh sách các course theo dữ liệu thật từ hệ thống
+    - Chưa có ô search
+    
+* Trang courses.php
+    # Tính năng search chưa hoạt động (đã hoạt động chính xác, nhưng giao diện chưa hoàn chỉnh)
+    - Phần hiện thị các course chưa đẹp, phải bổ sung thông tin cơ bản về course, nút details, nút edit..
+    
+* Trang createcourse.php:
+    - Chưa check đc bằng ajax, course, course alias đã tồn tại hay không
+    - Ghi dữ liệu start_date bị lỗi
+    
+* Trang editcourse.php
+    - Chưa hoàn thiện.
+    - Nhấn vào exercises -> ra trang courses.php => không chính xác
+    
+* Phần xem nội dung 1 course: 
+    - Nếu người dùng chưa đăng nhập vào hệ thống sẽ bị lỗi.
+    

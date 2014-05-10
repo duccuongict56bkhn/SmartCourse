@@ -1,4 +1,10 @@
 <?php 
+/**
+ * BCrypt method - used as alternative for normal hash and md5
+ * 
+ * Author: duccuongict
+ * Last update: 02-May-2014 14:52 
+ **/
 class Bcrypt {
 	private $rounds;
 	public function __construct($rounds = 12) {

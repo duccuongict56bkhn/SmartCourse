@@ -26,7 +26,7 @@ if (isset($_GET['username']) && !empty($_GET['username'])) {
 	 	<title><?php echo $username; ?></title>
 	</head>
 	<body>
-	<div class="container" style="margin-top: 88px;">
+	<div class="container" style="margin-top: 25px;">
 	<div class="col-md-3 profile-container">
 		<?php 
 		if (!empty($profile_data['avatar'])) {

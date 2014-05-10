@@ -9,7 +9,7 @@ $general->logged_out_protect();
 	if (!$courses->course_exists($alias)) {
 		header('Location: index.php');
 		die();
-	} else if (!$courses->is_created_by_me($user_id, $courses->get_info('course_id', 'course_alias', $alias))) {
+	} else if (!$courses->is_created_by_me($user_id, $courses->get_ifa($alias))) {
 		header('Location: index.php');
 		die();
 	} else {

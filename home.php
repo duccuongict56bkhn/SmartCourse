@@ -3,7 +3,6 @@
 	require 'navbar.php';
 	$general->logged_out_protect();
 	
-	// $user = $users->userdata($_SESSION['user_id']);
 	$username = $user['username'];
  ?>
 <div class="container" style="margin-top: 88px;">
@@ -11,16 +10,16 @@
 		<div class="nav-container">
 			<ul class="nav-sidebarlist">
 				<li class="emphasize">All topics</li>
-				<li><a href="#">Computer Science</a></li>
-				<li><a href="#">Literature</a></li>
-				<li><a href="#">Electrical Engineering</a></li>
-				<li><a href="#">Biomedical Engineering</a></li>
-				<li><a href="#">Economics &amp; Finance</a></li>
-				<li><a href="#">Humanities</a></li>
+				<?php 
+				$cats = $courses->get_all_course_by_cat();
+
+				foreach ($cats as $cat) { ?>
+					<li><a href="#"><?php echo $cat['title'];?></a>
+                        <span class="badge pull-right"><?php echo $cat['count']; ?></span></li>
+				<?php }?>
 			</ul>
 		</div>
 	</div>
-
 	<div class="col-md-9 course-list">
 		<div class="col-md-9 course-list-header">
 			<div class="list-header">
@@ -197,14 +196,6 @@
 	<div class="col-md-9" id="bottom-line-separator">
 		<div class="line-separator"></div>
 	</div>
-	<!-- <div class="col-md-9" id="pagination">
-		<div class="row">
-			<ul class="pager">
-			  <li class="previous"><a href="#">&larr; Previous</a></li>
-			  <li class="next"><a href="#">Next &rarr;</a></li>
-			</ul>
-		</div>
-	</div> -->
 </div>
 </div>
 <!-- ./Body -->

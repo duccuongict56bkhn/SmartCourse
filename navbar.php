@@ -15,6 +15,13 @@ $page_title = ucfirst(substr($filename, 0, strpos($filename, '.php')));
 	<link rel="stylesheet" type="text/css" href="css/bootstrap-select/bootstrap-select.css">
 	<link rel="shortcut icon" href="images/icon.ico">
 	<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900' rel='stylesheet' type='text/css'>
+	<script type="text/javascript" src="magic.js"></script>
+	<script src="js/jquery-2.1.0.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/ajax.js"></script>
+	<script src="js/prettify.js"></script>
+	<script src="css/bootstrap-select/bootstrap-select.js"></script>
+	<script src="js/bootstrap-datepicker.js"></script>
 </head>
 <body>
 

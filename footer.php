@@ -6,10 +6,10 @@
 				<div class="col-md-6 ">
 					<div class="site-footer-brand">
 						<!-- <img src="images/Logo-50-dark.ico" style="width: 20px; height: 20px; opacity: .5;"> -->
-						<span>SmartCourse</span>	
+						<span>StudyHub</span>	
 					</div>
 								
-					<p><em>SmartCourse</em> is a project for course IT3292E - Database Laboratory at School of Information and Communication Technology <abbr>(SoICT)</abbr>, Hanoi University of Science and Technology <abbr>(HUST)</abbr>. This site is only for experienment and education purpose. We do not intend to make any copyright infringment of the materials used in the site </p>
+					<p><em>StudyHub</em> is a project for course IT3292E - Database Laboratory at School of Information and Communication Technology <abbr>(SoICT)</abbr>, Hanoi University of Science and Technology <abbr>(HUST)</abbr>. This site is only for experienment and education purpose. We do not intend to make any copyright infringment of the materials used in the site </p>
 				</div>
 
 				<div class="col-md-2 footer-menu">
@@ -36,18 +36,12 @@
 
 			<div class="row copyright">
 				<div class="col-md-6">
-					<p><em>Smartcourse </em>&copy 2014. Some rights reserved</p>
+					<p><em>StudyHub </em>&copy 2014. Some rights reserved</p>
 				</div>
 			</div>
 			</div>
 		</footer>
 <!-- ./Footer -->
  <!-- scripts-->
- <script src="js/jquery-2.1.0.min.js"></script>
- <script src="js/bootstrap.js"></script>
- <script src="js/ajax.js"></script>
- <script src="js/prettify.js"></script>
- <script src="css/bootstrap-select/bootstrap-select.js"></script>
- <script src="js/bootstrap-datepicker.js"></script>
 </body>
 </html>

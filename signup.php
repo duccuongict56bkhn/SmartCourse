@@ -2,7 +2,7 @@
 require 'core/init.php';
 require 'navbar.php';
 
-$status = 'Please enter your information below.';
+$status = '';
  
 # if form is submitted
 if (isset($_POST['submit'])) {
@@ -31,7 +31,6 @@ if (isset($_POST['submit'])) {
             $errors[] = 'That email already exists.';
         }
 	}
- 
 	if(empty($errors) === true){
 		
 		$username 	= htmlentities($_POST['username']);
@@ -47,16 +46,18 @@ if (isset($_POST['submit'])) {
 if (isset($_GET['success']) && empty($_GET['success'])) {
   $status = 'Thank you for registering. Please check your email.';
 } else {
-	$status = 'There\'s something wrong. Please check again';
+	if (!empty($status)) {
+		$status = 'There\'s something wrong. Please check again';
+	}
 }
 ?>
 
- <div class="container" style=" margin-top: 88px; width: 50%;">
+ <div class="container" style=" margin-top: 50px; width: 50%;">
 		<div class="panel panel-default" style="padding-bottom: 30px;">
-			<div class="panel-heading">Register for <strong>Smartcourse</strong></div>
+			<div class="panel-heading">Register for <strong>StudyHub</strong></div>
 			<div class="panel-body">
 				<div class="col-md-12">
-					<?php if (isset($status) === true) {
+					<?php if (isset($status) && !empty($status)) {
 						echo "<div class=\"alert alert-info\">" . $status ."</div>";
 						$status = '';
 					}?>
@@ -68,6 +69,10 @@ if (isset($_GET['success']) && empty($_GET['success'])) {
                         <div class="form-group">
                            <label for="password">Password</label>
                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                        </div>
+                        <div class="form-group">
+                           <label for="password">Password Confirm</label>
+                           <input type="password" class="form-control" id="password_confirm" name="password_confirm" placeholder="Password" required>
                         </div>
                         <div class="form-group">
                            <label for="email">Email</label>

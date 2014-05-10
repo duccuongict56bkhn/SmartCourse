@@ -85,7 +85,7 @@ if (isset($_GET['success']) && empty($_GET['success']) === false) {
 
  }?>
 
- <div class="container" style=" margin-top: 88px; width:85%;">       
+ <div class="container" style=" margin-top: 25px; width:85%;">       
 	<div class="panel panel-default">
 	  <div class="panel-heading">
 	    <h3 class="panel-title"><strong>Edit your public profile</strong></h3>

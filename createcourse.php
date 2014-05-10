@@ -3,7 +3,6 @@ require 'core/init.php';
 require 'navbar.php';
 
 $general->logged_out_protect();
-$status = '';
 
 if (isset($_POST['submit'])) {
 
@@ -60,7 +59,7 @@ if (isset($_POST['submit'])) {
 
 ?>
 
-<div class="container" style="margin-top: 88px;">
+<div class="container" style="margin-top: 25px;">
 	<div class="col-md-12">
 		<div class="panel panel-default">
 			<div class="panel-heading"><strong>Create a new course</strong></div>
@@ -97,7 +96,7 @@ if (isset($_POST['submit'])) {
 						<div class="col-md-6">
 							<div class="form-group">
 								<label for="course_alias"><strong>Course alias</strong></label>
-								<input type="text" name="course_alias" placeholder="Course code" class="form-control" required />
+								<input type="text" name="course_alias" placeholder="Course alias" class="form-control" required />
 							</div>
 						</div>
 					</div>
@@ -152,13 +151,3 @@ if (isset($_POST['submit'])) {
 <?php 
 require 'footer.php';
  ?>
-  <script type="text/javascript">
-          $(document).ready(function(e) {
-              $('.selectpicker').selectpicker();
-          });
-      </script>
- <script  src="js/bootstrap-datepicker.js"></script>
- <script>
- $('#start_date').datepicker();
- $('#length').datepicker();
- </script>

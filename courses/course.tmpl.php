@@ -266,16 +266,18 @@ $is_owner   = $courses->is_created_by_me($user_id, $id);
 							<div class="panel panel-info">
 								<div class="panel-heading">
 									<h4 class="panel-title">
-										<a data-toggle="collapse" href="#collpase<?php echo $v_unit['unit_id'];?>">L<?php echo $v_unit['unit_id'] . ' - ' . $v_unit['unit_name']; ?></a>
+										<a data-toggle="collapse" href="#collpase<?php echo $v_unit['unit_id'];?>"><?php echo $v_unit['unit_name']; ?></a>
 									</h4>
 								</div> <!-- End of .panel-heading-->
 								<div id="collpase<?php echo $v_unit['unit_id'];?>" class="panel-collapse collapse in">
 									<div class="panel-body">
 										 <?php $v_vids = $courses->get_unit_video($v_unit['unit_id']); ?>
 										 <?php foreach ($v_vids as $v_vid): ?>
-										 	<a class="show-vid-modal" videosrc="<?php echo str_replace('watch?v=','embed/', $v_vid['vid_link']); ?>" videotitle="<?php echo $v_vid['vid_title']; ?>" href="#"><?php echo $v_vid['vid_title'] ?></a>
-										 	<a href="#" class="pull-right slide"><span class="glyphicon glyphicon-list-alt"></span>Slides</a>
-										 	<br>
+										 	<div class="show-vid-modal-wrapper">
+											 	<a class="show-vid-modal" videosrc="<?php echo str_replace('watch?v=','embed/', $v_vid['vid_link']); ?>" videotitle="<?php echo $v_vid['vid_title']; ?>" href="#"><?php echo $v_vid['vid_title'] ?></a>
+											 	<a href="#" class="pull-right slide"><span class="glyphicon glyphicon-list-alt"></span>Slides</a>
+											 	<br>
+										 	</div>
 									 <?php endforeach ?>
 									</div> <!-- End of .panel-body -->
 								</div> <!-- End of .panel-collapse -->
@@ -298,7 +300,7 @@ $is_owner   = $courses->is_created_by_me($user_id, $id);
 						<option>All</option>
 						<?php $v_units = $courses->get_distinct_unit($id); ?>
 						<?php foreach ($v_units as $v_unit): ?>
-							<option>L<?php echo $v_unit['unit_id'] . ' - ' . $v_unit['unit_name'];?></option>
+							<option> <?php $v_unit['unit_name'];?></option>
 						<?php endforeach ?>
 					</select>
 					<?php if ($is_owner): ?>

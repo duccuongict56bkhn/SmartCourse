@@ -326,3 +326,12 @@ html, body {
 .borderless td, .borderless th, .borderless tr {
   border: none;
 }
+
+.show-vid-modal-wrapper {
+  text-decoration: none;
+  width: 100%;
+  line-height: 2.254;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #eee;
+}

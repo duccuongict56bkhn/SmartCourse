@@ -43,21 +43,35 @@ $alias = $_GET['course'];
 	 	</style>
 	</head>
 	<body>
-		<div id="alias">
-			<?php echo $alias ?>
-		</div>
+		<span id="alias"><?php echo str_replace(' ', '',$alias); ?></span>
+		<div class="modal fade" id="success_modal">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		        <h4 class="modal-title">StudyHub</h4>
+		      </div>
+		      <div class="modal-body">
+		        <p>Exercise is successfully created.</p>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 		<div class="container" style="width: 100%;">
 			<h3 class="form-title">Create new exercises <span id="close-window" class="label label-danger pull-right">Close</span></h3>
 			<form role="form" id="ex-form" method="post">
-				<div class="form-group sp">
+				<div class="form-group sp" id="title_group">
 					<div class="row">
 						<div class="col-md-6">
 						<label>Exercise title</label>
 						<input type="text" class="form-control" name="exercise_title" id="exercise_title" placeholder="Exercise title"> 
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-6" id="unit_group">
 						<label>Unit</label><br>
-							<?php $c_id = $courses->get_info('course_id', 'course_alias', $alias);
+							<?php $c_id = $courses->get_ifa($alias);
 								   $v_us = $courses->get_distinct_unit($c_id);
 							 ?>
 							 <select class="selectpicker" data-width="100%" id="ex_unit" name="ex_unit">
@@ -77,17 +91,17 @@ $alias = $_GET['course'];
 								<option value="2">Written exercise</option>
 							</select>
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-3" id="score_group">
 							<label>Score</label>
 							<input type="text" class="form-control" name="score" id="score" placeholder="Exercise score" style="display: inline;"> 
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-3" id="attempt_group">
 							<label>Maximum attempt</label>
 							<input type="text" class="form-control" name="attempt_limit" id="attempt_limit" placeholder="Maximum attempt" style="display: inline;"> 
 						</div>
 					</div>
 				</div>
-				<div class="form-group sp">
+				<div class="form-group sp" id="question_group">
 					<label>Question</label>
 					<div id="summernote"></div>
 				</div>
@@ -142,15 +156,3 @@ $alias = $_GET['course'];
 
 	</body>
 </html>
-<?php 
-// $ex_id = 1 + $courses->get_max_exercise_id($c_id, $_POST['unit_id']);
-// $courses->create_exercise($_POST['unit_id'],
-// 								 $c_id,
-// 								 $ex_id,
-// 								 $_POST['exercise_title'],
-// 								 $_POST['question_type'],
-// 								 $_POST['score'],
-// 								 $_POST['attempt_limit'],
-// 								 $_POST['question'],
-// 								 $_POST['multi_one'], '', '', '', '');
-?>

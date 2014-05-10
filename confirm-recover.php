@@ -1,9 +1,10 @@
 <?php 
+require 'core/init.php';
 require 'navbar.php';
 $general->logged_in_protect();
 ?>
-<div class="container" style="margin-top: 88px;">
-	<div class="panel panel-primary col-md-8">
+<div class="container" style="margin-top: 25px;">
+	<div class="panel panel-warning">
 		<div class="panel-heading">
 			<h1 class="panel-title"><strong>Recover your password</strong></h1>
 		</div>
@@ -29,6 +30,9 @@ $general->logged_in_protect();
 					<div class="form-group">
 						<label>Enter your email</label>
 						<input type="text" class="form-control" id="email" name="email" placeholder="Email" value="Recover" required>
+					</div>
+					<div class="form-group">
+						<input type="submit" class="btn btn-primary" name="recover-btn" value="Go">
 					</div>
 				</form>
 				<?php } ?>
