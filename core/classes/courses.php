@@ -446,7 +446,19 @@ class Courses {
 			die($e->getMessage());
 		}
 	}
-
+    
+    public function unit_count($course_id) {
+        $query = $this->db->prepare("SELECT COUNT(`unit_id`) FROM `sm_units` WHERE `course_id` = ? GROUP BY `course_id`");   
+        $query->bindValue(1, $course_id);
+        
+        try {
+            $query->execute();
+            return $query->fetchColumn();
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+    
 	public function get_max_course_id() 
 	{
 		$query = $this->db->prepare("SELECT IFNULL(MAX(`course_id`), 0) FROM `sm_courses`");

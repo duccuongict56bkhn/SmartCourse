@@ -153,6 +153,7 @@ em::selection, i::selection, abbr::selection {
 
 .course-list-header {
 	line-height: 1em;
+    font-family: 'Open Sans' sans-serif;
 }
 
 .course-list-header h2 {

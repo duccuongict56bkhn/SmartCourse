@@ -61,6 +61,7 @@
 						</div> <!-- end .entry-thumbnail-->
 						<div class="entry-meta">
 							<span class="school-name"><?php echo $v_course['school']; ?></span>
+                            <span class="pull-right label label-primary"><?php echo $courses->unit_count($v_course['course_id']);?> lectures</span>
 							<h2 class="course-title">
 								<a href="courses/<?php echo $v_course['course_alias'] . '/' ;?>" title="Link to <?php echo $v_course['course_title']; ?>">
 									<span><?php echo $v_course['course_title']; ?></span>
@@ -77,15 +78,15 @@
 									</div>
 								
 								<?php } else { ?>
-									<?php $end_date = $v_course['start_date'] + $v_course['length']; ?>
-									<span><?php echo date('M tS', strtotime($v_course['start_date'])); ?></span>
-									<span class="pull-right"><?php echo date('M tS', strtotime($end_date)); ?></span>
+									<?php $end_date = date('M jS',strtotime($v_course['start_date'] . ' + ' . $v_course['length']*7 . ' days'));?>
+									<span><?php echo date('M jS', strtotime($v_course['start_date'])); ?></span>
+									<span class="pull-right"><?php echo $end_date; ?></span>
 									<div class="progress" style="height: 8px;">
 									  <div class="progress-bar progress-bar-default" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
 									    <span class="sr-only">40% Complete (success)</span>
 									  </div>
 									</div>
-									<a href="courses/<?php echo $v_course['course_alias'] . '/' ;?>"><span>Course info</span></a> 
+									<a href="courses/<?php echo $v_course['course_alias'] . '/' ;?>" style="text-decoration: none;"><span>Course info</span></a> 
 									<div class="pull-right">
 										<?php if ($courses->is_created_by_me($user['user_id'], $v_course['course_id'])):?>
 								<a href="editcourse.php?course_alias=<?php echo $v_course['course_alias'] ;?>" class="btn btn-warning">Edit</a>	

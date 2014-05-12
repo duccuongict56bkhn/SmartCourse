@@ -230,76 +230,7 @@ $general->logged_out_protect();
 					</div>
 				</div>
 
-				<div class="page-segment" id="announcement">
-					<ol class="breadcrumb">
-						<li><a href="#dashboard"><span class="glyphicon glyphicon-home"></span>Dashboard</a></li>
-						<li><span class="glyphicon glyphicon-bullhorn"></span>Announcements</li>
-					</ol>
-					<h2 class="page-header">Announcements</h2>
-					<div class="panel panel-primary">
-						<div class="panel-heading">
-							<div class="panel-title">
-								<span class="glyphicon glyphicon-pencil"></span>Create new announcement
-							</div>
-						</div>
-						<div class="panel-body">
-							<form role="form" method="post" action="">
-								<div class="form-group">
-									<div class="row">
-										<div class="col-lg-6 col-md-6">
-											<label>Title</label>
-											<input type="text" name="anno-title" placeholder="Announcement title" class="form-control">
-										</div>
-										<div class="col-lg-2 col-md-2">
-											<label>Type</label>
-											<select class="form-control selectpicker" name="anno-type">
-												<option>Normal</option>
-												<option>Important</option>
-												<option>Urgent</option>
-											</select>
-										</div>
-										<div class="col-lg-2 col-md-2">
-											<label>Valid from</label>
-										   <input type="text" class="datepicker form-control"  id="valid-from" name="anno-valid-from" data-date-format="mm/dd/yyyy">
-										</div>
-										<div class="col-lg-2 col-md-2">
-											<label>Valid to</label>
-											<input type="text" class="datepicker form-control" id="valid-to" name="anno-valid-to" data-date-format="mm/dd/yyyy">
-
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-lg-12 col-md-12">
-											<label>Content</label>
-											<textarea class="form-control" name="anno-content" id="anno-content"></textarea>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<button type="submit" name="create-anno" class="btn btn-primary">Create</button>
-								</div>
-							</form>
-						</div>
-					</div>
-					<?php 
-					foreach ($annos as $anno) { 
-						if ($anno['anno_type'] == 'Normal') {?>
-						<div class="alert alert-info announcement announcement-info">
-							<p><strong><?php echo $anno['anno_title']; ?></strong></p>
-							<span><?php echo $anno['anno_content']; ?></span>
-						</div>
-					<?php } elseif ($anno['anno_type'] == 'Important') {?>
-						<div class="alert alert-warning announcement announcement-warning">
-							<p><strong><?php echo $anno['anno_title']; ?></strong></p>
-							<span><?php echo $anno['anno_content']; ?></span>
-						</div>
-					<?php } else { ?>
-						<div class="alert alert-danger announcement announcement-danger">
-							<p><strong><?php echo $anno['anno_title']; ?></strong></p>
-							<span><?php echo $anno['anno_content']; ?></span>
-						</div>
-					<?php } } ?>
-				</div>
+				
 		</div>
 	</div>
 </div> <!-- end of .container -->
