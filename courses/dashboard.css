@@ -7,7 +7,17 @@ body {
   padding-top: 50px;
   /*background-color: #f1f1f1 !important;*/
 }
-
+html::selection, body::selection, div::selection,
+p::selection, span::selection, a::selection,
+h1::selection, h2::selection, h3::selection,
+h4::selection, h5::selection, h6::selection,
+li::selection, ul::selection, button::selection,
+input::selection, footer::selection, nav::selection,
+header::selection, article::selection, img::selection, 
+b::selection, select::selection, strong::selection,
+em::selection, i::selection,  abbr::selection  {
+  background-color: #abdffa;
+}
 
 /*
  * Global add-ons

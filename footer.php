@@ -9,7 +9,7 @@
 						<span>StudyHub</span>	
 					</div>
 								
-					<p><em>StudyHub</em> is a project for course IT3292E - Database Laboratory at School of Information and Communication Technology <abbr>(SoICT)</abbr>, Hanoi University of Science and Technology <abbr>(HUST)</abbr>. This site is only for experienment and education purpose. We do not intend to make any copyright infringment of the materials used in the site </p>
+					<p><em>StudyHub</em> is a project for course IT3292E - Database Laboratory at School of Information and Communication Technology <abbr>(SoICT)</abbr>, Hanoi University of Science and Technology <abbr data-toggle="tooltip" data-placement="top" title="Hanoi University of Science and Technology">(HUST)</abbr>. This site is only for experienment and education purpose. We do not intend to make any copyright infringment of the materials used in the site </p>
 				</div>
 
 				<div class="col-md-2 footer-menu">

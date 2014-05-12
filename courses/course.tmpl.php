@@ -1,8 +1,12 @@
 <?php 
 $title = $course_data['course_title'];
 $filename = basename($_SERVER['SCRIPT_NAME']);
-$is_teacher = ($users->get_role($user_id) == 'Teacher') ? true : false;
-$is_owner   = $courses->is_created_by_me($user_id, $id);
+if ($general->logged_in()) {
+	$is_teacher = ($users->get_role($user_id) == 'Teacher') ? true : false;
+	$is_owner   = $courses->is_created_by_me($user_id, $id);
+} else {
+	header('Location: ../../signin.php');
+}
 
 ?>
 
@@ -83,7 +87,7 @@ $is_owner   = $courses->is_created_by_me($user_id, $id);
 					<?php } else { ?>
 						<!--Show the course_register-->
 						<li>
-							<a href="#" id="register-btn">
+							<a href="../../courses/register.php?user_id=<?php echo $user['user_id'] ?>&amp;course=<?php echo $course_data['course_alias']; ?>&amp;timestamp=<?php echo time(); ?>" id="register-btn">
 								<button class="btn btn-primary btn-sm">Register for this course</button>
 							</a>
 						</li>
@@ -376,11 +380,6 @@ $is_owner   = $courses->is_created_by_me($user_id, $id);
     $("#vid-modal").modal(options);
 
 });
-// Debug
-// $('a.show-vid-modal').click(function(e) {
-// 	e.preventDefault();
-// 	alert($('a.show-vid-modal').text());
-// });
 </script>
 </body>
 </html>

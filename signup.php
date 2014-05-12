@@ -62,7 +62,7 @@ if (isset($_GET['success']) && empty($_GET['success'])) {
 						$status = '';
 					}?>
 					<form class="form" role="form" method="post" action="">
-                         <div class="form-group">
+                         <div class="form-group username">
                            <label for="username">Username</label>
                            <input type="text" class="form-control" id="username" name="username" placeholder="Username" value="<?php if (isset($_POST['username'])) echo htmlentities($_POST['username']); ?>" required>
                         </div>
@@ -78,6 +78,11 @@ if (isset($_GET['success']) && empty($_GET['success'])) {
                            <label for="email">Email</label>
                            <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="<?php if (isset($_POST['email'])) echo htmlentities($_POST['email']); ?>" required>
                         </div>
+                        <div class="form-group user-role">
+                        	<label>I am a: </label>
+                        		<input type="radio" name="role" id="role_student">Student</input>
+                        		<input type="radio" name="role" id="role_teacher">Teacher</input>
+                        </div>
                     	<div class="form-group">
 							<div class="checkbox">
 								<label>
@@ -86,7 +91,7 @@ if (isset($_GET['success']) && empty($_GET['success'])) {
 							</div>
 						</div>
                         <div class="form-group col-xs-6" style="padding-left: 0 !important;">
-                           <button type="submit" name="submit" class="btn btn-primary btn-block">Sign up</button>
+                           <button type="submit" name="submit" class="btn btn-primary btn-block" id="btn-signup">Sign up</button>
                         </div>
                      </form>
 				</div>
@@ -102,4 +107,23 @@ if (isset($_GET['success']) && empty($_GET['success'])) {
 		</div>
 	</div>	
 </div>
+<script>
+// 	$('#username').keyup(function() {
+// 		username = $('#username').val();
+// 		if (username.length >= 3) {
+// 			$.ajax({
+// 				type  : 'POST',
+// 				url   : 'check.php',
+// 				data  : { username : username },
+// 				cache : 'false',
+// 				beforeSend: fucntion() {
+// 					$('.username').append('<img src="images/loading.gif" /><span> Loading</span>');
+// 				},
+// 				success: (function() {
+
+// 				})
+// 			});
+// 		};
+// 	});
+// </script>
  <?php require_once 'footer.php'; ?>

@@ -7,6 +7,17 @@
  	-webkit-font-smoothing: antialiased;
 /* 	height: 100%;*/
  }
+html::selection, body::selection, div::selection,
+p::selection, span::selection, a::selection,
+h1::selection, h2::selection, h3::selection,
+h4::selection, h5::selection, h6::selection,
+li::selection, ul::selection, button::selection,
+input::selection, footer::selection, nav::selection,
+header::selection, article::selection, img::selection, 
+b::selection, select::selection, strong::selection,
+em::selection, i::selection, abbr::selection {
+	background-color: #abdffa;
+}
 
 .navbar-fixed-top, .navbar-inverse {
 	background-color: #2A3744;
@@ -386,29 +397,68 @@ div {
 	padding-right: 0 !important;
 }
 
-.course-entry {
-	padding-top: 20px;
-	padding-left: 0 !important;
-	padding-right: 0 !important;
-	padding-bottom: 15px;
+.user-role input {
+	margin-left: 10px;
+	margin-right: 10px;
 }
 
-.course-entry img {
-	max-height: 150px;
-	height: 120px;
-	width: auto;
+.entry-wrap {
+	float: left;
+	/*margin-top: 15px;*/
+	/*margin-bottom: 15px;*/
+	padding-bottom: 30px;
+	margin-bottom: 15px;
+	width: 100%;
+	border-bottom: 1px solid #eee;
 }
 
-.course-entry img, .course-meta {
-	display: inline-block;
+.entry {
+	width: 100%;
 }
 
-/*#course-images {
-	padding-left: 15px;
-}*/
+.entry-meta {
+	display: block;
+}
 
-#course-images img {
-	width: 100px;
-	height: auto;
-	border: 1px solid #eee;
+.school-name {
+	margin-bottom: 10px;
+	color: #212A34;
+	opacity: 0.8;
+	font-family: 'Segoe UI Light';
+	font-size: 16px;
+}
+
+.course-title {
+	padding-top: 3px;
+}
+
+.course-title a {
+	color: #212A34;
+	opacity: 0.8;
+	text-decoration: none;
+	font-size: 24px;
+	font-family: 'Segoe UI Light';
+}
+
+.entry-thumbnail {
+	float: left;
+	margin-right: 20px;
+}
+
+.entry-thumbnail a {
+	display: block;
+}
+
+.entry-thumbnail img {
+	display: block;
+	margin: 0 auto;
+	max-width: 180px;
+}
+
+.go-to-course{
+	margin-top: 20px;
+}
+
+.go-to-course a {
+	text-decoration: none;
 }

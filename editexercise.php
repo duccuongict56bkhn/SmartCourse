@@ -60,20 +60,6 @@ $general->logged_out_protect();
 	</div>
 </div> <!-- end of .container -->
 
-<!-- scripts -->
- <script  src="js/jquery-2.1.0.min.js"></script>
- <script  src="js/bootstrap.js"></script>
- <script  src="js/ajax.js"></script>
- <script  src="js/prettify.js"></script>
- <script  src="css/bootstrap-select/bootstrap-select.js"></script>
- <script type="text/javascript">
-  $(document).ready(function(e) {
-      $('.selectpicker').selectpicker();
-  });
-</script>
- <script  src="js/bootstrap-datepicker.js"></script>
- <script>
- </script>
 <?php } else { 
 	header('Location: courses.php');}
 	?>

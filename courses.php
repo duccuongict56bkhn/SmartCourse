@@ -48,48 +48,58 @@
 		</div>
 		<div class="col-md-9 line-separator">
 		</div>
-		<div class="col-md-12 course-list-detail">
-		<?php if (isset($_POST['keyword']) && !empty($_POST['keyword'])) {
-			$keyword = $_POST['keyword']; 
 
-			$results = $courses->search_courses($keyword);
-			if ($results != false) {
-				foreach ($results as $result) { ?>
-					<div class="course-entry">
-						<img src="<?php echo $result['course_avatar'];?>">
-						<div class="course-meta">
-							<a href="<?php echo 'courses/' . $result['course_alias'] . '/'; ?>"><h3><?php echo $result['course_title'];?></h3></a>
-							<span><?php echo $result['course_code']; ?></span>
-							<span><?php echo $result['course_id']; ?></span>
+		<div class="course-wrapper">
+			<?php $v_courses = $courses->get_all_courses(); 
+			foreach ($v_courses as $v_course) { ?>
+			<div class="row">
+				<div class="col-md-9 entry">
+					<div class="entry-wrap">
+						<div class="entry-thumbnail">
+							<a href="courses/<?php echo $v_course['course_alias'] . '/' ;?>" title="Link to <?php echo $v_course['course_title']; ?>"></a>
+							<img src="<?php echo $v_course['course_avatar'];?>">
+						</div> <!-- end .entry-thumbnail-->
+						<div class="entry-meta">
+							<span class="school-name"><?php echo $v_course['school']; ?></span>
+							<h2 class="course-title">
+								<a href="courses/<?php echo $v_course['course_alias'] . '/' ;?>" title="Link to <?php echo $v_course['course_title']; ?>">
+									<span><?php echo $v_course['course_title']; ?></span>
+								</a>
+							</h2>
+							<div class="course-progress">
+								<?php if ($v_course['course_type'] == 1) { ?>
+									<span class="self-study">Self-study</span><br>
+									<div class="go-to-course">
+										<a href="courses/<?php echo $v_course['course_alias'] . '/' ;?>"><span>Course info</span></a> 
+										<div class="pull-right">
+											<a href="courses/<?php echo $v_course['course_alias'] . '/' ;?>" class="btn btn-success">Go to class</a>
+										</div>										
+									</div>
+								
+								<?php } else { ?>
+									<?php $end_date = $v_course['start_date'] + $v_course['length']; ?>
+									<span><?php echo date('M tS', strtotime($v_course['start_date'])); ?></span>
+									<span class="pull-right"><?php echo date('M tS', strtotime($end_date)); ?></span>
+									<div class="progress" style="height: 8px;">
+									  <div class="progress-bar progress-bar-default" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+									    <span class="sr-only">40% Complete (success)</span>
+									  </div>
+									</div>
+									<a href="courses/<?php echo $v_course['course_alias'] . '/' ;?>"><span>Course info</span></a> 
+									<div class="pull-right">
+										<?php if (($user['role'] == 'Teacher') && ($courses->is_created_by_me($user_id, $v_course['course_id']))): var_dump($courses->is_created_by_me($user_id, $v_course['course_id']));?>
+											<a href="courses/<?php echo $v_course['course_alias'] . '/' ;?>" class="btn btn-warning">Edit</a>	
+										<?php endif ?>
+										<a href="courses/<?php echo $v_course['course_alias'] . '/' ;?>" class="btn btn-success">Go to class</a>
+									</div>
+								<?php } ?>
+							</div>
 						</div>
 					</div>
-			<?php }
-            } else { ?> 
-                <h3>There is nothing like that!</h3>
-            <?php }} else {
-				$results = $courses->get_all_courses();
-
-				foreach ($results as $result) {?>
-					<div class="course-entry">
-						<img src="<?php echo $result['course_avatar'];?>">
-						<div class="course-meta">
-							<a href="<?php echo 'courses/' . $result['course_alias'] . '/'; ?>"><h3><?php echo $result['course_title'];?></h3></a>
-							<span><?php echo $result['course_code']; ?></span>
-						</div>
-						<?php 
-						if ($general->logged_in()) {
-							if (($users->get_role($user_id) == 'Teacher') && ($courses->is_created_by_me($user_id, $result['course_id']) === true)) { 
-								?>
-								<div class="pull-right">
-									<a href="editcourse.php?course_alias=<?php echo $result['course_alias']; ?>">Edit</a>
-								</div>
-							<?php } } ?>
-					</div>
-			<?php	} }?>
+				</div>
+			</div>
+			<?php } ?>
 		</div>
-	<div class="col-md-9" id="bottom-line-separator">
-		<div class="line-separator"></div>
-	</div>
 </div>
 </div>
 <!-- ./Body -->

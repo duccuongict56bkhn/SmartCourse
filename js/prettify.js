@@ -14,6 +14,6 @@ $(document).ready(function() {
 		$('#'+$(this).val()).show();
 	});
     
-    $('.selectpicker').selectpicker();
-    $('#start_date').datepicker();
+   $('.selectpicker').selectpicker();
+   $('#start_date').datepicker();
 });

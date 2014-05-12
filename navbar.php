@@ -22,6 +22,7 @@ $page_title = ucfirst(substr($filename, 0, strpos($filename, '.php')));
 	<script src="js/prettify.js"></script>
 	<script src="css/bootstrap-select/bootstrap-select.js"></script>
 	<script src="js/bootstrap-datepicker.js"></script>
+	<script src="js/magic.js"></script>
 </head>
 <body>
 
