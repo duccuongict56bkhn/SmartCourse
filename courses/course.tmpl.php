@@ -18,6 +18,7 @@ if ($general->logged_in()) {
 	<!-- Global CSS-->
 	<link rel="stylesheet" href="../../css/bootstrap.css">
 	<link rel="stylesheet" href="../../css/prettify.css">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800&subset=latin,vietnamese' rel='stylesheet' type='text/css'>
 	<!-- CSS for course page-->
 	<link rel="stylesheet" href="../course.css">
 	<link rel="stylesheet" href="../../css/dashboard.css">
@@ -28,6 +29,7 @@ if ($general->logged_in()) {
 	<script src="../../js/prettify.js"></script>
 	<script src="../../js/bootstrap-datepicker.js"></script>
 	<script src="../../js/bootstrap-select.js"></script>
+
 </head>
 <body>
 <!-- Navbar-->

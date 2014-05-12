@@ -129,7 +129,9 @@ body {
   font-family: 'Open Sans' sans-serif;
 }
 
-
+.announcement .page-header {
+    font-family: 'Open Sans' sans-serif;
+}
 /*
  * Placeholder dashboard ideas
  */
