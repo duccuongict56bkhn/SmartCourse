@@ -1,0 +1,1 @@
+<?php $alias = 'crypto'; require '../index.php';?>

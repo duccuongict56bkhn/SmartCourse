@@ -20,4 +20,5 @@ if ($general->logged_in() === true)  { // check if the user is logged in
 }
 
 $errors			= array();
+#date_default_timezone_set('Asia/Jakarta');
  ?>

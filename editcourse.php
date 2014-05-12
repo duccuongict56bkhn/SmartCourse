@@ -71,7 +71,7 @@ $general->logged_out_protect();
 				<li><a href="#"><span class="glyphicon glyphicon-eye-open"></span>Syllabus</a></li>
 				<li><a href="#"><span class="glyphicon glyphicon-calendar"></span>Calendar</a></li>
 				<li><a href="#"><span class="glyphicon glyphicon-book"></span>Lectures</a></li>
-				<li><a href="editexercise.php?course_alias=<?php echo $course_data['course_alias']; ?>"><span class="glyphicon glyphicon-tasks"></span>Exercises</a></li>
+				<li><a href="editexercise.php?course_alias=<?php echo $alias; ?>"><span class="glyphicon glyphicon-tasks"></span>Exercises</a></li>
 				<li><a href="#"><span class="glyphicon glyphicon-print"></span>Course materials</a></li>
 				<li><a href="#"><span class="glyphicon glyphicon-bookmark"></span>Discussions</a></li>
 			</ul>

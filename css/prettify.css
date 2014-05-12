@@ -424,8 +424,8 @@ div {
 	margin-bottom: 10px;
 	color: #212A34;
 	opacity: 0.8;
-	font-family: 'Segoe UI Light';
-	font-size: 16px;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 14px;
 }
 
 .course-title {
@@ -437,7 +437,7 @@ div {
 	opacity: 0.8;
 	text-decoration: none;
 	font-size: 24px;
-	font-family: 'Segoe UI Light';
+	font-family: 'Open Sans', sans-serif;
 }
 
 .entry-thumbnail {

@@ -226,7 +226,7 @@ class Courses {
 			throw new InvalidArgumentException;
 		} else {
 
-			$query = $this->db->prepare("SELECT $what FROM `sm_courses` WHERE $field = '?'");
+			$query = $this->db->prepare("SELECT $what FROM `sm_courses` WHERE $field = ?");
 			$query->bindValue(1, $value);
 
 			try {

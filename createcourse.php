@@ -39,7 +39,7 @@ if (isset($_POST['submit'])) {
 		$course_alias = htmlentities($_POST['course_alias']);
 		$cat_id		  = htmlentities(substr($_POST['course_cat'], 0, strpos($_POST['course_cat'], ' -'))); #, 
 		$course_type  = ($_POST['course_type'] == 'sefls') ? 1 : 2;
-		$start_date	  = ($_POST['start_date']);
+		$start_date	  = date('Y-m-d',strtotime($_POST['start_date']));
 		$length		  = htmlentities($_POST['length']);
 
 		$courses->create_course($course_title, $course_code, $course_alias, $cat_id, $course_type, $start_date, $length, $user_id);
@@ -148,6 +148,9 @@ if (isset($_POST['submit'])) {
 		</div>	
 	</div>
 </div> <!-- end of .container-->
+<script>
+$('')
+</script>
 <?php 
 require 'footer.php';
  ?>

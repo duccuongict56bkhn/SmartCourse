@@ -87,8 +87,8 @@
 									</div>
 									<a href="courses/<?php echo $v_course['course_alias'] . '/' ;?>"><span>Course info</span></a> 
 									<div class="pull-right">
-										<?php if (($user['role'] == 'Teacher') && ($courses->is_created_by_me($user_id, $v_course['course_id']))): var_dump($courses->is_created_by_me($user_id, $v_course['course_id']));?>
-											<a href="courses/<?php echo $v_course['course_alias'] . '/' ;?>" class="btn btn-warning">Edit</a>	
+										<?php if ($courses->is_created_by_me($user['user_id'], $v_course['course_id'])):?>
+								<a href="editcourse.php?course_alias=<?php echo $v_course['course_alias'] ;?>" class="btn btn-warning">Edit</a>	
 										<?php endif ?>
 										<a href="courses/<?php echo $v_course['course_alias'] . '/' ;?>" class="btn btn-success">Go to class</a>
 									</div>
