@@ -10,3 +10,7 @@ School of Information and Communication Technology
 Hanoi University of Science and Technology
 
 This is not the final version, so changes may come unnoticed
+
+-----------
+
+[May 12th, 2014] Top priority: Edit course content page

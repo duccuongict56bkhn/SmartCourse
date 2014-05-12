@@ -1,11 +1,20 @@
--- Author: duccuongict
+-- phpMyAdmin SQL Dump
+-- version 4.0.4
+-- http://www.phpmyadmin.net
+--
 -- Host: localhost
--- Generation Time: May 06, 2014 at 05:01 AM
-
+-- Generation Time: May 12, 2014 at 06:35 AM
+-- Server version: 5.6.12-log
+-- PHP Version: 5.4.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `studyhub`
@@ -27,20 +36,23 @@ CREATE TABLE IF NOT EXISTS `sm_courses` (
   `course_alias` varchar(100) CHARACTER SET utf32 NOT NULL COMMENT 'Alias to create a folder for course in PHP',
   `course_type` varchar(10) NOT NULL COMMENT '1 - Self-study; 2 - Period course',
   `course_desc` text COMMENT 'For storing a large number of texts, should use this TEXT',
-  `start_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `start_date` datetime DEFAULT NULL,
   `length` int(5) DEFAULT NULL COMMENT 'The length of the course in weeks',
   `course_avatar` varchar(500) DEFAULT 'images/courses/css-thumbnail.png',
   `course_cover` varchar(1000) NOT NULL,
+  `school` varchar(255) NOT NULL,
   PRIMARY KEY (`course_id`),
   KEY `cat_id` (`cat_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Courses that are currently available in the system' AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Courses that are currently available in the system' AUTO_INCREMENT=31 ;
 
 --
 -- Dumping data for table `sm_courses`
 --
 
-INSERT INTO `sm_courses` (`cat_id`, `course_id`, `course_code`, `course_title`, `course_alias`, `course_type`, `course_desc`, `start_date`, `length`, `course_avatar`, `course_cover`) VALUES
-(1, 19, 'CS2250', 'Introduction to Databases', 'dbstanford', '1', '"Introduction to Databases" had a very successful public offering in fall 2011, as one of Stanford''s inaugural three massive open online courses. Since then, the course materials have been improved and expanded, and we''re excited to be launching a second public offering of the course in winter 2013. The course includes video lectures and demos with in-video quizzes to check understanding, in-depth standalone quizzes, a wide variety of automatically-checked interactive programming exercises, midterm and final exams, a discussion forum, optional additional exercises with solutions, and pointers to readings and resources. Taught by Professor Jennifer Widom, the curriculum draws from Stanford''s popular Introduction to Databases course. ', '2014-05-01 05:30:00', 0, 'images/courses/database-thumbnail.png', '');
+INSERT INTO `sm_courses` (`cat_id`, `course_id`, `course_code`, `course_title`, `course_alias`, `course_type`, `course_desc`, `start_date`, `length`, `course_avatar`, `course_cover`, `school`) VALUES
+(1, 19, 'CS2250', 'Introduction to Databases', 'dbstanford', '2', '"Introduction to Databases" had a very successful public offering in fall 2011, as one of Stanford''s inaugural three massive open online courses. Since then, the course materials have been improved and expanded, and we''re excited to be launching a second public offering of the course in winter 2013. The course includes video lectures and demos with in-video quizzes to check understanding, in-depth standalone quizzes, a wide variety of automatically-checked interactive programming exercises, midterm and final exams, a discussion forum, optional additional exercises with solutions, and pointers to readings and resources. Taught by Professor Jennifer Widom, the curriculum draws from Stanford''s popular Introduction to Databases course. ', '2014-02-01 12:30:00', 20, 'images/courses/database-thumbnail.png', '', 'Stanford University'),
+(1, 29, 'IT3258E', 'Fundamentals of Cryptography', 'crypto-010', '2', NULL, '2014-03-12 00:00:00', 14, 'images/courses/css-thumbnail.png', '', 'UC Berkeley'),
+(9, 30, '6.041x', 'Introduction to Probability', 'introprob', '2', NULL, '2014-04-01 00:00:00', 12, 'images/courses/css-thumbnail.png', '', 'MIT');
 
 -- --------------------------------------------------------
 
@@ -116,7 +128,9 @@ CREATE TABLE IF NOT EXISTS `sm_create_course` (
 --
 
 INSERT INTO `sm_create_course` (`user_id`, `course_id`, `create_date`) VALUES
-(20, 19, 1399113079);
+(20, 19, 1399113079),
+(20, 29, 1399868787),
+(20, 30, 1399875099);
 
 -- --------------------------------------------------------
 
@@ -366,3 +380,7 @@ ALTER TABLE `sm_rate_course`
 --
 ALTER TABLE `sm_units`
   ADD CONSTRAINT `sm_units_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `sm_courses` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
