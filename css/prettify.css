@@ -235,7 +235,7 @@ em::selection, i::selection, abbr::selection {
 
 .course-title {
 	height: 42px;
-	margin: 0px;
+    margin: 0px;
 	font: bold 18px/1.2em "adelle-sans", "Helvetica Neue", Arial, sans-serif;
 }
 

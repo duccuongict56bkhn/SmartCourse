@@ -81,9 +81,12 @@
 									<?php $end_date = date('M jS',strtotime($v_course['start_date'] . ' + ' . $v_course['length']*7 . ' days'));?>
 									<span><?php echo date('M jS', strtotime($v_course['start_date'])); ?></span>
 									<span class="pull-right"><?php echo $end_date; ?></span>
+                                    <?php $tmp = (time() - strtotime($v_course['start_date'])); 
+                                          $week = $tmp / 604800 % 52; 
+                                          $prog = $week / $v_course['length'] * 100;?>
 									<div class="progress" style="height: 8px;">
-									  <div class="progress-bar progress-bar-default" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-									    <span class="sr-only">40% Complete (success)</span>
+									  <div class="progress-bar progress-bar-default" role="progressbar" aria-valuenow="<?php echo $prog?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $prog . '%';?>">
+									    <span class="sr-only"><?php echo $prog; ?>% Complete (success)</span>
 									  </div>
 									</div>
 									<a href="courses/<?php echo $v_course['course_alias'] . '/' ;?>" style="text-decoration: none;"><span>Course info</span></a> 
