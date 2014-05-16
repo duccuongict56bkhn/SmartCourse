@@ -316,6 +316,12 @@ if ($general->logged_in()) {
 					<?php endif ?>
 				</div>
 <!-- Announcement holder-->
+				<div class="panel-group" id="accordion" name="exercise-list">
+					
+					<div class="panel-default">
+						
+					</div>
+				</div>
 				<div class="col-lg-12 col-md-12" >
 					<?php $exs = $courses->get_all_exercises($id); ?>
 					<?php foreach ($exs as $ex): ?>
