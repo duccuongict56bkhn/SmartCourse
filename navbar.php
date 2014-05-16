@@ -13,17 +13,23 @@ $page_title = ucfirst(substr($filename, 0, strpos($filename, '.php')));
 	<link rel="stylesheet" type="text/css" href="css/dashboard.css">
 	<link rel="stylesheet" type="text/css" href="css/datepicker.css">
 	<link rel="stylesheet" type="text/css" href="css/bootstrap-select/bootstrap-select.css">
+	<link rel="stylesheet" type="text/css" href="bseditable/css/bootstrap-editable.css">
 	<link rel="shortcut icon" href="images/icon.ico">
-    <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900' rel='stylesheet' type='text/css'>
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800&subset=latin,vietnamese' rel='stylesheet' type='text/css'>
-	<script type="text/javascript" src="magic.js"></script>
+   <!-- <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800&subset=latin,vietnamese' rel='stylesheet' type='text/css'> -->
 	<script src="js/jquery-2.1.0.min.js"></script>
 	<script src="js/bootstrap.js"></script>
 	<script src="js/ajax.js"></script>
 	<script src="js/prettify.js"></script>
 	<script src="css/bootstrap-select/bootstrap-select.js"></script>
 	<script src="js/bootstrap-datepicker.js"></script>
-	<script src="js/magic.js"></script>
+	<script type="text/javascript" src="magic.js"></script>
+	<script src="bseditable/js/bootstrap-editable.js"></script>
+	<?php if ($page_title == 'Editannouncement'): ?>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap-notify/css/bootstrap-notify.css">
+		<link rel="stylesheet" type="text/css" href="css/bootstrap-notify/css/styles/alert-blackgloss.css">
+		<script type="text/javascript" src="css/bootstrap-notify/js/bootstrap-notify.js"></script>
+	<?php endif ?>
 </head>
 <body>
 

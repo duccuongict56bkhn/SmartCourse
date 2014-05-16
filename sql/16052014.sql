@@ -1,5 +1,20 @@
+-- phpMyAdmin SQL Dump
+-- version 4.0.4
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: May 16, 2014 at 01:48 AM
+-- Server version: 5.6.12-log
+-- PHP Version: 5.4.12
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `studyhub`
@@ -35,9 +50,9 @@ CREATE TABLE IF NOT EXISTS `sm_courses` (
 --
 
 INSERT INTO `sm_courses` (`cat_id`, `course_id`, `course_code`, `course_title`, `course_alias`, `course_type`, `course_desc`, `start_date`, `length`, `course_avatar`, `course_cover`, `school`) VALUES
-(1, 19, 'CS2250', 'Introduction to Databases', 'dbstanford', '2', '"Introduction to Databases" had a very successful public offering in fall 2011, as one of Stanford''s inaugural three massive open online courses. Since then, the course materials have been improved and expanded, and we''re excited to be launching a second public offering of the course in winter 2013. The course includes video lectures and demos with in-video quizzes to check understanding, in-depth standalone quizzes, a wide variety of automatically-checked interactive programming exercises, midterm and final exams, a discussion forum, optional additional exercises with solutions, and pointers to readings and resources. Taught by Professor Jennifer Widom, the curriculum draws from Stanford''s popular Introduction to Databases course. ', '2014-02-01 12:30:00', 20, 'images/courses/database-thumbnail.png', '', 'Stanford University'),
-(1, 29, 'IT3258E', 'Fundamentals of Cryptography', 'crypto-010', '2', NULL, '2014-03-12 00:00:00', 14, 'images/courses/css-thumbnail.png', '', 'UC Berkeley'),
-(9, 30, '6.041x', 'Introduction to Probability', 'introprob', '2', NULL, '2014-04-01 00:00:00', 12, 'images/courses/css-thumbnail.png', '', 'MIT');
+(1, 19, 'CS2250', 'Fundamentals to Databases', 'dbstanford', '2', '"Introduction to Databases" had a very successful public offering in fall 2011, as one of Stanford''s inaugural three massive open online courses. Since then, the course materials have been improved and expanded, and we''re excited to be launching a second public offering of the course in winter 2013. The course includes video lectures and demos with in-video quizzes to check understanding, in-depth standalone quizzes, a wide variety of automatically-checked interactive programming exercises, midterm and final exams, a discussion forum, optional additional exercises with solutions, and pointers to readings and resources. Taught by Professor Jennifer Widom, the curriculum draws from Stanford''s popular Introduction to Databases course', '2014-02-01 12:30:00', 20, 'images/courses/database-thumbnail.png', '', 'Stanford University'),
+(1, 29, 'IT3258E', 'Fundamentals of Cryptography', 'crypto-010', '2', 'Some description for Fundamentals of Cryptography', '2014-03-12 00:00:00', 14, 'images/courses/css-thumbnail.png', '', 'UC Berkeley'),
+(9, 30, '6.041x', 'Introduction to Probability', 'introprob', '2', 'Some description for Introduction to Probability', '2014-04-01 00:00:00', 12, 'images/courses/css-thumbnail.png', '', 'HUST');
 
 -- --------------------------------------------------------
 
@@ -64,8 +79,10 @@ CREATE TABLE IF NOT EXISTS `sm_course_announcements` (
 --
 
 INSERT INTO `sm_course_announcements` (`user_id`, `course_id`, `anno_id`, `anno_title`, `anno_content`, `create_date`, `valid_from`, `valid_to`, `anno_type`) VALUES
-(20, 19, 1, 'Test announcement', 'This is the first announcement for Database course. It is to test the course announcement functionalities.', 1398897788, '2014-05-01', '2014-05-30', 1),
-(20, 19, 865, 'Lorem Announcement', 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.', 1398902853, '2014-05-14', '2014-05-28', 2);
+(20, 19, 2, 'Tested 3', 'Bootstrap Image Gallery is a complete gallery solution for bootstrap. After you include the needed files in your page, you get a grid of images which open in modal windows. The gallery can also optionally go into fullscreen mode. Note that there is now an improved version of this plugin which drops the Bootstrap requirement, so you can use it in any project.', 1298902753, '2014-05-13', '2014-05-11', 1),
+(20, 19, 3, 'Lorem Announcement', 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.', 1398902853, '2014-05-14', '2014-05-28', 2),
+(20, 19, 5, 'Create announcement from form', 'This announcement is created through form', 1400180212, '2014-05-13', '2014-05-19', 2),
+(20, 19, 7, 'Create announcement from form', 'This announcement is created through form', 1400180297, '2014-05-13', '2014-05-19', 2);
 
 -- --------------------------------------------------------
 
@@ -366,3 +383,6 @@ ALTER TABLE `sm_rate_course`
 ALTER TABLE `sm_units`
   ADD CONSTRAINT `sm_units_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `sm_courses` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

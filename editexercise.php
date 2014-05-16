@@ -23,7 +23,7 @@ $general->logged_out_protect();
 		<div class="col-sm-3 col-md-2 sidebar">
 			<ul class="nav nav-sidebar">
 				<li><a href="editcourse.php?course_alias=<?php echo $course_data['course_alias']; ?>" ><span class="glyphicon glyphicon-home"></span>Dashboard</a></li>
-				<li><a href="#announcement"><span class="glyphicon glyphicon-bullhorn"></span>Announcements</a></li>
+				<li><a href="editannouncement.php?course_alias=<?php echo $course_data['course_alias']; ?>"><span class="glyphicon glyphicon-bullhorn"></span>Announcements</a></li>
 				<li><a href=""><span class="glyphicon glyphicon-picture"></span>Photos</a></li>
 				<li><a href="#"><span class="glyphicon glyphicon-eye-open"></span>Syllabus</a></li>
 				<li><a href="#"><span class="glyphicon glyphicon-calendar"></span>Calendar</a></li>

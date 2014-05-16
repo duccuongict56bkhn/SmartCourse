@@ -6,7 +6,7 @@
 	<div class="panel panel-default">
 		<div class="panel-body">
 			<h4><strong>Search for courses</strong></h4>
-			<form method="post" action="" role="form" id="course-search-form">
+			<form method="post" action="courses.php" role="form" id="course-search-form">
 				<div class="input-group">
 			      <input type="text" class="form-control" name="keyword" placeholder="Enter a keyword here">
 			      <span class="input-group-btn">
@@ -33,7 +33,6 @@
 	<div class="col-md-8 course-list">
 		<div class="col-md-9 course-list-header">
 			<div class="list-header">
-				<!-- <p style="display: block; font-size: 12px;">Browsing</p> -->
 				<?php 
 				if (isset($_POST['keyword']) && !empty($_POST['keyword'])) {
 					$keyword = $_POST['keyword'];
@@ -41,7 +40,10 @@
 						<h2>Search results for &ldquo;<?php echo substr($keyword, 0, 15) . '...'; ?>&rdquo;</h2>
 					<?php } else {?>
 					<h2>Search results for &ldquo;<?php echo $keyword; ?>&rdquo;</h2>
-				<?php } } else { ?>
+				<?php } 
+                
+                
+                } else { ?>
 					<h2>All topics</h2>
 				<?php } ?>
 			</div>
@@ -91,9 +93,11 @@
 									</div>
 									<a href="courses/<?php echo $v_course['course_alias'] . '/' ;?>" style="text-decoration: none;"><span>Course info</span></a> 
 									<div class="pull-right">
-										<?php if ($courses->is_created_by_me($user['user_id'], $v_course['course_id'])):?>
-								<a href="editcourse.php?course_alias=<?php echo $v_course['course_alias'] ;?>" class="btn btn-warning">Edit</a>	
-										<?php endif ?>
+										<?php 
+										if ($general->logged_in()) {
+											if ($courses->is_created_by_me($user['user_id'], $v_course['course_id'])){?>
+											<a href="editcourse.php?course_alias=<?php echo $v_course['course_alias'] ;?>" class="btn btn-warning">Edit</a>	
+										<?php }} ?>
 										<a href="courses/<?php echo $v_course['course_alias'] . '/' ;?>" class="btn btn-success">Go to class</a>
 									</div>
 								<?php } ?>

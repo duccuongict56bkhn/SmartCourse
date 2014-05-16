@@ -14,7 +14,7 @@ $general->logged_out_protect();
 		die();
 	} else {
 		$course_data = array();
-		$id 		    = $courses->get_info('course_id', 'course_alias', $alias);
+		$id 		    = $courses->get_ifa($alias);
 		$course_data = $courses->coursedata($id);
 		$annos = $courses->get_announcement($course_data['course_id']);
 	}
@@ -66,8 +66,8 @@ $general->logged_out_protect();
 		<div class="col-sm-3 col-md-2 sidebar">
 			<ul class="nav nav-sidebar">
 				<li><a href="editcourse.php?course_alias=<?php echo $course_data['course_alias']; ?>" class="active"><span class="glyphicon glyphicon-home"></span>Dashboard</a></li>
-				<li><a href="#announcement"><span class="glyphicon glyphicon-bullhorn"></span>Announcements</a></li>
-				<li><a href=""><span class="glyphicon glyphicon-picture"></span>Photos</a></li>
+				<li><a href="editannouncement.php?course_alias=<?php echo $course_data['course_alias'];?>"><span class="glyphicon glyphicon-bullhorn"></span>Announcements</a></li>
+				<li><a href="editphoto.php?course_alias=<?php echo $course_data['course_alias'];?>"><span class="glyphicon glyphicon-picture"></span>Photos</a></li>
 				<li><a href="#"><span class="glyphicon glyphicon-eye-open"></span>Syllabus</a></li>
 				<li><a href="#"><span class="glyphicon glyphicon-calendar"></span>Calendar</a></li>
 				<li><a href="#"><span class="glyphicon glyphicon-book"></span>Lectures</a></li>
@@ -87,6 +87,51 @@ $general->logged_out_protect();
 						<p>Welcome to <strong>Setting Panel</strong> for <?php echo $course_data['course_title']; ?>. Here you can view all contents, settings for your course. 
 						Navigate to the left sidebar, you can customize, edit those settings and contents.</p>
 					</div>
+                    <div class="row">
+                        <div class="panel-group" id="accordion">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Basic information</a>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse collapse in">
+                                  <div class="panel-body">
+                                      <div class="row info">
+                                          <div class="col-md-4">
+                                            <span>Title: 
+                                            		<a href="#" class="editable-field" id="course_title" data-pk="<?php echo $id ?>" data-type="text" data-title="Enter course title">
+	                                            		<strong><?php echo $course_data['course_title'];?></strong>
+                                            		</a>
+                                            </span><br>
+                                            <span>Code: <strong><?php echo $course_data['course_code'];?></strong></span><br>
+                                            <span>Alias: <strong id="course_alias"><?php echo $course_data['course_alias'];?></strong></span><br>
+                                          </div>
+                                          <div class="col-md-4">
+                                            <span>Type: <strong><?php echo ($course_data['course_type'] == 1) ? 'Self-study' : 'Period';?></strong></span><br>
+                                            <span>Start date: <strong><?php echo $course_data['start_date'];?></strong></span><br>  
+                                            <span>Length: <a id="length" class="editable-field" data-pk="<?php echo $id;?>" data-type="text" data-title="Enter length of course"><strong><?php echo $course_data['length'];?></strong></a><strong> weeks</strong></span><br>
+                                          </div>
+                                           <div class="col-md-4">
+                                            <?php $teacher = $courses->get_teacher($course_data['course_id']);?>
+                                            <span>Teacher: <strong><?php echo $teacher['display_name'];?></strong></span><br>  
+                                            <span>School: 
+	                                            <a href="#" class="editable-field" id="school" data-pk="<?php echo $id ?>" data-type="text" data-title="School name">
+	                                            	<strong><?php echo $course_data['school'];?></strong>
+	                                            </a>
+                                            </span>                                            
+                                          </div>
+                                      </div>
+                                      <div class="row info">
+                                        <span>Description:</span><br>
+                                        <span href="#" class="editable-field" id="course_desc" data-pk="<?php echo $id ?>" data-type="textarea" data-title="Course description"><?php echo $course_data['course_desc'];?></span>
+                                      
+                                      </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 					<div class="row" id="statistic">
 						<div class="col-lg-3">
 							<div class="panel panel-default panel-success">
@@ -235,5 +280,24 @@ $general->logged_out_protect();
 	</div>
 </div> <!-- end of .container -->
 
+<script type="text/javascript">
+	$(document).ready(function() {
+		$.fn.editable.defaults.mode = 'inline';
+		var urlstr = 'processor/editprocess.php';
+		// alert(urlstr);
+		$('.editable-field').editable({
+			url	 : urlstr,
+			fail : function(data) {
+				console.log(data);
+			}	
+		});
+		// $("#accordion").click(function() {
+		// 	alert(course_alias);
+		// });
+	});
+</script>
 <?php } else { 
 	header('Location: courses.php');}?>
+<?php 
+
+ ?>

@@ -128,7 +128,7 @@ if (isset($_POST['submit'])) {
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Course start date</label>
-								<input type="text" class="form-control" name="start_date" id = "start_date" placeholder="Course start date"/>
+								<input type="text" class="form-control" name="start_date" id="start_date" placeholder="Course start date"/>
 							</div>
 						</div>
 						<div class="col-md-6">

@@ -154,6 +154,27 @@ class Courses {
 		}
 	}
 
+	public function update($course_id, $field, $value)
+	{
+		$allowed = array('course_title', 'course_desc', 'course_type', 'start_date', 
+							  'length', 'course_avatar', 'course_cover', 'school');
+		if(!in_array($field, $allowed)) {
+			throw new InvalidArgumentException;
+		} else {
+			$query = $this->db->prepare("UPDATE `sm_courses` SET $field = ? WHERE `course_id` = $course_id");
+			// $query->bindParam(':field', $field, PDO::PARAM_STR);
+			$query->bindValue(1, $value);
+			// $query->bindParam(':course_id', $course_id, PDO::PARAM_INT);
+
+			try {
+				$query->execute();
+				return true;
+			} catch (PDOException $e) {
+				die($e->getMessage());
+			}
+		}
+	}
+
 	public function get_all_course_by_cat()
 	{
 		$results = array();
@@ -217,7 +238,18 @@ class Courses {
 		} 
 		return false;
 	}
-
+    
+    public function get_teacher($course_id) {
+        $query = $this->db->prepare("SELECT * FROM `sm_users` AS smu, `sm_create_course` AS scc WHERE scc.`course_id` = ? AND scc.`user_id` = smu.`user_id`");
+        $query->bindValue(1, $course_id);
+        
+        try {
+            $query->execute();
+            return $query->fetch();
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
 	public function get_info($what, $field, $value) 	
 	{
 		$allowed = array('cat_id', 'course_id', 'course_title', 'course_code', 'course_alias', 'course_desc', 'course_type',
@@ -351,8 +383,7 @@ class Courses {
 		$query = $this->db->prepare("SELECT *
 											  FROM `sm_course_announcements`
 											  WHERE `course_id` = ?
-											  ORDER BY `create_date` DESC
-											  LIMIT 10");
+											  ORDER BY `create_date` DESC");
 		$query->bindValue(1, $course_id);
 
 		try {
@@ -363,6 +394,21 @@ class Courses {
 		}
 	}
 
+	public function delete_announcement($course_alias, $anno_id)
+	{
+		$course_id = $this->get_ifa($course_alias);
+
+		$query = $this->db->prepare("DELETE FROM `sm_course_announcements` WHERE `course_id` = ? AND `anno_id` = ?");
+		$query->bindValue(1, $course_id);
+		$query->bindValue(2, $anno_id);
+
+		try {
+			$query->execute();
+			return true;
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+	}
 	public function create_announcement($user_id, $course_id, $anno_id, $anno_title,
 	                                    $anno_content, $create_date, $anno_type, $valid_from, $valid_to)
 	{
@@ -376,16 +422,15 @@ class Courses {
 		$query->bindValue(5, $anno_content);
 		$query->bindValue(6, $create_date);
 		$query->bindValue(7, $anno_type);
-		$query->bindValue(8, $valid_from->format('Y-m-d H:i:s'));		# Convert DateTime back to string before insert to Database
-		$query->bindValue(9, $valid_to->format('Y-m-d H:i:s'));		   # Convert DateTime back to string before insert to Database
+		$query->bindValue(8, $valid_from);		# Convert DateTime back to string before insert to Database
+		$query->bindValue(9, $valid_to);		   # Convert DateTime back to string before insert to Database
 
 		try {
 			$query->execute();
+			return true;
 		} catch (PDOException $e) {
 			die($e->getMessage());
 		}
-
-		return $query === false;
 	}
 
 	public function create_exercise($unit_id, $course_id, $exercise_id,$exercise_title, 
@@ -503,6 +548,21 @@ class Courses {
 		}
 		return false;
 	}
+
+	public function get_max_announcement_id($course_id)
+	{
+		$query = $this->db->prepare("SELECT IFNULL(MAX(`anno_id`), 0) FROM `sm_course_announcements` WHERE `course_id` = ?");
+		$query->bindValue(1, $course_id);
+
+		try {
+			$query->execute();
+			return $query->fetchColumn();
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+		return false;
+	}
+
 
 	# Developing-time functions
 	public function get_all_exercises($course_id) 

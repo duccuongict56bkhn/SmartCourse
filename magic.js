@@ -6,14 +6,14 @@
  * by DuccuongICT
  * last update: 06-May-2014
  */
-
 $(document).ready(function () {
+	
 	// process the form
 	$('#ex-form').submit(function (event) {
 		// get the form data
 		var formData = {
 			'course'         : $('#alias').text(),	
-			'exercise_title' : $('#exercise_title').val(),
+            'exercise_title' : $('#exercise_title').val(),
 			'unit_id'		 : $('#ex_unit').val(),
 			'question_type'  : $('#question_type').val(),
 			'score'          : $('#score').val(),
@@ -111,4 +111,6 @@ $(document).ready(function () {
 		}
 
 	});
+    
+   // Enable double-click to edit for course basic information text
 });

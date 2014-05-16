@@ -212,7 +212,25 @@ table > tbody > tr > th{
 .announcement-danger {background-color: #FDF7F7; color: #A94442; border-left: 3px solid #D9534F;}
 .announcement-warning {background-color: #FCF8F2; color: #A66D3B; border-left: 3px solid #F0AD4E;}
 
+.announcement-list {
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+#panel-create-anno {
+  padding-bottom: 0px;
+  border-bottom: none;
+}
+
 .spacer {
   content: none;
   height: 20px;
+}
+
+#accordion {
+    padding-left: 15px;
+    padding-right: 15px;
 }

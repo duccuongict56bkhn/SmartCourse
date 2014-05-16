@@ -464,3 +464,10 @@ div {
 .go-to-course a {
 	text-decoration: none;
 }
+
+.info {
+    padding-top: 0px !important;
+    margin-left: 0;
+    margin-right: 0;
+}
+
