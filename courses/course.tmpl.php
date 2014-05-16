@@ -306,16 +306,16 @@ if ($general->logged_in()) {
 						<option>All</option>
 						<?php $v_units = $courses->get_distinct_unit($id); ?>
 						<?php foreach ($v_units as $v_unit): ?>
-							<option> <?php $v_unit['unit_name'];?></option>
+							<option> <?php echo $v_unit['unit_name'];?></option>
 						<?php endforeach ?>
 					</select>
 					<?php if ($is_owner): ?>
-					<!-- <div class="pull-right">
+					<div class="pull-right">
 						<a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-flash"></span>Create new</a>
-					</div> -->
+					</div>
 					<?php endif ?>
 				</div>
-							<!-- Announcement holder-->
+<!-- Announcement holder-->
 				<div class="col-lg-12 col-md-12" >
 					<?php $exs = $courses->get_all_exercises($id); ?>
 					<?php foreach ($exs as $ex): ?>
