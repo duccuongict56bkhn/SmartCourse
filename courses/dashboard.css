@@ -15,7 +15,7 @@ li::selection, ul::selection, button::selection,
 input::selection, footer::selection, nav::selection,
 header::selection, article::selection, img::selection, 
 b::selection, select::selection, strong::selection,
-em::selection, i::selection,  abbr::selection  {
+em::selection, i::selection,  abbr::selection, label::selection  {
   background-color: #abdffa;
 }
 

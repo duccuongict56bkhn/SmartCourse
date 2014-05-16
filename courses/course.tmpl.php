@@ -296,80 +296,32 @@ if ($general->logged_in()) {
 		<?php endif ?>		
 		<!-- End lecture.php-->
 
-		<!-- Exercise.php-->
+		<!-- For exercise.php -->
 		<?php if ($filename == 'exercise.php'): ?>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main-content">
-			<div class="row announcement">
-				<div class="col-lg-12 col-md-12" style="padding-left: 0; padding-right: 0;">
-					<h2 class="page-header">Course Exercises</h2>
-					<select class="selectpicker" name="ex_filter" id="ex_filter">
-						<option>All</option>
+				<div class="row announcement">
+					<div class="col-lg-12 col-md-12" style="padding-left: 0; padding-right: 0;">
+						<h2 class="page-header">Exercises</h2>
+						<?php if ($is_owner): ?>
+							<!-- <div class="pull-right">
+								<a href="../../newexercise.php?course=<?php echo $alias;?>" target="_blank" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-flash"></span>Creat new</a>
+							</div> -->
+						<?php endif ?>
+					</div>
+
+					<div class="col-lg-12 col-md-12" style="padding-left: 0px;">
 						<?php $v_units = $courses->get_distinct_unit($id); ?>
-						<?php foreach ($v_units as $v_unit): ?>
-							<option> <?php echo $v_unit['unit_name'];?></option>
-						<?php endforeach ?>
-					</select>
-					<?php if ($is_owner): ?>
-					<div class="pull-right">
-						<a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-flash"></span>Create new</a>
+						<label style="margin-right: 15px;">Lecture </label>
+						<select class="selectpicker" data-width="420px" id="unit-select">
+							<?php foreach ($v_units as $v_unit): ?>
+								<option unit-id="<?php echo $v_unit['unit_id']; ?>" value="<?php echo $v_unit['unit_id']; ?>">L<?php echo $v_unit['unit_id'] . ' - ' . $v_unit['unit_name']; ?></option>
+							<?php endforeach ?>
+						</select>
 					</div>
-					<?php endif ?>
 				</div>
-<!-- Announcement holder-->
-				<div class="panel-group" id="accordion" name="exercise-list">
-					<?php $v_units = $courses->get_distinct_unit($id);
-					foreach ($v_units as $v_unit) { ?>
-					<div class="panel-default">
-						<div class="panel-heading">
-							<h4 class="panel-title">
-								<a data-toggle="collapse" href="#collpase<?php echo $v_unit['unit_id'];?>"><?php echo $v_unit['unit_name']; ?></a>
-							</h4>
-						</div>
-						<div class="panel-body">
-							<div id="collpase<?php echo $v_unit['unit_id'];?>" class="panel-collapse collapse in">
-								<div class="panel-body">
-									 <?php $v_exs = $courses->get_exercise_by_unit($id, $v_unit['unit_id']);?>
-									 <?php foreach ($v_exs as $v_ex): ?>
-									 	<div><?php echo $v_ex['exercise_title']; ?></div>
-									 <?php endforeach ?>
-								</div> <!-- End of .panel-body -->
-							</div>
-						</div>
-					</div>
-					<?php }?>
-					
-				</div>
-				<!-- <div class="col-lg-12 col-md-12" >
-					<?php $exs = $courses->get_all_exercises($id); ?>
-					<?php foreach ($exs as $ex): ?>
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h4 class="panel-title"><?php echo $ex['exercise_title']; ?></h4>
-							</div>
-							<div class="panel-body">
-								<?php echo $ex['question']; ?>
-							</div>
-							<div class="panel-footer">
-								<li>
-									<?php echo $ex['multi_one']; ?>
-								</li>
-								<li>
-									<?php echo $ex['multi_two']; ?>
-								</li>
-								<li>
-									<?php echo $ex['multi_three']; ?>
-								</li>
-								<li>
-									<?php echo $ex['multi_four']; ?>
-								</li>
-							</div>
-						</div>
-					<?php endforeach ?>
-				</div> -->
-			</div>
-		</div>
+			</div>  <!-- End of .main-content -->
 		<?php endif ?>
-		<!-- End of exercise.php-->
+		<!-- End exercise.php -->
 	</div>
 </div>
 <!-- End .main content -->
