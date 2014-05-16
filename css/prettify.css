@@ -19,6 +19,13 @@ em::selection, i::selection, abbr::selection {
 	background-color: #abdffa;
 }
 
+/**
+ * Remove 3D effect border of default iframe
+ **/
+iframe {
+	border: 1px solid #ffffff;
+}
+
 .navbar-fixed-top, .navbar-inverse {
 	background-color: #2A3744;
 	color: #c0ccdb !important;
@@ -498,4 +505,14 @@ div {
 #detail-panel-statistic .col-md-6 span {
 	text-align: middle;
 	vertical-align: middle;
+}
+
+.lecture-video-container {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+.lecture-video-container iframe {
+	width: 100%;
+	min-height: 320px;
 }

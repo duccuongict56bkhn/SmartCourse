@@ -277,7 +277,7 @@ if ($general->logged_in()) {
 								</div> <!-- End of .panel-heading-->
 								<div id="collpase<?php echo $v_unit['unit_id'];?>" class="panel-collapse collapse in">
 									<div class="panel-body">
-										 <?php $v_vids = $courses->get_unit_video($v_unit['unit_id']); ?>
+										 <?php $v_vids = $courses->get_unit_video($id, $v_unit['unit_id']); ?>
 										 <?php foreach ($v_vids as $v_vid): ?>
 										 	<div class="show-vid-modal-wrapper">
 											 	<a class="show-vid-modal" videosrc="<?php echo str_replace('watch?v=','embed/', $v_vid['vid_link']); ?>" videotitle="<?php echo $v_vid['vid_title']; ?>" href="#"><?php echo $v_vid['vid_title'] ?></a>

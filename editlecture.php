@@ -24,13 +24,13 @@ $general->logged_out_protect();
 			<ul class="nav nav-sidebar">
 				<li><a href="editcourse.php?course_alias=<?php echo $course_data['course_alias']; ?>" ><span class="glyphicon glyphicon-home"></span>Dashboard</a></li>
 				<li><a href="editannouncement.php?course_alias=<?php echo $course_data['course_alias']; ?>"><span class="glyphicon glyphicon-bullhorn"></span>Announcements</a></li>
-				<li><a href=""><span class="glyphicon glyphicon-picture"></span>Photos</a></li>
-				<li><a href="#"><span class="glyphicon glyphicon-eye-open"></span>Syllabus</a></li>
-				<li><a href="#"><span class="glyphicon glyphicon-calendar"></span>Calendar</a></li>
-				<li><a href="#"><span class="glyphicon glyphicon-book"></span>Lectures</a></li>
-				<li><a href="editexercise.php?course_alias=<?php echo $course_data['course_alias']; ?>" class="active"><span class="glyphicon glyphicon-tasks"></span>Exercises</a></li>
-				<li><a href="#"><span class="glyphicon glyphicon-print"></span>Course materials</a></li>
-				<li><a href="#"><span class="glyphicon glyphicon-bookmark"></span>Discussions</a></li>
+				<li><a href="editphoto.php?course_alias=<?php echo $course_data['course_alias']; ?>"><span class="glyphicon glyphicon-picture"></span>Photos</a></li>
+				<li><a href="editsyllabus.php?course_alias=<?php echo $course_data['course_alias']; ?>"><span class="glyphicon glyphicon-eye-open"></span>Syllabus</a></li>
+				<li><a href="editcalendar.php?course_alias=<?php echo $course_data['course_alias']; ?>"><span class="glyphicon glyphicon-calendar"></span>Calendar</a></li>
+				<li><a href="editlecture.php?course_alias=<?php echo $course_data['course_alias']; ?>" class="active"><span class="glyphicon glyphicon-book"></span>Lectures</a></li>
+				<li><a href="editexercise.php?course_alias=<?php echo $course_data['course_alias']; ?>"><span class="glyphicon glyphicon-tasks"></span>Exercises</a></li>
+				<li><a href="editmaterial.php?course_alias=<?php echo $course_data['course_alias']; ?>"><span class="glyphicon glyphicon-print"></span>Course materials</a></li>
+				<li><a href="editforum.php?course_alias=<?php echo $course_data['course_alias']; ?>"><span class="glyphicon glyphicon-bookmark"></span>Discussions</a></li>
 			</ul>
 		</div> <!-- end of .sidebar -->
 
@@ -65,12 +65,27 @@ $general->logged_out_protect();
 								</div>
 								<div class="panel-body" id="detail-panel-body">
 									<div class="row" id="detail-panel-statistic">
+										<!-- Show basic lecture statistic here -->
 										<div class="col-md-6" style="border: 1px solid #bbb;">
 											<span>text</span>
 										</div>
 										<div class="col-md-6" style="border: 1px solid #bbb;">
 											<span>text</span>
 										</div>
+									</div> <!-- End of detail-panel-statistic-->
+									<div class="row lecture-video-container">
+										<iframe width="680" height="450" src="http://www.youtube.com/embed/D-k-h0GuFmE">
+										</iframe>
+										<form role="form" id="video-meta">
+											<div class="form-group">
+												<label>Lecture title</label>
+												<input type="text" class="form-control" name="inputLectureTitle" id="inputLectureTitle" placeholder="Lecture title" value="">
+											</div>
+											<div class="form-group">
+												<label>Video link</label>
+												<input type="text" class="form-control" name="inputVideoLink" id="inputVideoLink" placeholder="Video link" value="">
+											</div>
+										</form>
 									</div>
 								</div>
 							</div>				
@@ -80,7 +95,26 @@ $general->logged_out_protect();
 		</div>
 	</div>
 </div> <!-- end of .container -->
+<script type="text/javascript">
+	$('.unit-group-item').each(function(index) {
+		$(this).click(function(e) {
+			e.preventDefault();
 
+			/* Load corresponding lecture data to detail panel */
+			var unit_id = $(this).attr('id').replace('u','');
+			var type = 'lecture';
+
+			$.ajax({
+				type 		: 'POST',
+				url 		: 'processor/fetch.php',
+				data 		: {
+					type	: type,
+					
+				}
+			});
+		});
+	});
+</script>
 <?php } else { 
 	header('Location: courses.php');}
 	?>
