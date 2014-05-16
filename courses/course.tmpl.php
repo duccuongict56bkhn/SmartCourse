@@ -317,12 +317,29 @@ if ($general->logged_in()) {
 				</div>
 <!-- Announcement holder-->
 				<div class="panel-group" id="accordion" name="exercise-list">
-					
+					<?php $v_units = $courses->get_distinct_unit($id);
+					foreach ($v_units as $v_unit) { ?>
 					<div class="panel-default">
-						
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" href="#collpase<?php echo $v_unit['unit_id'];?>"><?php echo $v_unit['unit_name']; ?></a>
+							</h4>
+						</div>
+						<div class="panel-body">
+							<div id="collpase<?php echo $v_unit['unit_id'];?>" class="panel-collapse collapse in">
+								<div class="panel-body">
+									 <?php $v_exs = $courses->get_exercise_by_unit($id, $v_unit['unit_id']);?>
+									 <?php foreach ($v_exs as $v_ex): ?>
+									 	<div><?php echo $v_ex['exercise_title']; ?></div>
+									 <?php endforeach ?>
+								</div> <!-- End of .panel-body -->
+							</div>
+						</div>
 					</div>
+					<?php }?>
+					
 				</div>
-				<div class="col-lg-12 col-md-12" >
+				<!-- <div class="col-lg-12 col-md-12" >
 					<?php $exs = $courses->get_all_exercises($id); ?>
 					<?php foreach ($exs as $ex): ?>
 						<div class="panel panel-default">
@@ -348,7 +365,7 @@ if ($general->logged_in()) {
 							</div>
 						</div>
 					<?php endforeach ?>
-				</div>
+				</div> -->
 			</div>
 		</div>
 		<?php endif ?>
