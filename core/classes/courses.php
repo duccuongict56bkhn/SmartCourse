@@ -577,6 +577,20 @@ class Courses {
 		}
 		return false;
 	}
+
+	public function get_all_unit_exercise($course_id, $unit_id)
+	{
+		$query = $this->db->prepare("SELECT * FROM `sm_exercises` WHERE `course_id` = ? AND `unit_id` = ?");
+		$query->bindValue(1, $course_id);
+		$query->bindValue(2, $unit_id);
+
+		try {
+			$query->execute();
+			return $query->fetchAll();
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+	}
 }
 
  ?>
