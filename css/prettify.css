@@ -471,3 +471,31 @@ div {
     margin-right: 0;
 }
 
+#lecture-list-group {
+	padding-right: 5px;
+
+}
+
+#lecture-list-group a {
+	padding-top: 7px;
+	padding-bottom: 7px;
+}
+#lecture-edit-detail {
+	padding-left: 5px;
+}
+#detail-panel-body {
+	padding-top: 0;
+}
+
+#detail-panel-statistic {
+	padding-top: 0 !important;
+}
+
+#detail-panel-statistic .col-md-6 {
+	padding-top: 15px;
+}
+
+#detail-panel-statistic .col-md-6 span {
+	text-align: middle;
+	vertical-align: middle;
+}
