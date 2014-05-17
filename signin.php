@@ -26,7 +26,7 @@ if (empty($_POST) === false) {
          // To prevent state session attack
          session_regenerate_id(true);// destroying the old session id and creating a new one
          $_SESSION['user_id'] =  $login;
-         header('Location: home.php');
+         header('Location: courses.php');
          exit();
       }
    }

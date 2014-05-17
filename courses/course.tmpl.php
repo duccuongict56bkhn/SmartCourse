@@ -4,6 +4,7 @@ $filename = basename($_SERVER['SCRIPT_NAME']);
 if ($general->logged_in()) {
 	$is_teacher = ($users->get_role($user_id) == 'Teacher') ? true : false;
 	$is_owner   = $courses->is_created_by_me($user_id, $id);
+	$is_registered = $courses->is_registered($user_id, $id);
 } else {
 	header('Location: ../../signin.php');
 }
@@ -74,7 +75,7 @@ if ($general->logged_in()) {
 								<li role="representation" class="divider"></li>
 								<li role="representation" class="dropdown-header">Exercises</li>
 								<li>
-									<a id="open-new-ex" target="_blank" href="../../newexercise.php?course=<?php echo $course_data['course_alias']; ?>">Create new exercise</a>
+									<a id="open-new-ex" target="_blank" href="../../newexercise.php?mode=create&amp;course=<?php echo $course_data['course_alias']; ?>">Create new exercise</a>
 								</li>
 								<li>
 									<a href="#">Correct student's submits</a>
@@ -298,6 +299,70 @@ if ($general->logged_in()) {
 
 		<!-- For exercise.php -->
 		<?php if ($filename == 'exercise.php'): ?>
+			<?php if (!$is_registered): ?>
+				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main-content">
+				<div class="row announcement">
+					<div class="col-lg-12 col-md-12" style="padding-left: 0; padding-right: 0;">
+						<h2 class="page-header">Exercises</h2>
+						<?php if ($is_owner): ?>
+							<!-- <div class="pull-right">
+								<a href="../../newexercise.php?course=<?php echo $alias;?>" target="_blank" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-flash"></span>Creat new</a>
+							</div> -->
+						<?php endif ?>
+					</div>
+
+					<?php if (!$is_owner): ?>
+						<div class="col-lg-12 col-md-12" style="padding-left: 0px;">
+							<div class="alert alert-danger">
+								<span>You need to <a href="../register.php?user_id=<?php echo $user_id ?>&amp;course_alias=<?php echo $course_data['course_alias']; ?>">register</a> for this course in order to do exercises!</span>
+							</div>
+						</div>
+					<?php else: ?>
+						<div class="col-lg-12 col-md-12" style="padding-left: 0px;">
+						<?php $v_units = $courses->get_distinct_unit($id); ?>
+						<label style="margin-right: 15px;">Lecture </label>
+						<select class="selectpicker" data-width="420px" id="unit-select">
+							<?php foreach ($v_units as $v_unit): ?>
+								<option unit-id="<?php echo $v_unit['unit_id']; ?>" value="<?php echo $v_unit['unit_id']; ?>">L<?php echo $v_unit['unit_id'] . ' - ' . $v_unit['unit_name']; ?></option>
+							<?php endforeach ?>
+						</select>
+						<div class="pagination-wrapper">
+							<ul class="pagination" id="exercise_pagination">
+							</ul>
+						</div>
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-lg-12">
+								<!-- Show a list of exercise here-->
+								<?php $exercises = $courses->get_all_exercises($id);
+								#foreach ($exercises as $exercise) { ?>
+									<div class="panel panel-default" id="exercise_content_wrapper">
+										<div class="panel-heading">
+											<h4 class="panel-title" id="exercise_title"></h4>
+										</div>
+										<div class="panel-body" id="exercise_content">
+											<div class="alert alert-info">Please choose a lecture to see its exercises.</div>
+										</div>
+										<?php if ($exercises[0]['question_type'] == '1'): ?>
+										<div class="panel-footer" id="exercise_answer">
+										
+										</div>
+										<?php endif ?>
+									</div>
+								
+							</div>
+						</div>
+
+						<div class="row"  style="text-align: center; margin-bottom: 15px;">
+							<button style="margin: auto;" id="submit_answer" type="submit" class="btn btn-success" name="submit_answer">Submit your answers</button>
+							<button style="margin: auto;" id="save_answer" type="submit" class="btn btn-default" name="save_answer">Save your answers</button>
+						</div>
+					</div>
+					<?php endif ?>
+					
+				</div>
+			</div>  <!-- End of .main-content -->
+		
+			<?php else: ?>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main-content">
 				<div class="row announcement">
 					<div class="col-lg-12 col-md-12" style="padding-left: 0; padding-right: 0;">
@@ -314,12 +379,13 @@ if ($general->logged_in()) {
 						<label style="margin-right: 15px;">Lecture </label>
 						<select class="selectpicker" data-width="420px" id="unit-select">
 							<?php foreach ($v_units as $v_unit): ?>
-								<option unit-id="<?php echo $v_unit['unit_id']; ?>" value="<?php echo $v_unit['unit_id']; ?>">L<?php echo $v_unit['unit_id'] . ' - ' . $v_unit['unit_name']; ?></option>
+								<option unit_id="<?php echo $v_unit['unit_id']; ?>" value="<?php echo $v_unit['unit_id']; ?>">L<?php echo $v_unit['unit_id'] . ' - ' . $v_unit['unit_name']; ?></option>
 							<?php endforeach ?>
 						</select>
 					</div>
 				</div>
 			</div>  <!-- End of .main-content -->
+		<?php endif ?>
 		<?php endif ?>
 		<!-- End exercise.php -->
 	</div>
@@ -357,6 +423,103 @@ if ($general->logged_in()) {
     $("#vid-modal").modal(options);
 
 });
+</script>
+<script type="text/javascript">
+	$('.pagination-wrapper').hide();
+	/* pagination */
+	$('#unit-select').change(function() {
+		var unit_id = $(this).val();
+		var type = 'unitexercise';
+		var url = '../../processor/fetch.php';
+		var course_alias = '<?php echo $alias ?>';
+
+		$.ajax({
+			type 		: 'POST',
+			url 		: url,
+			data 		: {
+				type  : type,
+				unit_id : unit_id,
+				course_alias : course_alias
+			},
+			dataType : 'json',
+			success  : function(data) {
+				var nPage = data.length;
+
+				if (nPage > 1) {
+					var paginate_str = '';
+					var answer_html = '<strong>What is your answer?</strong><br>';
+
+					$('#exercise_title').html(data[0].exercise_title);
+					$('#exercise_content').html(data[0].question);
+					if (data[0].question_type == 1) {
+						answer_html = '<strong>What is your answer?</strong><br><input class="exercise_choice_radio" type="radio" name="exercise_choice"><span class="exercise_multiple">' + data[0].multi_one+'</span><br>'
+						             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice"><span class="exercise_multiple">' + data[0].multi_two+'</span><br>'
+						             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice"><span class="exercise_multiple">' + data[0].multi_three+'</span><br>' 
+						             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice"><span class="exercise_multiple">' + data[0].multi_four+'</span><br>';
+						$('#exercise_answer').html(answer_html);
+					} else {
+						answer_html = '<strong>What is your answer?</strong><br><textarea class="exercise_answer_text form-control" ex_id="'+1+'" placeholer="Enter your answer here"></textarea>';
+						$('#exercise_answer').html(answer_html);
+					}
+					
+					
+					for (i = 1; i <= nPage; i++) {
+						var ex_id = data[i-1].exercise_id;
+
+						paginate_str += '<li class="paginate_li"><a class="paginate_item" href="#" ex_id="' + ex_id + '">' + i + '</a></li>';
+						$('#exercise_pagination').html(paginate_str);
+						$('.paginate_item').each(function() {
+							$('.paginate_item').click(function(e) {
+								e.preventDefault();
+								var exercise_id = $(this).attr('ex_id');
+								// $('.paginate_li').addClass('active');
+								// Remove active class from other
+								// for (j = 1; j <= nPage; j++) {
+
+								// }
+
+								$('#exercise_title').html(data[exercise_id-1].exercise_title);
+								$('#exercise_content').html(data[exercise_id-1].question);
+								
+								if (data[exercise_id-1].question_type == 1) {
+									answer_html = '<strong>What is your answer?</strong><br><input class="exercise_choice_radio" type="radio" name="exercise_choice"><span class="exercise_multiple">' + data[exercise_id-1].multi_one+'</span><br>'
+									             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice"><span class="exercise_multiple">' + data[exercise_id-1].multi_two+'</span><br>'
+									             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice"><span class="exercise_multiple">' + data[exercise_id-1].multi_three+'</span><br>' 
+									             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice"><span class="exercise_multiple">' + data[exercise_id-1].multi_four+'</span><br>';
+									$('#exercise_answer').html(answer_html);
+								} else {
+									answer_html = '<strong>What is your answer?</strong><br><textarea class="exercise_answer_text form-control" ex_id="'+exercise_id+'" placeholer="Enter your answer here"></textarea>';
+									$('#exercise_answer').html(answer_html);
+								}
+							});
+						});
+					}
+					$('.pagination-wrapper').show();
+				} else if (nPage < 1) {
+					var html_str = '<span>There is no exercise within this lecture</span>'
+					$('#exercise_content').html(html_str);	
+					$('.pagination-wrapper').hide();
+					$('#exercise_answer').text('');
+					$('#exercise_title').html('');			
+				} else if (nPage == 1) {
+					$('#exercise_title').html(data[0].exercise_title);
+					$('.pagination-wrapper').hide();
+					$('#exercise_content').html(data[0].question);
+					if (data[0].question_type == 1) {
+						answer_html = '<strong>What is your answer?</strong><br><input class="exercise_choice_radio" type="radio" name="exercise_choice"><span class="exercise_multiple">' + data[0].multi_one+'</span><br>'
+						             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice"><span class="exercise_multiple">' + data[0].multi_two+'</span><br>'
+						             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice"><span class="exercise_multiple">' + data[0].multi_three+'</span><br>' 
+						             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice"><span class="exercise_multiple">' + data[0].multi_four+'</span><br>';
+						$('#exercise_answer').html(answer_html);
+					} else {
+						answer_html = '<strong>What is your answer?</strong><br><textarea class="exercise_answer_text form-control" ex_id="'+1+'" placeholer="Enter your answer here"></textarea>';
+						$('#exercise_answer').html(answer_html);
+					}
+				}
+				
+			}
+		});
+	});
 </script>
 </body>
 </html>

@@ -113,6 +113,43 @@ class Courses {
 		file_put_contents($folder . '/about.php', '<?php $alias = \'' . $course_alias . '\'; require \'../index.php\';?>');
 	}
 
+	public function enroll($user_id, $course_id)
+	{
+		$query = $this->db->prepare("INSERT INTO `sm_enroll_course`(`user_id`, `course_id`, `enroll_date`)
+											VALUES(?, ?, ?)");
+		$query->bindValue(1, $user_id);
+		$query->bindValue(2, $course_id);
+		$query->bindValue(3, time());
+
+		try {
+			$query->execute();
+
+			return true;
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+	}
+
+	public function is_registered($user_id, $course_id)
+	{
+		$query = $this->db->prepare("SELECT * FROM `sm_enroll_course` WHERE `user_id` = ? AND `course_id` = ?");
+		$query->bindValue(1, $user_id);
+		$query->bindValue(2, $course_id);
+
+		try {
+			$query->execute();
+			$row = $query->fetch();
+
+			if ($row == 1) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+	}
+	
 	public function coursedata($course_id)
 	{
 		$query = $this->db->prepare("SELECT * FROM `sm_courses` WHERE `course_id` = ?");

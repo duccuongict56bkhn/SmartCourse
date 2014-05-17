@@ -2,6 +2,7 @@
 require 'core/init.php';
 $general->logged_out_protect();
 $alias = $_GET['course'];
+$mode = $_GET['mode'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +13,7 @@ $alias = $_GET['course'];
 		<link rel="shortcut icon" href="images/icon.ico">
 		<script src="js/jquery-2.1.0.min.js"></script>
 	 	<script src="js/bootstrap.js"></script>
-	 	<script src="js/prettify.js"></script>
+	 	<!--<script src="js/prettify.js"></script>-->
 	 	<script type="text/javascript" src="magic.js"></script>
 	 	<link rel="stylesheet" type="text/css" href="fonts/font-awesome/css/font-awesome.css">
 	 	<link rel="stylesheet" type="text/css" href="summernote/summernote.css">
@@ -61,7 +62,11 @@ $alias = $_GET['course'];
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
 		<div class="container" style="width: 100%;">
+		<?php if ($mode == 'create') { ?>
 			<h3 class="form-title">Create new exercises <span id="close-window" class="label label-danger pull-right">Close</span></h3>
+		<?php } else if($mode == 'update') { ?>
+			<h3 class="form-title">Update exercise <span id="close-window" class="label label-danger pull-right">Close</span></h3>
+		<?php } ?>
 			<form role="form" id="ex-form" method="post">
 				<div class="form-group sp" id="title_group">
 					<div class="row">
@@ -127,14 +132,19 @@ $alias = $_GET['course'];
 				<div class="form-group sp">
 					<label>Correct Answer</label>
 					<select class="selectpicker" name="correct_answer" id="correct_answer" style="width: 100%" >
-							<option value="1">A</option>
-							<option value="2">B</option>
-							<option value="3">C</option>
-							<option value="4">D</option>
+							<option value="A">A</option>
+							<option value="B">B</option>
+							<option value="C">C</option>
+							<option value="D">D</option>
 					</select>
 				</div>
 				<div class="form-group form-btn">
+				<?php if ($mode == 'create'): ?>
 					<button type="submit" name="create_exercise" id="create_exercise" class="btn btn-primary">Create</button>
+				<?php else: ?>
+					<button type="submit" name="update_exercise" id="update_exercise" class="btn btn-success">Update</button>
+				<?php endif ?>
+					
 					<button type="button" name="discard" id="discard" class="btn btn-default" id="discard">Discard</button>
 				</div>
 			</form>

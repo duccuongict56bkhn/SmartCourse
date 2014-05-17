@@ -346,3 +346,25 @@ em::selection, i::selection, abbr::selection, label::selection {
   padding-bottom: 5px;
   border-bottom: 1px solid #eee;
 }
+
+#exercise_content_wrapper {
+  margin-right: -15px;
+}
+
+.exercise_multiple {
+  margin-left: 10px;
+}
+
+.pagination-wrapper {
+  text-align: center;
+}
+
+.pagination {
+  margin: auto;
+}
+
+.exercise_answer_text {
+  width : 100%;
+  margin: auto;
+  height: 100px;
+}
