@@ -15,7 +15,7 @@
 				<li class="emphasize">All topics</li>
 				<?php 
 				foreach ($cats as $cat) { ?>
-					<li><a href="#"><?php echo $cat['cat_title']; ?></a></li>
+					<li><a href="courses.php?cat_id=<?php echo $cat['cat_id']; ?>"><?php echo $cat['cat_title']; ?></a></li>
 				<?php } ?>
 			</ul>
 		</div>

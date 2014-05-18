@@ -1,10 +1,11 @@
 <?php 
 $title = $course_data['course_title'];
+$course_id = $course_data['course_id'];
 $filename = basename($_SERVER['SCRIPT_NAME']);
 if ($general->logged_in()) {
 	$is_teacher = ($users->get_role($user_id) == 'Teacher') ? true : false;
-	$is_owner   = $courses->is_created_by_me($user_id, $id);
-	$is_registered = $courses->is_registered($user_id, $id);
+	$is_owner   = $courses->is_created_by_me($user_id, $course_id);
+	$is_registered = $courses->is_registered($user_id, $course_id);
 } else {
 	header('Location: ../../signin.php');
 }
@@ -69,7 +70,7 @@ if ($general->logged_in()) {
 								<li role="representation" class="dropdown-header">Edit course</li>
 								<li>
 									<a href="#">Add new unit</a>
-									<a href="#">Add new announcement</a>
+									<a href="../../editannouncement.php?course_alias=<?php echo $course_data['course_alias']; ?>#creat_anno">Add new announcement</a>
 									<a href="#">Add new materials</a>
 								</li>
 								<li role="representation" class="divider"></li>
@@ -78,7 +79,7 @@ if ($general->logged_in()) {
 									<a id="open-new-ex" target="_blank" href="../../newexercise.php?mode=create&amp;course=<?php echo $course_data['course_alias']; ?>">Create new exercise</a>
 								</li>
 								<li>
-									<a href="#">Correct student's submits</a>
+									<a href="studentsubmit.php?auth_mode=correct&amp;user_id=<?php echo $user_id ?>&amp;course_alias=<?php echo $course_data['course_alias']; ?>">Correct student's submits</a>
 								</li>
 								<li role="representation" class="divider"></li>
 								<li role="representation" class="dropdown-header">Create course</li>
@@ -89,11 +90,13 @@ if ($general->logged_in()) {
 						</li>
 					<?php } else { ?>
 						<!--Show the course_register-->
-						<li>
-							<a href="../../courses/register.php?user_id=<?php echo $user['user_id'] ?>&amp;course=<?php echo $course_data['course_alias']; ?>&amp;timestamp=<?php echo time(); ?>" id="register-btn">
-								<button class="btn btn-primary btn-sm">Register for this course</button>
-							</a>
-						</li>
+						<?php if (!$is_registered): ?>
+							<li>
+								<a href="../../courses/register.php?user_id=<?php echo $user['user_id'] ?>&amp;course=<?php echo $course_data['course_alias']; ?>&amp;timestamp=<?php echo time(); ?>" id="register-btn">
+									<button class="btn btn-primary btn-sm">Register for this course</button>
+								</a>
+							</li>
+						<?php endif ?>
 					<?php } # get_role() 
 						# Show normal menu for logged in users ?>
 						<li>
@@ -314,18 +317,29 @@ if ($general->logged_in()) {
 					<?php if (!$is_owner): ?>
 						<div class="col-lg-12 col-md-12" style="padding-left: 0px;">
 							<div class="alert alert-danger">
-								<span>You need to <a href="../register.php?user_id=<?php echo $user_id ?>&amp;course_alias=<?php echo $course_data['course_alias']; ?>">register</a> for this course in order to do exercises!</span>
+								<span>You need to <a href="../register.php?user_id=<?php echo $user_id ?>&amp;course=<?php echo $course_data['course_alias']; ?>">register</a> for this course in order to do exercises!</span>
 							</div>
 						</div>
 					<?php else: ?>
 						<div class="col-lg-12 col-md-12" style="padding-left: 0px;">
-						<?php $v_units = $courses->get_distinct_unit($id); ?>
+						<div class="row" style="margin-left: 0; padding-top:0;">
+							<?php $v_units = $courses->get_distinct_unit($id); ?>
 						<label style="margin-right: 15px;">Lecture </label>
 						<select class="selectpicker" data-width="420px" id="unit-select">
 							<?php foreach ($v_units as $v_unit): ?>
 								<option unit-id="<?php echo $v_unit['unit_id']; ?>" value="<?php echo $v_unit['unit_id']; ?>">L<?php echo $v_unit['unit_id'] . ' - ' . $v_unit['unit_name']; ?></option>
 							<?php endforeach ?>
 						</select>
+						<div class="pull-right">
+							
+							<?php if ($is_owner): ?>
+								<button class="btn btn-danger" type="button" id="show_student_submit"><span class="glyphicon glyphicon-star"></span>Show student's submit</button>	
+ 							<?php else: ?>
+								<a href="progress.php" class="btn btn-default" id="show_score"><span class="glyphicon glyphicon-star"></span>Show my achieved score</a>
+							<?php endif ?>
+						</div>
+						</div>
+						
 						<div class="pagination-wrapper">
 							<ul class="pagination" id="exercise_pagination">
 							</ul>
@@ -339,7 +353,7 @@ if ($general->logged_in()) {
 										<div class="panel-heading">
 											<h4 class="panel-title" id="exercise_title"></h4>
 										</div>
-										<div class="panel-body" id="exercise_content">
+										<div class="panel-body" id="exercise_content" exercise_id="" question_type="">
 											<div class="alert alert-info">Please choose a lecture to see its exercises.</div>
 										</div>
 										<?php if ($exercises[0]['question_type'] == '1'): ?>
@@ -375,15 +389,136 @@ if ($general->logged_in()) {
 					</div>
 
 					<div class="col-lg-12 col-md-12" style="padding-left: 0px;">
-						<?php $v_units = $courses->get_distinct_unit($id); ?>
+						<div class="row" style="margin-left: 0; padding-top:0;">
+							<?php $v_units = $courses->get_distinct_unit($id); ?>
 						<label style="margin-right: 15px;">Lecture </label>
 						<select class="selectpicker" data-width="420px" id="unit-select">
 							<?php foreach ($v_units as $v_unit): ?>
-								<option unit_id="<?php echo $v_unit['unit_id']; ?>" value="<?php echo $v_unit['unit_id']; ?>">L<?php echo $v_unit['unit_id'] . ' - ' . $v_unit['unit_name']; ?></option>
+								<option unit-id="<?php echo $v_unit['unit_id']; ?>" value="<?php echo $v_unit['unit_id']; ?>">L<?php echo $v_unit['unit_id'] . ' - ' . $v_unit['unit_name']; ?></option>
 							<?php endforeach ?>
 						</select>
+						<div class="pull-right">
+							
+							<?php if ($is_owner): ?>
+								<button class="btn btn-danger" type="button" id="show_student_submit"><span class="glyphicon glyphicon-star"></span>Show student's submit</button>	
+ 							<?php else: ?>
+								<a href="process.php" class="btn btn-default" id="show_score"><span class="glyphicon glyphicon-star"></span>Show my achieved score</a>
+							<?php endif ?>
+						</div>
+						</div>
+						
+						<div class="pagination-wrapper">
+							<ul class="pagination" id="exercise_pagination">
+							</ul>
+						</div>
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-lg-12">
+								<!-- Show a list of exercise here-->
+								<?php $exercises = $courses->get_all_exercises($id);
+								#foreach ($exercises as $exercise) { ?>
+									<div class="panel panel-default" id="exercise_content_wrapper">
+										<div class="panel-heading">
+											<h4 class="panel-title" id="exercise_title"></h4>
+										</div>
+										<div class="panel-body" id="exercise_content" exercise_id="" question_type="">
+											<div class="alert alert-info">Please choose a lecture to see its exercises.</div>
+										</div>
+										<?php if ($exercises[0]['question_type'] == '1'): ?>
+										<div class="panel-footer" id="exercise_answer">
+										
+										</div>
+										<?php endif ?>
+									</div>
+								
+							</div>
+						</div>
+
+						<div class="row"  style="text-align: center; margin-bottom: 15px;">
+							<button style="margin: auto;" id="submit_answer" type="submit" class="btn btn-success" name="submit_answer">Submit your answers</button>
+							<button style="margin: auto;" id="save_answer" type="submit" class="btn btn-default" name="save_answer">Save your answers</button>
+						</div>
 					</div>
 				</div>
+			</div>  <!-- End of .main-content -->
+		<?php endif ?>
+		<?php endif ?>
+
+		<?php if ($filename == 'studentsubmit.php'): ?>
+			<?php if (!$is_registered): ?>
+				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main-content">
+				<div class="row announcement">
+					<div class="col-lg-12 col-md-12" style="padding-left: 0; padding-right: 0;">
+						<h2 class="page-header">Student submits</h2>
+					</div>
+
+					<?php if (!$is_owner): ?>
+						<div class="col-lg-12 col-md-12" style="padding-left: 0px;">
+							<div class="alert alert-danger">
+								<span>You need to <a href="../register.php?user_id=<?php echo $user_id ?>&amp;course_alias=<?php echo $course_data['course_alias']; ?>">register</a> for this course in order to do exercises!</span>
+							</div>
+						</div>
+					<?php else: ?>
+						<div class="col-lg-12 col-md-12" style="padding-left: 0px;">
+						<div class="row" style="margin-left: 0; padding-top:0;">
+							<?php $v_units = $courses->get_distinct_unit($id); ?>
+							<label style="margin-right: 15px;">Lecture </label>
+							<select class="selectpicker" data-width="420px" id="unit-select">
+								<?php foreach ($v_units as $v_unit): ?>
+									<option unit-id="<?php echo $v_unit['unit_id']; ?>" value="<?php echo $v_unit['unit_id']; ?>">L<?php echo $v_unit['unit_id'] . ' - ' . $v_unit['unit_name']; ?></option>
+								<?php endforeach ?>
+							</select>
+							<div class="pull-right">
+								<label style="margin-right: 15px;">Student</label>
+								<?php $v_enrollers = $courses->get_enroller($id); ?>
+								<select class="selectpicker" data-width="320px" id="student_select">
+									<?php foreach ($v_enrollers as $v_enroller): ?>
+										<option value="<?php echo $v_enroller['user_id']; ?>"><span><?php echo $v_enroller['username']; ?></span> - <?php echo $v_enroller['display_name']; ?></option>
+									<?php endforeach ?>
+								</select>
+							</div>
+						<div class="pull-right">
+						</div>
+						</div>
+						
+						<div class="pagination-wrapper">
+							<ul class="pagination" id="exercise_pagination">
+							</ul>
+						</div>
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-lg-12">
+								<!-- Show a list of exercise here-->
+								<?php $exercises = $courses->get_all_exercises($id);
+								#foreach ($exercises as $exercise) { ?>
+									<div class="panel panel-default" id="exercise_content_wrapper">
+										<div class="panel-heading">
+											<h4 class="panel-title" id="exercise_title"></h4>
+										</div>
+										<div class="panel-body" id="exercise_content" exercise_id="" question_type="">
+											<div class="alert alert-info">Please choose a lecture to see its exercises.</div>
+										</div>
+										<?php if ($exercises[0]['question_type'] == '1'): ?>
+										<div class="panel-footer" id="exercise_answer">
+											
+										</div>
+										<?php endif ?>
+									</div>
+								
+							</div>
+						</div>
+
+						<div class="row"  style="text-align: center; margin-bottom: 15px;">
+							<button style="margin: auto;" id="submit_answer" type="submit" class="btn btn-success" name="submit_answer">Submit your answers</button>
+							<button style="margin: auto;" id="save_answer" type="submit" class="btn btn-default" name="save_answer">Save your answers</button>
+						</div>
+					</div>
+					<?php endif ?>
+					
+				</div>
+			</div>  <!-- End of .main-content -->
+		
+			<?php else: ?>
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main-content">
+			
 			</div>  <!-- End of .main-content -->
 		<?php endif ?>
 		<?php endif ?>
@@ -397,7 +532,8 @@ if ($general->logged_in()) {
      $('.selectpicker').selectpicker();
  });
 </script>
-<script>
+<?php if ($filename == 'lecture.php'): ?>
+	<script>
 	$('a.show-vid-modal').click(function(e) { 
 	 var vidsrc = $(this).attr('videosrc');
      var title = $(this).attr('videotitle');
@@ -421,10 +557,12 @@ if ($general->logged_in()) {
 	  });
 
     $("#vid-modal").modal(options);
-
 });
 </script>
-<script type="text/javascript">
+<?php endif ?>
+
+<?php if ($filename == 'exercise.php'): ?>
+	<script type="text/javascript">
 	$('.pagination-wrapper').hide();
 	/* pagination */
 	$('#unit-select').change(function() {
@@ -445,17 +583,21 @@ if ($general->logged_in()) {
 			success  : function(data) {
 				var nPage = data.length;
 
+				var score = '<label class="pull-right label label-info">Score: '
+
 				if (nPage > 1) {
 					var paginate_str = '';
 					var answer_html = '<strong>What is your answer?</strong><br>';
-
-					$('#exercise_title').html(data[0].exercise_title);
+					
+					$('#exercise_title').html(data[0].exercise_title + score + data[0].score + '</label>');
+					$('#exercise_content').attr('exercise_id', 1);
 					$('#exercise_content').html(data[0].question);
+					$('#exercise_content').attr('question_type', data[0].question_type);
 					if (data[0].question_type == 1) {
-						answer_html = '<strong>What is your answer?</strong><br><input class="exercise_choice_radio" type="radio" name="exercise_choice"><span class="exercise_multiple">' + data[0].multi_one+'</span><br>'
-						             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice"><span class="exercise_multiple">' + data[0].multi_two+'</span><br>'
-						             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice"><span class="exercise_multiple">' + data[0].multi_three+'</span><br>' 
-						             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice"><span class="exercise_multiple">' + data[0].multi_four+'</span><br>';
+						answer_html = '<strong>What is your answer?</strong><br><input class="exercise_choice_radio" type="radio" name="exercise_choice" value="A"><span class="exercise_multiple">' + data[0].multi_one+'</span><br>'
+						             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice" value="B"><span class="exercise_multiple">' + data[0].multi_two+'</span><br>'
+						             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice" value="C"><span class="exercise_multiple">' + data[0].multi_three+'</span><br>' 
+						             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice" value="D"><span class="exercise_multiple">' + data[0].multi_four+'</span><br>';
 						$('#exercise_answer').html(answer_html);
 					} else {
 						answer_html = '<strong>What is your answer?</strong><br><textarea class="exercise_answer_text form-control" ex_id="'+1+'" placeholer="Enter your answer here"></textarea>';
@@ -469,6 +611,8 @@ if ($general->logged_in()) {
 						paginate_str += '<li class="paginate_li"><a class="paginate_item" href="#" ex_id="' + ex_id + '">' + i + '</a></li>';
 						$('#exercise_pagination').html(paginate_str);
 						$('.paginate_item').each(function() {
+
+							/* Actions happened when user click the pagination number */
 							$('.paginate_item').click(function(e) {
 								e.preventDefault();
 								var exercise_id = $(this).attr('ex_id');
@@ -478,14 +622,16 @@ if ($general->logged_in()) {
 
 								// }
 
-								$('#exercise_title').html(data[exercise_id-1].exercise_title);
+								$('#exercise_title').html(data[exercise_id-1].exercise_title + score + data[exercise_id-1].score + '</label>');
+								$('#exercise_content').attr('exercise_id', exercise_id);
 								$('#exercise_content').html(data[exercise_id-1].question);
-								
+								$('#exercise_content').attr('question_type', data[exercise_id-1].question_type);
+
 								if (data[exercise_id-1].question_type == 1) {
-									answer_html = '<strong>What is your answer?</strong><br><input class="exercise_choice_radio" type="radio" name="exercise_choice"><span class="exercise_multiple">' + data[exercise_id-1].multi_one+'</span><br>'
-									             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice"><span class="exercise_multiple">' + data[exercise_id-1].multi_two+'</span><br>'
-									             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice"><span class="exercise_multiple">' + data[exercise_id-1].multi_three+'</span><br>' 
-									             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice"><span class="exercise_multiple">' + data[exercise_id-1].multi_four+'</span><br>';
+									answer_html = '<strong>What is your answer?</strong><br><input class="exercise_choice_radio" type="radio" name="exercise_choice" value="A"><span class="exercise_multiple">' + data[exercise_id-1].multi_one+'</span><br>'
+									             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice" value="B"><span class="exercise_multiple">' + data[exercise_id-1].multi_two+'</span><br>'
+									             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice" value="C"><span class="exercise_multiple">' + data[exercise_id-1].multi_three+'</span><br>' 
+									             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice" value="D"><span class="exercise_multiple">' + data[exercise_id-1].multi_four+'</span><br>';
 									$('#exercise_answer').html(answer_html);
 								} else {
 									answer_html = '<strong>What is your answer?</strong><br><textarea class="exercise_answer_text form-control" ex_id="'+exercise_id+'" placeholer="Enter your answer here"></textarea>';
@@ -502,14 +648,17 @@ if ($general->logged_in()) {
 					$('#exercise_answer').text('');
 					$('#exercise_title').html('');			
 				} else if (nPage == 1) {
-					$('#exercise_title').html(data[0].exercise_title);
+					$('#exercise_title').html(data[0].exercise_title + score + data[0].score + '</label>');
 					$('.pagination-wrapper').hide();
+					$('#exercise_content').attr('exercise_id', 1);
 					$('#exercise_content').html(data[0].question);
+					$('#exercise_content').attr('question_type', data[0].question_type);
+
 					if (data[0].question_type == 1) {
-						answer_html = '<strong>What is your answer?</strong><br><input class="exercise_choice_radio" type="radio" name="exercise_choice"><span class="exercise_multiple">' + data[0].multi_one+'</span><br>'
-						             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice"><span class="exercise_multiple">' + data[0].multi_two+'</span><br>'
-						             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice"><span class="exercise_multiple">' + data[0].multi_three+'</span><br>' 
-						             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice"><span class="exercise_multiple">' + data[0].multi_four+'</span><br>';
+						answer_html = '<strong>What is your answer?</strong><br><input class="exercise_choice_radio" type="radio" name="exercise_choice" value="A"><span class="exercise_multiple">' + data[0].multi_one+'</span><br>'
+						             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice" value="B"><span class="exercise_multiple" value="B">' + data[0].multi_two+'</span><br>'
+						             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice" value="C"><span class="exercise_multiple" value="C">' + data[0].multi_three+'</span><br>' 
+						             + '<input class="exercise_choice_radio" type="radio" name="exercise_choice" value="D"><span class="exercise_multiple" value="D">' + data[0].multi_four+'</span><br>';
 						$('#exercise_answer').html(answer_html);
 					} else {
 						answer_html = '<strong>What is your answer?</strong><br><textarea class="exercise_answer_text form-control" ex_id="'+1+'" placeholer="Enter your answer here"></textarea>';
@@ -521,5 +670,135 @@ if ($general->logged_in()) {
 		});
 	});
 </script>
+<script type="text/javascript">
+	$('#submit_answer').click(function(e) {
+		e.preventDefault();
+
+		var user_id       = '<?php echo $user_id; ?>';
+		var course_id     = '<?php echo $course_id; ?>';
+		var unit_id       = $('#unit-select').val();
+		var exercise_id   = $('#exercise_content').attr('exercise_id');
+		var question_type = $('#exercise_content').attr('question_type');
+
+		var answer = '';
+
+		/* Written exercises */
+		if (question_type == 2) {
+			answer = $('#exercise_answer textarea').val();
+		} else if (question_type == 1) {
+			var checked_exercise_choice = $('input:radio[name=exercise_choice]:checked').val();
+			if (checked_exercise_choice != undefined) {
+				answer = checked_exercise_choice;
+			};
+		}
+	
+		var request_data = {
+			"type"			 : 'exercise_attempt',
+			"user_id"	    : user_id,
+			"course_id"     : course_id,
+			"unit_id"       : unit_id,
+			"exercise_id"   : exercise_id,
+			"question_type" : question_type,
+			"answer"        : answer,
+			"status"			 : 0
+		};
+
+		var url = '../../processor/create.php';
+
+		$.ajax({
+			type : 'POST',
+			url  : url,
+			data : request_data,
+			// contentType: "application/json; charset=utf-8",
+			// dataType: "json",
+			success : function(data) {
+				if (data == 2) {
+					alert('Your answer has been submitted and pending for teacher\'s feedback');
+				} else if (data == 3) {
+					alert('Your answer is correct');
+				} else if (data == 4) {
+					alert('Your answer is incorrect');
+				}
+			}
+		});
+	});
+</script>
+<script>
+		$('#save_answer').click(function(e) {
+			e.preventDefault();
+
+		var user_id       = '<?php echo $user_id; ?>';
+		var course_id     = '<?php echo $course_id; ?>';
+		var unit_id       = $('#unit-select').val();
+		var exercise_id   = $('#exercise_content').attr('exercise_id');
+		var question_type = $('#exercise_content').attr('question_type');
+
+		var answer = '';
+
+		/* Written exercises */
+		if (question_type == 2) {
+			answer = $('#exercise_answer textarea').val();
+		} else if (question_type == 1) {
+			var checked_exercise_choice = $('input:radio[name=exercise_choice]:checked').val();
+			if (checked_exercise_choice != undefined) {
+				answer = checked_exercise_choice;
+			};
+		}
+	
+		var request_data = {
+			"type"			 : 'exercise_save',
+			"user_id"	    : user_id,
+			"course_id"     : course_id,
+			"unit_id"       : unit_id,
+			"exercise_id"   : exercise_id,
+			"question_type" : question_type,
+			"answer"        : answer,
+			"status"			 : 1
+		};
+
+		var url = '../../processor/create.php';
+		$.ajax({
+			type : 'POST',
+			url  : url,
+			data : request_data,
+			success : function(data) {
+				if (data == 1) {
+					alert('Your answer has been saved');
+				}
+			}
+		});		
+		});
+</script>
+<?php endif ?>
+
+<?php if ($filename == 'studentsubmit.php'): ?>
+	<script type="text/javascript">
+	$('#student_select').change(function(e) {
+
+	});
+	</script>
+	<script type="text/javascript">
+		$('#unit-select').change(function(e) {
+			var unit_id = $(this).val();
+			var user_id = $('#student_select').val();
+			var course_id = <?php echo $id; ?>;
+			var type = 'studentsubmit';
+
+			$.ajax({
+				type : 'POST',
+				url  : '../../processor/fetch.php',
+				data {
+					type : type,
+					unit_id : unit_id,
+					course_id : course_id,
+					user_id : user_id
+				},
+				success : function(data) {
+					console.log(data);
+				}
+			});
+		});
+	</script>
+<?php endif ?>
 </body>
 </html>

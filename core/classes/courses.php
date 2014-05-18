@@ -111,6 +111,25 @@ class Courses {
 		file_put_contents($folder . '/studentsubmit.php', '<?php $alias = \'' . $course_alias . '\'; require \'../index.php\';?>');
 		# create about file
 		file_put_contents($folder . '/about.php', '<?php $alias = \'' . $course_alias . '\'; require \'../index.php\';?>');
+		file_put_contents($folder . '/progress.php', '<?php $alias = \'' . $course_alias . '\'; require \'../index.php\';?>');
+	}
+
+	public function get_enroller($course_id)
+	{
+		$query = $this->db->prepare("SELECT `user_id`, `username`, `email`, `display_name`, `avatar`
+											  FROM `sm_users`
+											  WHERE `user_id` IN (SELECT `user_id`
+											  							 FROM `sm_enroll_course`
+											  							 WHERE `course_id` = ?)
+											  ORDER BY `time`");
+		$query->bindValue(1, $course_id);
+
+		try {
+			$query->execute();
+			return $query->fetchAll();
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
 	}
 
 	public function enroll($user_id, $course_id)
@@ -138,8 +157,7 @@ class Courses {
 
 		try {
 			$query->execute();
-			$row = $query->fetch();
-
+			$row = $query->rowCount();
 			if ($row == 1) {
 				return true;
 			} else {
@@ -212,15 +230,27 @@ class Courses {
 		}
 	}
 
+	public function get_course_by_cat($cat_id)
+	{
+		$query = $this->db->prepare("SELECT * FROM `sm_courses` WHERE `cat_id` = $cat_id");
+		try {
+			$query->execute();
+
+			return $query->fetchAll();
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+	}
+
 	public function get_all_course_by_cat()
 	{
 		$results = array();
-		$query = $this->db->prepare("SELECT scat.cat_title AS 'title', COUNT(smc.course_id) AS 'count'
+		$query = $this->db->prepare("SELECT scat.cat_title AS 'title', scat.cat_id AS 'cat_id', COUNT(smc.course_id) AS 'count'
 									FROM `sm_courses` AS smc, `sm_course_cat` AS scat
 									WHERE smc.cat_id = scat.cat_id
 									GROUP BY scat.cat_id, scat.cat_title
 									UNION 
-									SELECT scat.cat_title AS 'title', 0 AS 'count'
+									SELECT scat.cat_title AS 'title', scat.cat_id AS 'cat_id', 0 AS 'count'
 									FROM `sm_course_cat` AS scat
 									WHERE scat.cat_id NOT IN (SELECT DISTINCT cat_id FROM `sm_courses`) ");
 		try {
@@ -236,6 +266,23 @@ class Courses {
 		} 
 
 		return false;
+	}
+
+	public function get_cat_info($what, $field, $value)
+	{
+		$allowed = array('cat_id', 'cat_title');
+		if (!in_array($what, $allowed)) {
+			throw new InvalidArgumentException;
+		}
+
+		$query = $this->db->prepare("SELECT $what FROM `sm_course_cat` WHERE $field = $value");
+		try {
+				$query->execute();
+
+				return $query->fetchColumn();
+			} catch (PDOException $e) {
+				die($e->getMessage());
+			}	
 	}
 
 	public function get_all_courses()
@@ -504,6 +551,112 @@ class Courses {
 		try {
 			$query->execute();
 			return true;
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+	}
+
+	/*
+	 * sm_do_exercises table
+	 */
+	public function multi_choice_exercise_submit($user_id, $course_id, $unit_id, $exercise_id, $answer_mul = '',
+		                                          $answer_text = '', $status = '')
+	{
+		$query = $this->db->prepare("INSERT INTO `sm_do_exercise`(`user_id`, `course_id`, `unit_id`, `exercise_id`, `answer_mul`,
+		                                          `answer_text`, `attempt_made`, `attempt_timestamp`, `status`, `score`, `approved`)							  
+		                                          VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+		$timestamp = time();
+		$attempt = 1 + $this->get_max_attempt_made($user_id, $course_id, $unit_id, $exercise_id);
+		$score = null;
+		$approved = null;
+		if($status != 1) {
+			if ($answer_mul != '') {
+			
+				if ($answer_mul == $this->multi_choice_get_correct_answer($course_id, $unit_id, $exercise_id)) {
+					$status = 3;
+					$score = $this->get_ex_score($course_id, $unit_id, $exercise_id);
+					$approved = 'Y';
+				} else {
+					$status = 4;
+				}
+			} else {
+				$status = 2;
+			}
+		}
+		$query->bindValue(1, $user_id);
+		$query->bindValue(2, $course_id);
+		$query->bindValue(3, $unit_id);
+		$query->bindValue(4, $exercise_id);
+		$query->bindValue(5, $answer_mul);
+		$query->bindValue(6, $answer_text);
+		$query->bindValue(7, $attempt);
+		$query->bindValue(8, $timestamp);
+		$query->bindValue(9, $status);
+		$query->bindValue(10, $score);
+		$query->bindValue(11, $approved);
+		try {
+			$query->execute();
+
+			return $status;
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+	}
+
+	public function get_ex_score($course_id, $unit_id, $exercise_id)
+	{
+		$query = $this->db->prepare("SELECT `score` FROM `sm_exercises` WHERE `course_id` = ? AND `unit_id` = ? AND `exercise_id` = ?");
+		$query->bindValue(1, $course_id);
+		$query->bindValue(2, $unit_id);
+		$query->bindValue(3, $exercise_id);
+
+		try {
+			$query->execute();
+
+			return $query->fetchColumn();
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+	}
+
+	public function multi_choice_get_correct_answer($course_id, $unit_id, $exercise_id)
+	{
+		$query = $this->db->prepare("SELECT `question_type`, `correct_answer` FROM `sm_exercises` WHERE `course_id` = ? AND `unit_id` = ? AND `exercise_id` = ?");
+		$query->bindValue(1, $course_id);
+		$query->bindValue(2, $unit_id);
+		$query->bindValue(3, intval($exercise_id));
+
+		try {
+			$query->execute();
+
+			$question_type = $query->fetch();
+
+			if ($question_type['question_type'] == 1) {
+				return $question_type['correct_answer'];
+			} else {
+				return '';
+			}
+
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+	}
+
+	public function get_max_attempt_made($user_id, $course_id, $unit_id, $exercise_id)
+	{
+		$query = $this->db->prepare("SELECT IFNULL(MAX(`attempt_made`), 0) FROM `sm_do_exercise` WHERE `user_id` = ?
+																														 AND   `course_id` = ? 
+																														 AND   `unit_id` = ?
+																														 AND   `exercise_id` = ?");
+		$query->bindValue(1, $user_id);
+		$query->bindValue(2, $course_id);
+		$query->bindValue(3, $unit_id);
+		$query->bindValue(4, intval($exercise_id));
+
+		try {
+			$query->execute();
+
+			return $query->fetchColumn();
 		} catch (PDOException $e) {
 			die($e->getMessage());
 		}

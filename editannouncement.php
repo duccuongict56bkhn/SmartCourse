@@ -246,6 +246,8 @@ $general->logged_out_protect();
 				type 		: 'POST',
 				url 		: 'processor/create.php',
 				data 		: formData,
+				// dataType : 'json',
+				// contentType : 'application/json',
 				success  : function() {
 					location.reload();
 				}

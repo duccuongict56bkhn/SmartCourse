@@ -31,6 +31,13 @@ if (isset($_POST['type'])) {
 			}
 			break;
 
+		case 'studentsubmit':
+			$user_id = $_POST['user_id'];
+			$course_id = $_POST['course_id'];
+			$unit_id = $_POST['unit_id'];
+
+			
+		break;
 		default:
 			# code...
 			break;
