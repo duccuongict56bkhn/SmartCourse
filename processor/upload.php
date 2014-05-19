@@ -6,7 +6,7 @@ if (isset($_POST['type'])) {
 
 	switch($type) {
 		case 'uploadimage':
-			$course_id = $_POST['']
+			
 		break;
 
 		default:

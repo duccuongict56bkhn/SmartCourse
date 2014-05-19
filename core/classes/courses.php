@@ -429,7 +429,7 @@ class Courses {
 
 	public function get_distinct_unit($course_id)
 	{
-		$query = $this->db->prepare("SELECT DISTINCT `unit_id`, `unit_name`FROM `sm_units` WHERE `course_id` = ?");
+		$query = $this->db->prepare("SELECT DISTINCT `unit_id`, `unit_name` FROM `sm_units` WHERE `course_id` = ?");
 		$query->bindValue(1, $course_id);
 
 		try {

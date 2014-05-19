@@ -29,69 +29,43 @@
 			</div>
 			
 		</div>
-		<div class="col-md-3 pull-right sorting">
+		<!-- <div class="col-md-3 pull-right sorting">
 			<p style="display: block; font-size: 12px;">Sort by</p>
 			<div class="btn-group btn-group-sm">
 				<button type="button" class="btn btn-default active">Recency</button>
 				<button type="button" class="btn btn-default">Popularity</button>
 			</div>
-		</div>
+		</div> -->
 
 		<div class="col-md-9 line-separator">
 		</div>
 
 		<div class="row">
-			<div class="col-md-4 course-hero">
-				<div class="course-thumbnail">
-					<img src="images/courses/css-thumbnail.png" class="course-thumbnail-image">
-				</div>
-				<div class="course-info">
-					<div class="course-topic">
-						Computer Programming
-					</div>
-					<h3 class="course-title">Getting Started with CSS</h3>
-					<div class="course-start-date">
-						April 23th, 2014
-					</div>
-					<a href="#" class="course-num-of-unit">16 units</a>
-				</div>
-				<a href="#" class="course-link"></a>
-			</div>
+		<?php $b_courses = $courses->get_all_courses(); ?>
 
+		<?php foreach ($b_courses as $b_course): ?>
 			<div class="col-md-4 course-hero">
 				<div class="course-thumbnail">
-					<img src="images/courses/php-oop-thumbnail.png" class="course-thumbnail-image">
+					<img src="<?php echo $b_course['course_avatar'] ?>" class="course-thumbnail-image">
 				</div>
 				<div class="course-info">
 					<div class="course-topic">
-						Computer Science
+						<?php $cat_id = $courses->get_info('cat_id', 'course_id', $b_course['course_id']); 
+							echo $courses->get_cat_info('cat_title', 'cat_id', $cat_id);?>
 					</div>
-					<h3 class="course-title">OOP in PHP with Tests</h3>
+					<h3 class="course-title"><?php echo $b_course['course_title']; ?></h3>
 					<div class="course-start-date">
-						Self-paced
+						<?php echo date('M-d-Y', strtotime($b_course['start_date'])); ?>
 					</div>
-					<a href="#" class="course-num-of-unit">20 units</a>
+					<a href="#" class="course-num-of-unit"><?php echo $courses->unit_count($b_course['course_id']); ?> lectures</a>
 				</div>
-				<a href="#" class="course-link"></a>
+				<a href="courses/<?php echo $b_course['course_alias'] . '/'; ?>" class="course-link"></a>
 			</div>
-			<div class="col-md-4 course-hero">
-				<div class="course-thumbnail">
-					<img src="images/courses/database-thumbnail.png" class="course-thumbnail-image">
-				</div>
-				<div class="course-info">
-					<div class="course-topic">
-						Computer Science
-					</div>
-					<h3 class="course-title">Fundamentals of Database</h3>
-					<div class="course-start-date">
-						January 31th, 2014
-					</div>
-					<a href="#" class="course-num-of-unit">22 units</a>
-				</div>
-				<a href="#" class="course-link"></a>
-			</div>
+		<?php endforeach ?>
+			
+
 		</div>
-		<div class="row">
+		<!-- <div class="row">
 			<div class="col-md-4 course-hero">
 				<div class="course-thumbnail">
 					<img src="images/courses/css-thumbnail.png" class="course-thumbnail-image">
@@ -193,7 +167,7 @@
 				</div>
 				<a href="#" class="course-link"></a>
 			</div>
-		</div>
+		</div> -->
 	<div class="col-md-9" id="bottom-line-separator">
 		<div class="line-separator"></div>
 	</div>

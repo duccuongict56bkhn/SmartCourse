@@ -51,9 +51,9 @@ $general->logged_out_protect();
 								$v_units = $courses->get_distinct_unit($id);
 								foreach ($v_units as $v_unit) { ?>
 									<?php if ($v_unit['unit_id'] == 1): ?>
-									 	<a href="#" class="list-group-item unit-group-item active" id="u<?php echo $v_unit['unit_id'];?>" course-id="<?php echo $v_unit['course_id']; ?>"><?php echo $v_unit['unit_name']; ?></a>
+									 	<a href="#" class="list-group-item unit-group-item active" id="u<?php echo $v_unit['unit_id'];?>" course-id="<?php echo $id; ?>"><?php echo $v_unit['unit_name']; ?></a>
 								   <?php else: ?>
-									   <a href="#" class="list-group-item unit-group-item" id="u<?php echo $v_unit['unit_id'];?>" course-id="<?php echo $v_unit['course_id']; ?>"><?php echo $v_unit['unit_name']; ?></a>
+									   <a href="#" class="list-group-item unit-group-item" id="u<?php echo $v_unit['unit_id'];?>" course-id="<?php echo $id; ?>"><?php echo $v_unit['unit_name']; ?></a>
 									<?php endif;?>
 								 <?php } ?>
 							</div>
