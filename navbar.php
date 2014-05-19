@@ -30,6 +30,8 @@ $page_title = ucfirst(substr($filename, 0, strpos($filename, '.php')));
 		<link rel="stylesheet" type="text/css" href="css/bootstrap-notify/css/styles/alert-blackgloss.css">
 		<script type="text/javascript" src="css/bootstrap-notify/js/bootstrap-notify.js"></script>
 	<?php endif ?>
+	<link rel="stylesheet" type="text/css" href="jasny-bootstrap/css/jasny-bootstrap.min.css">
+	<script type="text/javascript" src="jasny-bootstrap/js/jasny-bootstrap.min.js"></script>
 </head>
 <body>
 

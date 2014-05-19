@@ -71,6 +71,21 @@ if ($general->logged_in()) {
 				}
 				
 			break;
+
+			case 'sendmessage':
+				$sender_id = $_POST['sender_id'];
+				$receiver_id = $_POST['receiver_id'];
+				$subject = $_POST['subject'];
+				$message = $_POST['message'];
+
+				$flag = $courses->send_message($sender_id, $receiver_id, $subject, $message);
+				if ($flag === true) {
+					return http_response_code(200);
+				} else {
+					return http_response_code(400);
+				}
+			break;
+
 			default:
 				# code...
 				break;

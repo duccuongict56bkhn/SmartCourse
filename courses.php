@@ -39,11 +39,74 @@
 					if (strlen($keyword) > 16) { ?>
 						<h2>Search results for &ldquo;<?php echo substr($keyword, 0, 15) . '...'; ?>&rdquo;</h2>
 					<?php } else {?>
-					<h2>Search results for &ldquo;<?php echo $keyword; ?>&rdquo;</h2>
-				<?php } 
+						<h2>Search results for &ldquo;<?php echo $keyword; ?>&rdquo;</h2>
+					<?php } ?>
                 
+                <div class="course-wrapper">
+						<?php $vscs = $courses->search_courses($_POST['keyword']); 
+						foreach ($vscs as $vsc) { ?>
+						<div class="row">
+							<div class="col-md-9 entry">
+								<div class="entry-wrap">
+									<div class="entry-thumbnail">
+										<a href="courses/<?php echo $vsc['course_alias'] . '/' ;?>" title="Link to <?php echo $vsc['course_title']; ?>"></a>
+										<img src="<?php echo $vsc['course_avatar'];?>">
+									</div> <!-- end .entry-thumbnail-->
+									<div class="entry-meta">
+										<span class="school-name"><?php echo $vsc['school']; ?></span>
+			                            <span class="pull-right label label-primary"><?php echo $courses->unit_count($vsc['course_id']);?> lectures</span>
+										<h2 class="course-title">
+											<a href="courses/<?php echo $vsc['course_alias'] . '/' ;?>" title="Link to <?php echo $vsc['course_title']; ?>">
+												<span><?php echo $vsc['course_title']; ?></span>
+											</a>
+										</h2>
+										<div class="course-progress">
+											<?php if ($vsc['course_type'] == 1) { ?>
+												<span class="self-study">Self-study</span><br>
+												<div class="go-to-course">
+													<a href="courses/<?php echo $vsc['course_alias'] . '/' ;?>"><span>Course info</span></a> 
+													<?php if ($courses->is_registered($user_id, $vsc['course_id'])): ?>
+														<span class="glyphicon glyphicon-ok"></span><span>Enrolled</span>
+													<?php endif ?>
+													<div class="pull-right">
+														<a href="courses/<?php echo $vsc['course_alias'] . '/' ;?>" class="btn btn-success">Go to class</a>
+													</div>										
+												</div>
+											
+											<?php } else { ?>
+												<?php $end_date = date('M jS',strtotime($vsc['start_date'] . ' + ' . $vsc['length']*7 . ' days'));?>
+												<span><?php echo date('M jS', strtotime($vsc['start_date'])); ?></span>
+												<span class="pull-right"><?php echo $end_date; ?></span>
+			                                    <?php $tmp = (time() - strtotime($vsc['start_date'])); 
+			                                          $week = $tmp / 604800 % 52; 
+			                                          $prog = $week / $vsc['length'] * 100;?>
+												<div class="progress" style="height: 8px;">
+												  <div class="progress-bar progress-bar-default" role="progressbar" aria-valuenow="<?php echo $prog?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $prog . '%';?>">
+												    <span class="sr-only"><?php echo $prog; ?>% Complete (success)</span>
+												  </div>
+												</div>
+												<a href="courses/<?php echo $vsc['course_alias'] . '/' ;?>" style="text-decoration: none;"><span>Course info</span></a> 
+												<?php if ($courses->is_registered($user_id, $vsc['course_id'])): ?>
+														| <span class="glyphicon glyphicon-ok"></span>  <span>Enrolled</span>
+													<?php endif ?>
+												<div class="pull-right">
+													<?php 
+													if ($general->logged_in()) {
+														if ($courses->is_created_by_me($user['user_id'], $vsc['course_id'])){?>
+														<a href="editcourse.php?course_alias=<?php echo $vsc['course_alias'] ;?>" class="btn btn-warning">Edit</a>	
+													<?php }} ?>
+													<a href="courses/<?php echo $vsc['course_alias'] . '/' ;?>" class="btn btn-success">Go to class</a>
+												</div>
+											<?php } ?>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<?php } ?>
+					
                 
-                } else { ?>
+               <?php } else { ?>
                 <?php if (isset($_GET['cat_id'])): ?>
                 	<h2><?php echo $courses->get_cat_info('cat_title', 'cat_id', $_GET['cat_id']); ?></h2>
                 <?php else: ?>
@@ -56,7 +119,7 @@
 		</div>
 
 		<div class="course-wrapper">
-		<?php if (isset($_GET['keyword']) === false || isset($_GET['cat_id']) === false): ?>
+		<?php if (!isset($_GET['cat_id'])): ?>
 			<?php $v_courses = $courses->get_all_courses(); 
 			foreach ($v_courses as $v_course) { ?>
 			<div class="row">

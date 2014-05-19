@@ -141,7 +141,8 @@ $general->logged_out_protect();
 											<span class="glyphicon glyphicon-user"></span>
 										</div>
 										<div class="col-xs-6 text-right">
-											<p class="figure-heading">125</p>
+										<?php $enroll_num = $courses->get_num_enroller($id); ?>
+											<p class="figure-heading"><?php echo $enroll_num; ?></p>
 										</div>
 										<div class="text-right" style="padding-right: 14px;"><p>Students are taking this course</p></div>
 									</div>
@@ -159,7 +160,8 @@ $general->logged_out_protect();
 											<span class="glyphicon glyphicon-tasks"></span>
 										</div>
 										<div class="col-xs-6 text-right">
-											<p class="figure-heading">701</p>
+											<?php $ex_num = $courses->get_num_exercise($id); ?>
+											<p class="figure-heading"><?php echo $ex_num; ?></p>
 										</div>
 										<div class="text-right" style="padding-right: 14px;"><p>Exercises in this course</p></div>
 									</div>

@@ -116,7 +116,7 @@ class Courses {
 
 	public function get_enroller($course_id)
 	{
-		$query = $this->db->prepare("SELECT `user_id`, `username`, `email`, `display_name`, `avatar`
+		$query = $this->db->prepare("SELECT `user_id`, `username`, `email`, `display_name`, `avatar`, `first_name`, `last_name`, `time`
 											  FROM `sm_users`
 											  WHERE `user_id` IN (SELECT `user_id`
 											  							 FROM `sm_enroll_course`
@@ -127,6 +127,34 @@ class Courses {
 		try {
 			$query->execute();
 			return $query->fetchAll();
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+	}
+
+	public function get_num_enroller($course_id)
+	{
+		$query = $this->db->prepare("SELECT COUNT(`user_id`) FROM `sm_enroll_course` WHERE `course_id` = ?");
+		$query->bindValue(1, $course_id);
+
+		try {
+			$query->execute();
+
+			return $query->fetchColumn();
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+	}
+
+	public function get_num_exercise($course_id)
+	{
+		$query = $this->db->prepare("SELECT COUNT(`exercise_id`) FROM `sm_exercises` WHERE `course_id` = ?");
+		$query->bindValue(1, $course_id);
+
+		try {
+			$query->execute();
+
+			return $query->fetchColumn();
 		} catch (PDOException $e) {
 			die($e->getMessage());
 		}
@@ -787,6 +815,49 @@ class Courses {
 			die($e->getMessage());
 		}
 	}
-}
 
+	public function get_max_message_id()
+	{
+		$query = $this->db->prepare("SELECT IFNULL(MAX(`message_id`),0) FROM `sm_messages`");
+		$query->execute();
+		return $query->fetchColumn();
+	}
+
+	public function create_message($subject, $message)
+	{
+		$query = $this->db->prepare("INSERT INTO `sm_messages`(`message_id`, `subject`, `message`)
+											  VALUES(?,?,?)");
+		$message_id = 1 + $this->get_max_message_id();
+		$query->bindValue(1, $message_id);
+		$query->bindValue(2, $subject);
+		$query->bindValue(3, $message);
+
+		try {
+			$query->execute();
+			return $message_id;
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+	}
+
+	public function send_message($sender_id, $receiver_id, $subject, $message)
+	{
+		$message_id = $this->create_message($subject, $message);
+
+		$query = $this->db->prepare("INSERT INTO `sm_send_message`(`sender_id`, `receiver_id`, `message_id`, `status`, `timestamp`)
+																				VALUES(?,?,?,?,?)");
+		$query->bindValue(1, $sender_id);
+		$query->bindValue(2, $receiver_id);
+		$query->bindValue(3, $message_id);
+		$query->bindValue(4, 'pending');
+		$query->bindValue(5, time());
+
+		try {
+			$query->execute();
+			return true;
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+	}
+}
  ?>

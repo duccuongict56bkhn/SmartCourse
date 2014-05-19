@@ -93,7 +93,16 @@ $general->logged_out_protect();
 							<h4 class="panel-title">Course avatar</h4>
 						</div>
 						<div class="panel-body">
-							
+							<div class="fileupload fileinput-exists" data-provides="fileinput" id="avatarFileInput">
+								<div style="margin-bottom: 5px;">
+									<strong>Note: </strong><span>You should choose images in size proportional to ratio of 400px &times; 277px</span>
+								</div>
+							  <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 139px;" id="avatarPreview"></div>
+							  <div>
+							    <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span class="fileinput-exists">Change</span><input type="file" name="..."></span>
+							    <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+							  </div>
+							</div>
 						</div>
 					</div>
 					<div class="panel panel-default">
@@ -101,8 +110,21 @@ $general->logged_out_protect();
 							<h4 class="panel-title">Course cover photo</h4>
 						</div>
 						<div class="panel-body">
-							
+							<div style="margin-bottom: 5px;">
+								<strong>Note: </strong><span>You should choose images in size proportional to ratio of 850px &times; 315px</span>
+							</div>
+							<div class="fileinput fileinput-new" data-provides="fileinput" id="coverFileInput">
+							  <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width:850px; height: 315px;" id="coverPreview"></div>
+							  <div>
+							    <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span class="fileinput-exists">Change</span><input type="file" name="..."></span>
+							    <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+							  </div>
+							</div>
 						</div>
+					</div>
+					<div class="row" style="text-align: center;">
+						<a href="#" class="btn btn-primary" id="btnUploadPhoto" style="width: 100px;"><span class="glyphicon glyphicon-upload"></span>Update</a>
+						<a href="#" class="btn btn-default" id="btnDiscardPhoto" style="width: 100px;"><span class="glyphicon glyphicon-pencil"></span>Discard</a>
 					</div>
 				</div>
 		</div>
@@ -124,6 +146,32 @@ $general->logged_out_protect();
 		// 	alert(course_alias);
 		// });
 	});
+</script>
+
+<script type="text/javascript">
+	$('#btnUploadPhoto').click(function(e) {
+		e.preventDefault();
+
+		var avatar = $('#avatarPreview img').attr('src');
+		var cover = $('#coverPreview img').attr('src');
+		var type = 'uploadimage';
+		var course_id = '<?php echo $courses->get_ifa($alias); ?>';
+
+		$.ajax({
+			type 			: 'POST',
+			url 			: 'processor/upload.php',
+			data 			: {
+				type  : type,
+				course_id : course_id;
+				avatar  : avatar;
+				course_cover : cover;
+			},
+			success : function(data) {
+				console.log(data);
+			} 
+		});
+
+	})
 </script>
 <?php } else { 
 	header('Location: courses.php');}?>

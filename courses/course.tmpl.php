@@ -188,7 +188,7 @@ if ($general->logged_in()) {
 				<h2 class="page-header">Announcements</h2>
 				<?php if ($is_owner): ?>
 					<div class="pull-right">
-						<a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-flash"></span>Create new</a>
+						<a href="../../editannouncement.php?course_alias=<?php echo $course_data['course_alias']; ?>" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-flash"></span>Create new</a>
 					</div>
 				<?php endif ?>
 			</div>
@@ -522,7 +522,91 @@ if ($general->logged_in()) {
 			</div>  <!-- End of .main-content -->
 		<?php endif ?>
 		<?php endif ?>
-		<!-- End exercise.php -->
+		<!-- End studentsubmit.php -->
+
+		<?php if ($filename == 'studentlist.php'): ?>
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main-content">
+			<div class="modal fade" id="sendMessage" tabindex="-1" role="dialog" aria-labelledby="sendMessageLabel" aria-hidden="true">
+	            <div class="modal-dialog">
+	                <div class="panel panel-primary">
+	                    <div class="panel-heading">
+	                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	                        <h4 class="panel-title" id="sendMessageLabel"><span class="glyphicon glyphicon-envelope"></span>Send new message</h4>
+	                    </div>
+	                    <form action="#" method="post" accept-charset="utf-8">
+	                    <div class="modal-body" style="padding: 5px;" id="messageModalBody">
+	                           <div class="row">
+	                                <div class="col-lg-12 col-md-12 col-sm-12" style="padding-bottom: 10px;">
+	                                    <input class="form-control" id="messageSubject" name="subject" placeholder="Subject" type="text" required />
+	                                </div>
+	                            </div>
+	                            <div class="row">
+	                                <div class="col-lg-12 col-md-12 col-sm-12">
+	                                    <textarea style="resize:vertical;" id="messageMsg" class="form-control" placeholder="Message..." rows="8" name="comment" required></textarea>
+	                                </div>
+	                            </div>
+	                        </div>  
+	                        <div class="panel-footer" style="margin-bottom:-14px;">
+	                            <input type="button" class="btn btn-success" id="sendBtn"value="Send"/>
+	                                <!--<span class="glyphicon glyphicon-ok"></span>-->
+	                            <input type="reset" class="btn btn-danger" id="clearBtn" value="Clear" />
+	                                <!--<span class="glyphicon glyphicon-remove"></span>-->
+	                            <button style="float: right;" type="button" class="btn btn-default btn-close" data-dismiss="modal">Close</button>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+
+				<div class="row" id="student-list" style="padding-left: 15px; padding-right: 15px;">
+							<div class="panel panel-primary">
+								<div class="panel-heading">
+									<h3 class="panel-title"><span class="glyphicon glyphicon-list"></span>Student list</h3>
+								</div>
+								<?php $enrollers = $courses->get_enroller($id); ?>
+								<div class="panel-body">
+									<table class="table">
+										<thead>
+											<tr>
+												<th>No.</th>
+												<th>Firstname</th>
+												<th>Lastname</th>
+												<th>Username</th>
+												<th>Register date</th>
+												<th>Current progress</th>
+												<th>Send message</th>
+											</tr>
+										</thead>
+										<tbody>
+										<?php $no = 0; ?>
+										<?php foreach ($enrollers as $enroller): ?>
+											
+											<tr>
+												<th><?php echo ++$no; ?></th>
+												<th><?php echo $enroller['first_name'];?></th>
+												<th><?php echo $enroller['last_name'];?></th>
+												<th><a href="../../profile.php?username=<?php echo $enroller['username']; ?>"><?php echo $enroller['username'];?></a></th>
+												<th><?php echo date('d-M-Y', $enroller['time']); ?></th>
+												<th>
+													<div class="progress">
+														<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+	    												60%
+	  													</div>
+													</div>
+												</th>
+												<th>
+													<a href="#" class="btn btn-default btn-sm" name="send_mes_btn" sender_id="<?php echo $user_id; ?>" sender="<?php echo $users->fetch_info('username', 'user_id', $user_id); ?>" receiver_id="<?php echo $enroller['user_id'];?>" receiver="<?php echo $enroller['username']; ?>"><span class="glyphicon glyphicon-pencil"></span>Send message</a>
+												</th>
+											</tr>
+										<?php endforeach ?>
+											
+										</tbody>
+									</table>
+								</div>
+							</div>
+				</div>
+				</div>
+			</div>
+		<?php endif ?>
 	</div>
 </div>
 <!-- End .main content -->
@@ -798,6 +882,49 @@ if ($general->logged_in()) {
 				}
 			});
 		});
+	</script>
+<?php endif ?>
+
+<?php if ($filename == 'studentlist.php'): ?>
+	<script type="text/javascript">
+	$('a[name="send_mes_btn"]').click(function(e) {
+		var sender_id = $(this).attr('sender_id');
+		var receiver_id = $(this).attr('receiver_id');
+		var receiver = $(this).attr('receiver');
+
+		var options = {
+			"backdrop" : "static"
+		}
+		$('#sendMessageLabel').text('Send message to ' + receiver);
+		$('#sendMessage').modal(options);
+
+		$('#sendBtn').click(function(e) {
+			e.preventDefault();
+			$('.alert-success').remove();
+			$('.alert-danger').remove();
+
+			var subject = $('#messageSubject').val();
+			var message = $('#messageMsg').val();
+
+			$.ajax({
+				type : 'POST',
+				url  : '../../processor/create.php',
+				data : {
+					type 	: 'sendmessage',
+					sender_id : sender_id,
+					receiver_id : receiver_id,
+					subject : subject,
+					message : message
+				},
+				success : function(e) {
+					$('#messageModalBody').append('<div class="alert alert-success">Your message has been sent</div>');
+				},
+				error : function(e) {
+					$('#messageModalBody').append('<div class="alert alert-danger">There is something wrong, please try again</div>');
+				}
+			});
+		});
+	})
 	</script>
 <?php endif ?>
 </body>
