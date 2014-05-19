@@ -62,7 +62,7 @@ if (isset($_GET['success']) && empty($_GET['success'])) {
 						$status = '';
 					}?>
 					<form class="form" role="form" method="post" action="">
-                         <div class="form-group username">
+                         <div class="form-group username" id="usernameGroup">
                            <label for="username">Username</label>
                            <input type="text" class="form-control" id="username" name="username" placeholder="Username" value="<?php if (isset($_POST['username'])) echo htmlentities($_POST['username']); ?>" required>
                         </div>
@@ -107,23 +107,25 @@ if (isset($_GET['success']) && empty($_GET['success'])) {
 		</div>
 	</div>	
 </div>
-<script>
-// 	$('#username').keyup(function() {
-// 		username = $('#username').val();
-// 		if (username.length >= 3) {
-// 			$.ajax({
-// 				type  : 'POST',
-// 				url   : 'check.php',
-// 				data  : { username : username },
-// 				cache : 'false',
-// 				beforeSend: fucntion() {
-// 					$('.username').append('<img src="images/loading.gif" /><span> Loading</span>');
-// 				},
-// 				success: (function() {
+<script type="text/javascript">
+  $('#username').keyup(function(e) {
+    var username = $(this).val();
+    var type = 'checkuserexistence';
 
-// 				})
-// 			});
-// 		};
-// 	});
-// </script>
+    if (username.length >= 3) {
+      $.ajax({
+        type : 'POST',
+        url : 'processor/fetch.php',
+        data : {
+          type : type,
+          username : username
+        },
+        beforeSend : function(e) {
+          
+        }
+      });
+    }
+  });
+</script>
+
  <?php require_once 'footer.php'; ?>
