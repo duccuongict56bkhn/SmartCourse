@@ -287,10 +287,9 @@ class Users {
 		$query->bindValue(5, $avatar);
 		$query->bindValue(6, $user_id);
 
-		var_dump($query);
-
 		try {
 			$query->execute();
+			return true;
 		} catch (PDOException $e) {
 			die($e->getMessage());
 		}

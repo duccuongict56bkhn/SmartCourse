@@ -51,6 +51,30 @@ if (isset($_POST['type'])) {
 			}
 		break;
 
+		case 'updateuserprofile':
+			$username = $_POST['username'];
+			$first_name = $_POST['first_name'];
+			$last_name = $_POST['last_name'];
+			$bio = $_POST['bio'];
+			$display_name = $_POST['display_name'];
+			$avatar = $_POST['avatar'];
+			$avatar = str_replace('data:image/png;base64,', '', $avatar);
+			$data = base64_decode($avatar);		
+
+			$avatar_path = '../images/avatars/'. $username . '.png';
+			$db_avatar = 'images/avatars/'. $username . '.png';
+			file_put_contents('../images/avatars/avatar.png', $data);
+			rename('../images/avatars/avatar.png', '../images/avatars/' . $username . '.png');
+			
+			$user_id = $users->fetch_info('user_id', 'username', $username);
+			$flag = $users->update_user($user_id, $first_name, $last_name, $bio, $display_name, $db_avatar);
+			if ($flag === true) {
+				echo 1;
+			} else {
+				echo 0;
+			}
+		break;
+
 		default:
 			# code...
 			break;

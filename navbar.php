@@ -91,7 +91,7 @@ $page_title = ucfirst(substr($filename, 0, strpos($filename, '.php')));
 					<ul class="dropdown-menu">
 						<li><a href="course.php?username=<?php echo $user['username'];?>"><span class="glyphicon glyphicon-list"></span>My courses</a></li>
 						<li><a href="profile.php?username=<?php echo $user['username'];?>"><span class="glyphicon glyphicon-user"></span>My profile</a></li>
-						<li><a href="settings.php"><span class="glyphicon glyphicon-wrench"></span>Settings</a></li>
+						<li><a href="settings.php?username=<?php echo $user['username'];?>""><span class="glyphicon glyphicon-wrench"></span>Settings</a></li>
 						<li><a href="signout.php"><span class="glyphicon glyphicon-off"></span>Sign out</a></li>
 					</ul>
 				</li>
