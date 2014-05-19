@@ -60,40 +60,40 @@ if (isset($_GET['success']) && empty($_GET['success'])) {
 					<?php if (isset($status) && !empty($status)) {
 						echo "<div class=\"alert alert-info\">" . $status ."</div>";
 						$status = '';
-					}?>
-					<form class="form" role="form" method="post" action="">
-                         <div class="form-group username" id="usernameGroup">
-                           <label for="username">Username</label>
-                           <input type="text" class="form-control" id="username" name="username" placeholder="Username" value="<?php if (isset($_POST['username'])) echo htmlentities($_POST['username']); ?>" required>
-                        </div>
-                        <div class="form-group">
-                           <label for="password">Password</label>
-                           <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
-                        </div>
-                        <div class="form-group">
-                           <label for="password">Password Confirm</label>
-                           <input type="password" class="form-control" id="password_confirm" name="password_confirm" placeholder="Password" required>
-                        </div>
-                        <div class="form-group">
-                           <label for="email">Email</label>
-                           <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="<?php if (isset($_POST['email'])) echo htmlentities($_POST['email']); ?>" required>
-                        </div>
-                        <div class="form-group user-role">
-                        	<label>I am a: </label>
-                        		<input type="radio" name="role" id="role_student">Student</input>
-                        		<input type="radio" name="role" id="role_teacher">Teacher</input>
-                        </div>
-                    	<div class="form-group">
+					} ?>
+					<form role="form" method="post" action="" iname="signUpForm">
+            <div class="form-group" id="usernameGroup">
+               <label for="username">Username</label>
+               <input type="text" class="form-control" id="username" name="username" placeholder="Username" value="<?php if (isset($_POST['username'])) echo htmlentities($_POST['username']); ?>" required>
+            </div>
+            <div class="form-group" id="passwordGroup">
+               <label for="password">Password</label>
+               <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+            </div>
+            <div class="form-group" id="passwordConfirmGroup">
+               <label for="password">Password Confirm</label>
+               <input type="password" class="form-control" id="password_confirm" name="password_confirm" placeholder="Password" required>
+            </div>
+            <div class="form-group" id="emailGroup">
+               <label for="email">Email</label>
+               <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="<?php if (isset($_POST['email'])) echo htmlentities($_POST['email']); ?>" required>
+            </div>
+            <div class="form-group" is="roleGroup">
+            	<label>I am a: </label>
+            		<input type="radio" name="role" id="role_student">Student</input>
+            		<input type="radio" name="role" id="role_teacher">Teacher</input>
+            </div>
+          	<div class="form-group">
 							<div class="checkbox">
 								<label>
 									<input type="checkbox" required>I agree to the <a href="terms.html">Terms of Services</a> and <a href="terms.html#hornor-code">Honor Code</a>
 								</label>
 							</div>
-						</div>
-                        <div class="form-group col-xs-6" style="padding-left: 0 !important;">
-                           <button type="submit" name="submit" class="btn btn-primary btn-block" id="btn-signup">Sign up</button>
-                        </div>
-                     </form>
+	          </div>
+            <div class="form-group col-xs-6" style="padding-left: 0 !important;">
+               <button type="submit" name="submit" class="btn btn-primary btn-block" id="btn-signup">Sign up</button>
+            </div>
+          </form>
 				</div>
 
 			<?php 
@@ -108,9 +108,15 @@ if (isset($_GET['success']) && empty($_GET['success'])) {
 	</div>	
 </div>
 <script type="text/javascript">
+  var error = false;
   $('#username').keyup(function(e) {
     var username = $(this).val();
     var type = 'checkuserexistence';
+
+    $('.ajax-loader').remove();
+    $('#usernameGroup').removeClass('has-error');
+    $('#usernameGroup').removeClass('has-success');
+    $('.help-block-u').remove();
 
     if (username.length >= 3) {
       $.ajax({
@@ -121,10 +127,72 @@ if (isset($_GET['success']) && empty($_GET['success'])) {
           username : username
         },
         beforeSend : function(e) {
-          
+          $('#usernameGroup').append('<span class="ajax-loader"><img  src="images/ajax-loader.gif" />  Checking...</span>')
+        },
+        success : function(data) {
+          if (data == 1) {
+            $('#usernameGroup').addClass('has-error');
+            $('.ajax-loader').remove();
+            $('#usernameGroup').append('<div class="help-block-u" >This user has already existed!</div>');
+            error = true;
+          } else if (data == 0) {
+            $('#usernameGroup').addClass('has-success');
+            $('.ajax-loader').remove();
+            $('#usernameGroup').append('<div class="help-block-u" >Available username!</div>');
+            error = false;
+          }
         }
       });
     }
+  });
+  
+  $('#password').keyup(function(e) {
+    var password = $(this).val();
+
+    $('#passwordGroup').removeClass('has-error');
+    $('#passwordGroup').removeClass('has-success');
+    $('.help-block-p').remove();
+
+      if (password.length < 6) {
+        $('#passwordGroup').addClass('has-error');
+        $('#passwordGroup').append('<div class="help-block-p" >Password length must be between 6 and 18</div>');
+        error = true;
+      } else if (password.length >= 6 && password.length <= 18) {
+        $('#passwordGroup').addClass('has-success');
+        $('#passwordGroup').append('<div class="help-block-p" >Correct password</div>');
+        error = false;
+      } else if (password.length >= 18) {
+        $('#passwordGroup').addClass('has-error');
+        $('#passwordGroup').append('<div class="help-block-p" >Password length must be between 6 and 18</div>');
+      }
+  });
+
+
+  $('#password_confirm').keyup(function(e) {
+    var password_confirm = $(this).val();
+    // var password = ('#password').val();
+    var valid = $('#signUpForm').validate({
+      rule : {
+        password_confirm : {
+          equalTo : "#password"
+        }
+      }
+    });
+    alert(valid);
+
+    // $('#passwordConfirmGroup').removeClass('has-error');
+    // $('#usernameGroup').removeClass('has-success');
+    // $('.help-block .cf').remove();
+
+    // if (password != password_confirm) {
+    //   $('#passwordConfirmGroup').addClass('has-error');
+    //   $('#passwordConfirmGroup').append('<div class="help-block cf" >Password not match</div>');
+    //   error = true;
+    // } else {
+    //   $('#passwordConfirmGroup').addClass('has-success');
+    //   $('#passwordConfirmGroup').append('<div class="help-block cf" >Password match</div>');
+    //   error = false;
+    // }
   });
 </script>
 

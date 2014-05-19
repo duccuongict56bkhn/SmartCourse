@@ -38,6 +38,19 @@ if (isset($_POST['type'])) {
 
 			
 		break;
+
+		case 'checkuserexistence':
+			$username = $_POST['username'];
+
+			$flag = $users->user_exists($username);
+
+			if ($flag === true) {
+				echo 1;
+			} else {
+				echo 0;
+			}
+		break;
+
 		default:
 			# code...
 			break;
