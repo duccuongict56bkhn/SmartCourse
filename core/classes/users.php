@@ -57,7 +57,7 @@ class Users {
 		#$password	= sha1($password);
 		$password 	= $bcrypt->genHash($password);
 
-		$query = $this->db->prepare("INSERT INTO `sm_users` (`username`, `password`, `email`, `email_code`, `ip`, `time`) VALUES (?, ?, ?, ?, ?, ?)");
+		$query = $this->db->prepare("INSERT INTO `sm_users` (`username`, `password`, `email`, `email_code`, `ip`, `time`, `confirmed`) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
 		$query->bindValue(1, $username);
 		$query->bindValue(2, $password);
@@ -65,7 +65,7 @@ class Users {
 		$query->bindValue(4, $email_code);
 		$query->bindValue(5, $ip);
 		$query->bindValue(6, $time);
-
+		$query->bindValue(7, 1);
 		try {
 			$query->execute();
 

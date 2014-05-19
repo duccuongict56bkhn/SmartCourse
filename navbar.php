@@ -18,6 +18,7 @@ $page_title = ucfirst(substr($filename, 0, strpos($filename, '.php')));
    <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800&subset=latin,vietnamese' rel='stylesheet' type='text/css'>
 	<script src="js/jquery-2.1.0.min.js"></script>
+	<script src="js/jquery.validate.min.js"></script>
 	<script src="js/bootstrap.js"></script>
 	<script src="js/ajax.js"></script>
 	<script src="js/prettify.js"></script>

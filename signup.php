@@ -25,6 +25,9 @@ if (isset($_POST['submit'])) {
         } else if (strlen($_POST['password']) >18){
             $errors[] = 'Your password cannot be more than 18 characters long';
         }
+        if ($_POST['password_confirm'] != $_POST['password']) {
+           $errors[] = 'Passwords do not match';
+        }
         if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) === false) {
             $errors[] = 'Please enter a valid email address';
         }else if ($users->email_exists($_POST['email']) === true) {
@@ -90,8 +93,8 @@ if (isset($_GET['success']) && empty($_GET['success'])) {
 								</label>
 							</div>
 	          </div>
-            <div class="form-group col-xs-6" style="padding-left: 0 !important;">
-               <button type="submit" name="submit" class="btn btn-primary btn-block" id="btn-signup">Sign up</button>
+            <div class="form-group" style="padding-left: 0 !important;">
+               <button type="submit" name="submit" class="btn btn-primary btn-block" id="btn-signup" style="width: 200px;">Sign up</button>
             </div>
           </form>
 				</div>
@@ -108,7 +111,10 @@ if (isset($_GET['success']) && empty($_GET['success'])) {
 	</div>	
 </div>
 <script type="text/javascript">
+$(document).ready(function() {
+
   var error = false;
+
   $('#username').keyup(function(e) {
     var username = $(this).val();
     var type = 'checkuserexistence';
@@ -167,18 +173,16 @@ if (isset($_GET['success']) && empty($_GET['success'])) {
       }
   });
 
-
   $('#password_confirm').keyup(function(e) {
     var password_confirm = $(this).val();
     // var password = ('#password').val();
-    var valid = $('#signUpForm').validate({
+    $('#signUpForm').validate({
       rule : {
         password_confirm : {
           equalTo : "#password"
         }
       }
     });
-    alert(valid);
 
     // $('#passwordConfirmGroup').removeClass('has-error');
     // $('#usernameGroup').removeClass('has-success');
@@ -194,6 +198,7 @@ if (isset($_GET['success']) && empty($_GET['success'])) {
     //   error = false;
     // }
   });
+});
 </script>
 
  <?php require_once 'footer.php'; ?>
