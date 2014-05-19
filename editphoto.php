@@ -65,15 +65,14 @@ $general->logged_out_protect();
 	<div class="row">
 		<div class="col-sm-3 col-md-2 sidebar">
 			<ul class="nav nav-sidebar">
-				<li><a href="editcourse.php?course_alias=<?php echo $course_data['course_alias']; ?>"><span class="glyphicon glyphicon-home"></span>Dashboard</a></li>
-				<li><a href="editannouncement.php?course_alias=<?php echo $course_data['course_alias'];?>"><span class="glyphicon glyphicon-bullhorn"></span>Announcements</a></li>
+				<li><a href="editcourse.php?course_alias=<?php echo $course_data['course_alias']; ?>" ><span class="glyphicon glyphicon-home"></span>Dashboard</a></li>
+				<li><a href="editannouncement.php?course_alias=<?php echo $course_data['course_alias'];?>" ><span class="glyphicon glyphicon-bullhorn"></span>Announcements</a></li>
 				<li><a href="editphoto.php?course_alias=<?php echo $course_data['course_alias'];?>" class="active"><span class="glyphicon glyphicon-picture"></span>Photos</a></li>
 				<li><a href="editsyllabus.php?course_alias=<?php echo $course_data['course_alias'];?>"><span class="glyphicon glyphicon-eye-open"></span>Syllabus</a></li>
-				<li><a href="editcalendar.php?course_alias=<?php echo $course_data['course_alias'];?>"><span class="glyphicon glyphicon-calendar"></span>Calendar</a></li>
 				<li><a href="editlecture.php?course_alias=<?php echo $course_data['course_alias'];?>"><span class="glyphicon glyphicon-book"></span>Lectures</a></li>
-				<li><a href="editexercise.php?course_alias=<?php echo $alias; ?>"><span class="glyphicon glyphicon-tasks"></span>Exercises</a></li>
-				<li><a href="editmaterial.php?course_alias=<?php echo $course_data['course_alias'];?>"><span class="glyphicon glyphicon-print"></span>Course materials</a></li>
-				<li><a href="editforum.php?course_alias=<?php echo $course_data['course_alias'];?>"><span class="glyphicon glyphicon-bookmark"></span>Discussions</a></li>
+				<li><a href="editexercise.php?course_alias=<?php echo $alias; ?>" ><span class="glyphicon glyphicon-tasks"></span>Exercises</a></li>
+				<li><a href="editmaterial.php?course_alias=<?php echo $alias; ?>"><span class="glyphicon glyphicon-print"></span>Course materials</a></li>
+				<li><a href="courseforum.php?course_alias=<?php echo $alias; ?>"><span class="glyphicon glyphicon-bookmark"></span>Discussions</a></li>
 			</ul>
 		</div> <!-- end of .sidebar -->
 
@@ -154,6 +153,7 @@ $general->logged_out_protect();
 
 		var avatar = $('#avatarPreview img').attr('src');
 		var cover = $('#coverPreview img').attr('src');
+
 		var type = 'uploadimage';
 		var course_id = '<?php echo $courses->get_ifa($alias); ?>';
 
@@ -162,16 +162,20 @@ $general->logged_out_protect();
 			url 			: 'processor/upload.php',
 			data 			: {
 				type  : type,
-				course_id : course_id;
-				avatar  : avatar;
-				course_cover : cover;
+				course_id : course_id,
+				avatar  : avatar,
+				course_cover : cover
 			},
 			success : function(data) {
-				console.log(data);
+				if (data == 1) {
+					alert('Updated successfully');
+				} else {
+					alert('There were errors while uploading. Please try again');
+				}
 			} 
 		});
 
-	})
+	});
 </script>
 <?php } else { 
 	header('Location: courses.php');}?>

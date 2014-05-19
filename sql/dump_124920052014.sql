@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 19, 2014 at 02:15 PM
+-- Generation Time: May 19, 2014 at 05:49 PM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.12
 
@@ -63,16 +63,16 @@ CREATE TABLE IF NOT EXISTS `sm_courses` (
   `school` varchar(255) NOT NULL,
   PRIMARY KEY (`course_id`),
   KEY `cat_id` (`cat_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Courses that are currently available in the system' AUTO_INCREMENT=31 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Courses that are currently available in the system' AUTO_INCREMENT=32 ;
 
 --
 -- Dumping data for table `sm_courses`
 --
 
 INSERT INTO `sm_courses` (`cat_id`, `course_id`, `course_code`, `course_title`, `course_alias`, `course_type`, `course_desc`, `start_date`, `length`, `course_avatar`, `course_cover`, `school`) VALUES
-(1, 19, 'CS2250', 'Fundamentals of Databases', 'dbstanford', '2', '"Introduction to Databases" had a very successful public offering in fall 2011, as one of Stanford''s inaugural three massive open online courses. Since then, the course materials have been improved and expanded, and we''re excited to be launching a second public offering of the course in winter 2013. The course includes video lectures and demos with in-video quizzes to check understanding, in-depth standalone quizzes, a wide variety of automatically-checked interactive programming exercises, midterm and final exams, a discussion forum, optional additional exercises with solutions, and pointers to readings and resources. Taught by Professor Jennifer Widom, the curriculum draws from Stanford''s popular Introduction to Databases course', '2014-02-01 12:30:00', 20, 'images/courses/database-thumbnail.png', '', 'Stanford University'),
+(1, 19, 'CS2250', 'Fundamentals of Databases', 'dbstanford', '2', '"Introduction to Databases" had a very successful public offering in fall 2011, as one of Stanford''s inaugural three massive open online courses. Since then, the course materials have been improved and expanded, and we''re excited to be launching a second public offering of the course in winter 2013. The course includes video lectures and demos with in-video quizzes to check understanding, in-depth standalone quizzes, a wide variety of automatically-checked interactive programming exercises, midterm and final exams, a discussion forum, optional additional exercises with solutions, and pointers to readings and resources. Taught by Professor Jennifer Widom, the curriculum draws from Stanford''s popular Introduction to Databases course', '2014-02-01 12:30:00', 20, 'images/courses/dbstanford.png', 'images/courses/dbstanford.cover.png', 'Stanford University'),
 (1, 29, 'IT3258E', 'Fundamentals of Cryptography', 'crypto-010', '2', 'Some description for Fundamentals of Cryptography', '2014-03-12 00:00:00', 14, 'images/courses/css-thumbnail.png', '', 'UC Berkeley'),
-(9, 30, '6.041x', 'Introduction to Probability', 'introprob', '2', 'Some description for Introduction to Probability', '2014-04-01 00:00:00', 12, 'images/courses/css-thumbnail.png', '', 'HUST');
+(9, 30, '6.041x', 'Introduction to Probability', 'introprob', '2', 'Some description for Introduction to Probability', '2014-04-01 00:00:00', 12, 'images/courses/php-oop-thumbnail.png', '', 'HUST');
 
 -- --------------------------------------------------------
 
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `sm_course_cat` (
   `cat_id` int(10) NOT NULL AUTO_INCREMENT,
   `cat_title` varchar(100) NOT NULL,
   PRIMARY KEY (`cat_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Course catagories' AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Course catagories' AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `sm_course_cat`
@@ -130,7 +130,9 @@ INSERT INTO `sm_course_cat` (`cat_id`, `cat_title`) VALUES
 (6, 'Humanity'),
 (7, 'Economics and Finance'),
 (8, 'Biomedical Engineering'),
-(9, 'Mathematics');
+(9, 'Mathematics'),
+(10, 'Biology'),
+(11, 'Social Sciences');
 
 -- --------------------------------------------------------
 
@@ -406,7 +408,7 @@ CREATE TABLE IF NOT EXISTS `sm_users` (
   `ip` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Store user''s credentials, used to login, create new user' AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Store user''s credentials, used to login, create new user' AUTO_INCREMENT=24 ;
 
 --
 -- Dumping data for table `sm_users`
@@ -415,12 +417,15 @@ CREATE TABLE IF NOT EXISTS `sm_users` (
 INSERT INTO `sm_users` (`user_id`, `username`, `password`, `role`, `email`, `display_name`, `birthday`, `join_date`, `first_name`, `last_name`, `gender`, `bio`, `email_code`, `avatar`, `time`, `confirmed`, `generated_string`, `ip`) VALUES
 (13, 'tuanhm', '$2y$12$396456118153560ad36a9uV8h8l4lSJYTxtZVuEapCjYfkpw7dhgm', '1', 'tuanhm@example.com', 'Minh Tuan', '0000-00-00', '2014-04-25 15:03:01', 'Tuan', 'Hoang Minh', 'Male', '', 'code_53560ad36a9918.88085225', 'images/avatars/default_avatar.png', 1398827795, 1, '0', '127.0.0.1'),
 (14, 'vinhpt', '$2y$12$294838118253560cd76a9uxaHmxYJc0mhIbn04DJ68tAcHP1ZJtfW', '1', 'vinhpt@example.com', 'Pham Truong Vinh', '0000-00-00', '2014-04-25 15:03:01', 'Vinh', 'Pham Truong', '', '', 'code_53560cd76a9916.79158021', 'images/avatars/default_avatar.png', 1398148311, 1, '0', '127.0.0.1'),
-(15, 'cuongdd', '$2y$12$88767320953561127a000eYbQL3uo4pkb1luUjqhMlHcv95Bg.YTu', '1', 'cuongdd@example.com', 'Dao Duc Cuong', '1993-05-09', '2014-04-25 15:03:01', 'Cuong', 'Dao Duc', 'Male', 'Another update', 'code_53561127a000f8.58403816', 'images/avatars/default_avatar.png', 1398939415, 1, '0', '127.0.0.1'),
+(15, 'cuongdd', '$2y$12$88767320953561127a000eYbQL3uo4pkb1luUjqhMlHcv95Bg.YTu', '1', 'cuongdd@example.com', 'Dao Duc Cuong', '1993-05-09', '2014-04-25 15:03:01', 'Cuong', 'Dao Duc', 'Male', 'Another update', 'code_53561127a000f8.58403816', 'images/avatars/cuongdd.png', 1398939415, 1, '0', '127.0.0.1'),
 (16, 'haidd', '$2y$12$25660897285356842d4a3OmrwzdmdME8a1O0JauwsmL2vazc4DiEi', '1', 'haidd@example.com', NULL, '0000-00-00', '2014-04-25 15:03:01', '', '', '', '', 'code_5356842d4a3401.53899016', 'images/avatars/default_avatar.png', 1398178861, 0, '0', '::1'),
 (17, 'duccuongict56bkhn', '$2y$12$324873160535a75cb705cO3sp7o/ZaGT33n3OAQbue4p9yGaAzLti', '1', 'duccuong5199@gmail.com', NULL, '0000-00-00', '2014-04-25 15:03:01', 'Duc Cuong', 'Dao', 'Male', 'Another account', 'code_535a75cb6fcc48.61027433', 'images/avatars/default_avatar.png', 1398437323, 1, '0', '::1'),
 (18, 'davidb', '$2y$12$723271988535db41f6f0fuqiEygJEmsIfCR8zOfMn..ntiIjf/vKG', '2', 'davidb@example.com', 'David Black-Schaffer', NULL, '2014-04-28 01:51:27', 'David', 'Black-Shaffer', 'Male', 'Assistant Professor in Department of Information Technology - Uppsala University', 'code_535db41f6f0d12.26496647', 'images/avatars/davbl791.jpg', 1398649887, 1, '0', '::1'),
 (19, 'andersb', '$2y$12$1045017269535e6f4396dOwNjU357wXSOTpoeAeOmV4kMD4ZuJhxy', '2', 'andersb@example.com', 'Anders Berglund', NULL, '2014-04-28 15:09:55', '', '', '', '', 'code_535e6f4396db15.06762459', 'images/avatars/default_avatar.png', 1398697795, 1, '0', '::1'),
-(20, 'jennifer', '$2y$12$22341414525364c3c0ea2eTT3ydjdYsHC5o6Lxg9zuLRCRhXwPYd2', '2', 'widom@cs.stanford.edu', 'Jennifer Widom', NULL, '2014-05-03 10:24:01', 'Jennifer', 'Widom', 'Female', 'Jenifer Widom is the Fletcher Jones Professor and Chair of the Computer Science Department at Stanford University. She received her Bachelors degree from the Indiana University School of Music in 1982 and her Computer Science Ph.D. from Cornell University in 1987. She was a Research Staff Member at the IBM Almaden Research Center before joining the Stanford faculty in 1993. Her research interests span many aspects of nontraditional data management. She is an ACM Fellow and a member of the National Academy of Engineering and the American Academy of Arts & Sciences; she received the ACM SIGMOD Edgar F. Codd Innovations Award in 2007 and was a Guggenheim Fellow in 2000; she has served on a variety of program committees, advisory boards, and editorial boards.', 'code_5364c3c0e71fe2.76402301', 'images/avatars/jennifer.jpg', 1399112640, 1, '0', '::1');
+(20, 'jennifer', '$2y$12$22341414525364c3c0ea2eTT3ydjdYsHC5o6Lxg9zuLRCRhXwPYd2', '2', 'widom@cs.stanford.edu', 'Jennifer Widom', NULL, '2014-05-03 10:24:01', 'Jennifer', 'Widom', 'Female', 'Jenifer Widom is the Fletcher Jones Professor and Chair of the Computer Science Department at Stanford University. She received her Bachelors degree from the Indiana University School of Music in 1982 and her Computer Science Ph.D. from Cornell University in 1987. She was a Research Staff Member at the IBM Almaden Research Center before joining the Stanford faculty in 1993. Her research interests span many aspects of nontraditional data management. She is an ACM Fellow and a member of the National Academy of Engineering and the American Academy of Arts & Sciences; she received the ACM SIGMOD Edgar F. Codd Innovations Award in 2007 and was a Guggenheim Fellow in 2000; she has served on a variety of program committees, advisory boards, and editorial boards.', 'code_5364c3c0e71fe2.76402301', 'images/avatars/jennifer.jpg', 1399112640, 1, '0', '::1'),
+(21, 'cuongdd7', '$2y$12$57185965537a1a83695ccuA6lKANSa7Q/ZYgtGh07Rqgue5w41.LG', '1', 'cuongdd7@fpt.com.vn', 'username', NULL, '2014-05-19 14:51:48', '', '', '', '', 'code_537a1a836957f4.93899063', 'images/avatars/default_avatar.png', 1400511107, 1, '0', '::1'),
+(22, 'trinhvt', '$2y$12$2165246652537a1ae265euhiadjOSygaQYnfSxM6CPTVE5KonCqfq', '2', 'vttrinh@gmail.com', 'Vu Tuyet Trinh', NULL, '2014-05-19 14:53:23', 'Trinh', 'Vu Tuyet', 'Female', 'Dr. Vu Tuyet Trinh is deputy head of department of Information Systems, School of Information and Communication Technology, Hanoi University of Science and Technology', 'code_537a1ae265da67.49947719', 'images/avatars/trinhvt.png', 1400511202, 1, '0', '::1'),
+(23, 'dummy', '$2y$12$2541021046537a29d23e4uz/QhJguKlv2Y1uBHSU40VLlceE5N0xu', '2', 'dummy@example.com', 'Funny Teacher', NULL, '2014-05-19 15:57:07', 'Dummy ', 'Wormy', 'Female', 'Fake teacher role user', 'code_537a29d23e3da4.41918406', 'images/avatars/dummy.png', 1400515026, 1, '0', '::1');
 
 --
 -- Constraints for dumped tables

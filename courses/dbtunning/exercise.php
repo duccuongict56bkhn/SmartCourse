@@ -1,0 +1,1 @@
+<?php $alias = 'dbtunning'; require '../index.php';?>

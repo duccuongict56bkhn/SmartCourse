@@ -572,7 +572,6 @@ if ($general->logged_in()) {
 												<th>Lastname</th>
 												<th>Username</th>
 												<th>Register date</th>
-												<th>Current progress</th>
 												<th>Send message</th>
 											</tr>
 										</thead>
@@ -586,13 +585,6 @@ if ($general->logged_in()) {
 												<th><?php echo $enroller['last_name'];?></th>
 												<th><a href="../../profile.php?username=<?php echo $enroller['username']; ?>"><?php echo $enroller['username'];?></a></th>
 												<th><?php echo date('d-M-Y', $enroller['time']); ?></th>
-												<th>
-													<div class="progress">
-														<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-	    												60%
-	  													</div>
-													</div>
-												</th>
 												<th>
 													<a href="#" class="btn btn-default btn-sm" name="send_mes_btn" sender_id="<?php echo $user_id; ?>" sender="<?php echo $users->fetch_info('username', 'user_id', $user_id); ?>" receiver_id="<?php echo $enroller['user_id'];?>" receiver="<?php echo $enroller['username']; ?>"><span class="glyphicon glyphicon-pencil"></span>Send message</a>
 												</th>

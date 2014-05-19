@@ -160,8 +160,8 @@ if (isset($_GET['success']) && empty($_GET['success']) === false) {
 			   			</dt>
 			   			<dd>
 			   				<?php
-	                   	 	$gender 	= $users->fetch_info('gender', 'username', $_GET['username']);
-	                    	$options 	= array("Unndisclosed", "Male", "Female");
+	                   	 	$gender 	= $users->fetch_info('gender', 'username', $user['username']);
+	                    		$options 	= array("Unndisclosed", "Male", "Female");
 	                        echo "<select name=\"gender\" class=\"selectpicker\">";
 	                        foreach($options as $option){
 	                           	if($gender == $option){
@@ -201,6 +201,7 @@ if (isset($_GET['success']) && empty($_GET['success']) === false) {
 		var display_name = $('#display_name').val();
 		var bio = $('#bio').val();
 		var gender = $('.selectpicker').val();
+
 		// var avatar = $('input[name="myfile"]').val();
 		var avatar = $('#avatarPreview img').attr('src');
 		var username = '<?php echo $users->fetch_info("username", "user_id", $user_id); ?>';

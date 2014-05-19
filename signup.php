@@ -36,11 +36,18 @@ if (isset($_POST['submit'])) {
 	}
 	if(empty($errors) === true){
 		
+    $role = 1;
+
+    if (isset($_POST['role']) && ($_POST['role'] == "1")) {
+      $role = 1;
+    } else if (isset($_POST['role']) && ($_POST['role'] == "2")) {
+      $role = 2;
+    }
 		$username 	= htmlentities($_POST['username']);
 		$password 	= $_POST['password'];
 		$email 		= htmlentities($_POST['email']);
  
-		$users->register($username, $password, $email);// Calling the register function, which we will create soon.
+		$users->register($username, $password, $email,$role);// Calling the register function, which we will create soon.
 		header('Location: signup.php?success');
 		exit();
 	}
@@ -83,8 +90,8 @@ if (isset($_GET['success']) && empty($_GET['success'])) {
             </div>
             <div class="form-group" is="roleGroup">
             	<label>I am a: </label>
-            		<input type="radio" name="role" id="role_student">Student</input>
-            		<input type="radio" name="role" id="role_teacher">Teacher</input>
+            		<input type="radio" name="role" id="role_student" value="1">Student</input>
+            		<input type="radio" name="role" id="role_teacher" value="2">Teacher</input>
             </div>
           	<div class="form-group">
 							<div class="checkbox">

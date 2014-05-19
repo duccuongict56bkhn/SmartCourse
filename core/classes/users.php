@@ -46,7 +46,7 @@ class Users {
 		}
 	}
 
-	public function register($username, $password, $email)
+	public function register($username, $password, $email, $role)
 	{
 		# Make bcrypt global so that we can use it here
 		global $bcrypt;
@@ -57,7 +57,7 @@ class Users {
 		#$password	= sha1($password);
 		$password 	= $bcrypt->genHash($password);
 
-		$query = $this->db->prepare("INSERT INTO `sm_users` (`username`, `password`, `email`, `email_code`, `ip`, `time`, `confirmed`) VALUES (?, ?, ?, ?, ?, ?, ?)");
+		$query = $this->db->prepare("INSERT INTO `sm_users` (`username`, `password`, `email`, `email_code`, `ip`, `time`, `confirmed`, `role`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
 		$query->bindValue(1, $username);
 		$query->bindValue(2, $password);
@@ -66,6 +66,7 @@ class Users {
 		$query->bindValue(5, $ip);
 		$query->bindValue(6, $time);
 		$query->bindValue(7, 1);
+		$query->bindValue(8, $role);
 		try {
 			$query->execute();
 
@@ -271,21 +272,23 @@ class Users {
 		}
 	}
 
-	public function update_user($user_id, $first_name, $last_name, $bio, $display_name, $avatar)
+	public function update_user($user_id, $first_name, $last_name, $bio, $gender, $display_name, $avatar)
 	{
 		$query = $this->db->prepare("UPDATE `sm_users` SET
 										   `first_name`   = ? ,
 										   `last_name`    = ? ,
 										   `bio`		  = ? ,
 										   `display_name` = ? ,
-										   `avatar`		  = ?
+										   `avatar`		  = ?,
+										   `gender` = ?
 									WHERE  `user_id`	  = ?");
 		$query->bindValue(1, $first_name);
 		$query->bindValue(2, $last_name);
 		$query->bindValue(3, $bio);
 		$query->bindValue(4, $display_name);
 		$query->bindValue(5, $avatar);
-		$query->bindValue(6, $user_id);
+		$query->bindValue(6, $gender);
+		$query->bindValue(7, $user_id);
 
 		try {
 			$query->execute();

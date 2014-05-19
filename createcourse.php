@@ -37,12 +37,13 @@ if (isset($_POST['submit'])) {
 		$course_title = htmlentities($_POST['course_title']);
 		$course_code  = htmlentities($_POST['course_code']);
 		$course_alias = htmlentities($_POST['course_alias']);
+		$school 		  = htmlentities($_POST['school']);
 		$cat_id		  = htmlentities(substr($_POST['course_cat'], 0, strpos($_POST['course_cat'], ' -'))); #, 
 		$course_type  = ($_POST['course_type'] == 'sefls') ? 1 : 2;
 		$start_date	  = date('Y-m-d',strtotime($_POST['start_date']));
 		$length		  = htmlentities($_POST['length']);
 
-		$courses->create_course($course_title, $course_code, $course_alias, $cat_id, $course_type, $start_date, $length, $user_id);
+		$courses->create_course($course_title, $course_code, $course_alias, $cat_id, $course_type, $start_date, $length, $user_id, $school);
 
 		if ($users->get_role($user_id) == 'Teacher') {
 			header('Location: editcourse.php?course_alias=' . $course_alias);
@@ -93,10 +94,15 @@ if (isset($_POST['submit'])) {
 								<input type="text" name="course_code" placeholder="Course code" class="form-control" required />
 							</div>
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-3">
 							<div class="form-group">
 								<label for="course_alias"><strong>Course alias</strong></label>
-								<input type="text" name="course_alias" placeholder="Course alias" class="form-control" required />
+								<input type="text" name="course_alias" placeholder="Course alias" class="form-control" required />							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="school"><strong>School</strong></label>
+								<input type="text" name="school" placeholder="School" class="form-control" required />
 							</div>
 						</div>
 					</div>

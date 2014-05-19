@@ -48,11 +48,11 @@ class Courses {
 		}
 	}
 
-	public function create_course($course_title, $course_code, $course_alias, $cat_id, $course_type, $start_date, $length, $user_id)
+	public function create_course($course_title, $course_code, $course_alias, $cat_id, $course_type, $start_date, $length, $user_id, $school)
 	{
 		$create_date = time();
 
-		$query = $this->db->prepare("INSERT INTO `sm_courses` (`course_title`, `course_code`, `course_alias`, `cat_id`,`course_type`, `start_date`, `length`)
+		$query = $this->db->prepare("INSERT INTO `sm_courses` (`course_title`, `course_code`, `course_alias`, `cat_id`,`course_type`, `start_date`, `length`, `school`)
 									 VALUES (?, ?, ?, ?, ?, ?, ?)");
 		$query->bindValue(1, $course_title);
 		$query->bindValue(2, $course_code);
@@ -61,6 +61,7 @@ class Courses {
 		$query->bindValue(5, $course_type);
 		$query->bindValue(6, $start_date);
 		$query->bindValue(7, $length);
+		$query->bindValue(8, $school);
 
 		try {
 			$query->execute();
@@ -222,13 +223,30 @@ class Courses {
 		}
 	}
 
-	public function update_course($course_id,$course_desc, $avatar)
+	public function update_photo($course_id, $avatar, $cover)
+	{
+		$query = $this->db->prepare("UPDATE `sm_courses` SET `course_avatar` = ?, `course_cover` = ? WHERE `course_id` = ?");
+		$query->bindValue(1, $avatar);
+		$query->bindValue(2, $cover);
+		$query->bindValue(3, $course_id);
+		
+		try {
+			$query->execute();
+			return true;
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+	}
+
+	public function update_course($course_id,$course_desc, $avatar, $course_cover = '')
 	{
 		$query = $this->db->prepare("UPDATE `sm_courses` SET `course_desc` = ?,
-															 `avatar` = ?
+															 `avatar` = ?,
+															 `course_cover' = ?
 														WHERE `course_id` = ?");
 		$query->bindValue(1, $course_desc);
 		$query->bindValue(2, $avatar);
+		$query->bindValue(3, $course_cover);
 		try {
 			$query->execute();
 			return true;
