@@ -60,7 +60,7 @@ if (isset($_GET['username']) && !empty($_GET['username'])) {
 		 	</div>
 		 </div>
 		 <div id="edit-user-profile">
-			 <a href="settings.php" class="btn btn-success">Edit your profile</a>
+			 <a href="settings.php?username=<?php echo $username; ?>" class="btn btn-success">Edit your profile</a>
 		 </div>
 	</div>
 
@@ -106,6 +106,13 @@ if (isset($_GET['username']) && !empty($_GET['username'])) {
 	header('Location: index.php'); // redirect to index if there is no username in the Url
 }
 ?>
+<script type="text/javascript">
 
+    var height_diff = $(window).height() - $('body').height();
+    if ( height_diff > 0 ) {
+        $('.nice-footer').css( 'margin-top', height_diff +200);
+    }
+
+</script>
 <?php 
 include 'footer.php'; ?>

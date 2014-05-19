@@ -112,5 +112,8 @@ $(document).ready(function () {
 
 	});
     
-   // Enable double-click to edit for course basic information text
+    var height_diff = $(window).height() - $('body').height();
+    if ( height_diff > 0 ) {
+        $('.nice-footer').css( 'margin-top', height_diff);
+    }
 });
