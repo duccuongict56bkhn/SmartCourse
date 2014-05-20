@@ -72,8 +72,8 @@ $general->logged_out_protect();
 				<li><a href="editsyllabus.php?course_alias=<?php echo $course_data['course_alias'];?>"><span class="glyphicon glyphicon-eye-open"></span>Syllabus</a></li>
 				<li><a href="editlecture.php?course_alias=<?php echo $course_data['course_alias'];?>"><span class="glyphicon glyphicon-book"></span>Lectures</a></li>
 				<li><a href="editexercise.php?course_alias=<?php echo $alias; ?>"><span class="glyphicon glyphicon-tasks"></span>Exercises</a></li>
-				<li><a href="editmaterial.php?course_alias=<?php echo $alias; ?>"><span class="glyphicon glyphicon-print"></span>Course materials</a></li>
-				<li><a href="courseforum.php?course_alias=<?php echo $alias; ?>"><span class="glyphicon glyphicon-bookmark"></span>Discussions</a></li>
+				<!-- <li><a href="editmaterial.php?course_alias=<?php echo $alias; ?>"><span class="glyphicon glyphicon-print"></span>Course materials</a></li>
+				<li><a href="courseforum.php?course_alias=<?php echo $alias; ?>"><span class="glyphicon glyphicon-bookmark"></span>Discussions</a></li> -->
 			</ul>
 		</div> <!-- end of .sidebar -->
 

@@ -71,7 +71,7 @@ if ($general->logged_in()) {
 								<li>
 									<a href="#">Add new unit</a>
 									<a href="../../editannouncement.php?course_alias=<?php echo $course_data['course_alias']; ?>#creat_anno">Add new announcement</a>
-									<a href="#">Add new materials</a>
+									<!-- <a href="#">Add new materials</a> -->
 								</li>
 								<li role="representation" class="divider"></li>
 								<li role="representation" class="dropdown-header">Exercises</li>
@@ -168,7 +168,7 @@ if ($general->logged_in()) {
 					<?php if ($filename == 'studentsubmit.php'): ?>
 						<li><a class="active" href="studentsubmit.php"><span class="glyphicon glyphicon-circle-arrow-up"></span>Student submittals</a></li>
 					<?php else : ?>
-						<li><a href="studentsubmit.php"><span class="glyphicon glyphicon-circle-arrow-up"></span>Student submittals</a></li>
+						<li><a href="studentsubmit.php?auth_mode=correct&amp;user_id=<?php echo $user_id ?>&amp;course_alias=<?php echo $course_data['course_alias']; ?>"><span class="glyphicon glyphicon-circle-arrow-up"></span>Student submittals</a></li>
 					<?php endif ?>
 				<?php endif ?>
 				<li class="spacer"></li>
@@ -333,7 +333,7 @@ if ($general->logged_in()) {
 						<div class="pull-right">
 							
 							<?php if ($is_owner): ?>
-								<button class="btn btn-danger" type="button" id="show_student_submit"><span class="glyphicon glyphicon-star"></span>Show student's submit</button>	
+								<a href="studentsubmit.php?auth_mode=correct&amp;user_id=<?php echo $user_id ?>&amp;course_alias=<?php echo $course_data['course_alias']; ?>" class="btn btn-danger" type="button" id="show_student_submit"><span class="glyphicon glyphicon-star"></span>Show student's submit</a>	
  							<?php else: ?>
 								<a href="progress.php" class="btn btn-default" id="show_score"><span class="glyphicon glyphicon-star"></span>Show my achieved score</a>
 							<?php endif ?>
@@ -462,10 +462,14 @@ if ($general->logged_in()) {
 						<div class="row" style="margin-left: 0; padding-top:0;">
 							<?php $v_units = $courses->get_distinct_unit($id); ?>
 							<label style="margin-right: 15px;">Lecture </label>
-							<select class="selectpicker" data-width="420px" id="unit-select">
+							<select class="selectpicker" data-width="200px" id="unit-select">
 								<?php foreach ($v_units as $v_unit): ?>
-									<option unit-id="<?php echo $v_unit['unit_id']; ?>" value="<?php echo $v_unit['unit_id']; ?>">L<?php echo $v_unit['unit_id'] . ' - ' . $v_unit['unit_name']; ?></option>
+									<option unit_id="<?php echo $v_unit['unit_id']; ?>" value="<?php echo $v_unit['unit_id']; ?>">L<?php echo $v_unit['unit_id'] . ' - ' . $v_unit['unit_name']; ?></option>
 								<?php endforeach ?>
+							</select>
+							<label style="margin-right: 15px;">Exercise: </label>
+							<select class="selectpicker" data-width="200px" id="exercise-select">
+
 							</select>
 							<div class="pull-right">
 								<label style="margin-right: 15px;">Student</label>
@@ -853,28 +857,6 @@ if ($general->logged_in()) {
 
 	});
 	</script>
-	<script type="text/javascript">
-		$('#unit-select').change(function(e) {
-			var unit_id = $(this).val();
-			var user_id = $('#student_select').val();
-			var course_id = <?php echo $id; ?>;
-			var type = 'studentsubmit';
-
-			$.ajax({
-				type : 'POST',
-				url  : '../../processor/fetch.php',
-				data {
-					type : type,
-					unit_id : unit_id,
-					course_id : course_id,
-					user_id : user_id
-				},
-				success : function(data) {
-					console.log(data);
-				}
-			});
-		});
-	</script>
 <?php endif ?>
 
 <?php if ($filename == 'studentlist.php'): ?>
@@ -917,6 +899,16 @@ if ($general->logged_in()) {
 			});
 		});
 	})
+	</script>
+<?php endif ?>
+
+<?php if ($filename == 'studentsubmit.php'): ?>
+	<script type="text/javascript">
+		$('#unit-select').change(function(e) {
+			var unit_id = $(this).val();
+			//alert(unit_id);
+			$('#exercise-select').html('<p><?php echo "abc"; ?></p>')
+		});
 	</script>
 <?php endif ?>
 </body>

@@ -24,6 +24,7 @@ $page_title = ucfirst(substr($filename, 0, strpos($filename, '.php')));
 	<script src="js/prettify.js"></script>
 	<script src="css/bootstrap-select/bootstrap-select.js"></script>
 	<script src="js/bootstrap-datepicker.js"></script>
+	<script src="js/readmore.min.js"></script>
 	<script type="text/javascript" src="magic.js"></script>
 	<script src="bseditable/js/bootstrap-editable.js"></script>
 	<?php if ($page_title == 'Editannouncement'): ?>
@@ -62,8 +63,8 @@ $page_title = ucfirst(substr($filename, 0, strpos($filename, '.php')));
 					<a href="courses.php">Courses</a>
 				</li>
 				<?php } ?>
-				<li><a href="#">FAQ</a></li>
-				<li><a href="#">About</a></li>
+				<!-- <li><a href="#">FAQ</a></li> -->
+				<li><a href="about.php">About</a></li>
 				<li><a href="#">Terms of services</a></li>
 				<li><a href="#">Contact</a></li>
 			</ul>

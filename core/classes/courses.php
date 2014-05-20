@@ -477,6 +477,40 @@ class Courses {
 		return false;
 	}
 
+	public function get_pending_exercise($user_id, $course_id, $unit_id, $exercise_id)
+	{
+		$query = $this->db->prepare(" SELECT * 
+												FROM sm_do_exercise
+												WHERE user_id =?
+												AND course_id =?
+												AND unit_id =?
+												AND answer_text <>  ''
+												AND exercise_id =?
+												AND IFNULL( approved,  'N' ) <>  'Y'
+												AND attempt_made = ( 
+												SELECT MAX( attempt_made ) 
+												FROM sm_do_exercise
+												GROUP BY user_id, course_id, unit_id, exercise_id
+												HAVING (
+												user_id, course_id, unit_id, exercise_id
+												) = ( ?,?,?,? ) )");
+		$query->bindValue(1, $user_id);
+		$query->bindValue(2, $course_id);
+		$query->bindValue(3, $unit_id);
+		$query->bindValue(4, $exercise_id);
+		$query->bindValue(5, $user_id);
+		$query->bindValue(6, $course_id);
+		$query->bindValue(7, $unit_id);
+		$query->bindValue(8, $exercise_id);
+
+		try {
+			$query->execute();
+			return $query->fetchALl();
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+	}
+
 	public function search_courses($keyword)
 	{
 		$token = '\'%' . $keyword . '%\'';
@@ -808,8 +842,8 @@ class Courses {
 	# Developing-time functions
 	public function get_all_exercises($course_id) 
 	{
-		$query = $this->db->prepare("SELECT * FROM `sm_exercises` WHERE `course_id` = $course_id");
-		$query->bindParam(':course_id', $course_id, PDO::PARAM_INT);
+		$query = $this->db->prepare("SELECT * FROM `sm_exercises` WHERE `course_id` = ?");
+		$query->bindValue(1, $course_id);
 
 		try {
 			$query->execute();
