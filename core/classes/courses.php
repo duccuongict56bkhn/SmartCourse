@@ -53,7 +53,7 @@ class Courses {
 		$create_date = time();
 
 		$query = $this->db->prepare("INSERT INTO `sm_courses` (`course_title`, `course_code`, `course_alias`, `cat_id`,`course_type`, `start_date`, `length`, `school`)
-									 VALUES (?, ?, ?, ?, ?, ?, ?)");
+									 VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 		$query->bindValue(1, $course_title);
 		$query->bindValue(2, $course_code);
 		$query->bindValue(3, $course_alias);

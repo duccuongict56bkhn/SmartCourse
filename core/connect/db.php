@@ -3,7 +3,7 @@
 $config = array(
 	'host' => 'localhost',
 	'username' => 'root',
-	'password' => '',
+	'password' => 'voG2faRhku',
 	'database' => 'studyhub'
 	);
 
